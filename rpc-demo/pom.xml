@@ -37,6 +37,13 @@
         </dependency>
     </dependencies>
 
+    <repositories>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/lealone/Lealone</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
