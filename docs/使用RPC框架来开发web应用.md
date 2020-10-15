@@ -118,9 +118,12 @@ lealone-5.0.0.js 相当于一个RPC框架的客户端，通过sockjs与后端RPC
 
 ### 5. 完整例子
 
-下载[lealone-rpc-demo](https://github.com/lealone/Lealone-Examples/tree/main/rpc-demo) 项目，
+下载项目 [lealone-rpc-demo](https://github.com/lealone/Lealone-Examples/tree/main/rpc-demo)
+
 源码编译与打包请执行 build -p
+
 运行执行 build -r
+
 启动成功后，在浏览器中打开下面这个URL进行测试:
 http://localhost:8080/hello.html
 
