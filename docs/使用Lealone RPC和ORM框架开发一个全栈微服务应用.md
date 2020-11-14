@@ -54,7 +54,7 @@ public class User extends Model<User> {
     public User() {
         this(null, REGULAR_MODEL);
     }
-```java
+```
 
 User模型类生成的代码是不用修改的，采用的是一种简化的充血模型，
 可以基于模型类的字段来构建出跟普通SQL极其相似的类型安全的DSL，下文会有用法演示。
