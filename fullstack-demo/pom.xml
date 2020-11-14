@@ -3,10 +3,10 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion> 
     <groupId>org.lealone.demo</groupId>
-    <artifactId>lealone-rpc-demo</artifactId>
+    <artifactId>lealone-fullstack-demo</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
-    <name>lealone-rpc-demo</name>
+    <name>lealone-fullstack-demo</name>
 
     <dependencies>
         <dependency>
@@ -75,11 +75,11 @@
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>org.lealone.examples.rpc.RpcDemo</Main-Class>
+                                        <Main-Class>org.lealone.examples.fullstack.FullStackDemo</Main-Class>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
-                            <outputFile>target/lealone-rpc-demo-all-${project.version}.jar</outputFile>
+                            <outputFile>target/lealone-fullstack-demo-all-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>

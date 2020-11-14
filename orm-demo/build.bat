@@ -45,7 +45,7 @@ echo    -i            mvn install -Dmaven.test.skip=true
 echo    -c            mvn clean
 echo    -dt           mvn dependency:tree
 echo    -vu version   pom.xml version update
-echo    -r            java -jar ./target/lealone-rpc-demo-all-1.0.0.jar ./web
+echo    -r            java -jar ./target/lealone-orm-demo-all-1.0.0.jar
 goto end
 
 :e
@@ -88,5 +88,5 @@ call mvn versions:commit
 goto end
 
 :r
-java -jar ./target/lealone-rpc-demo-all-1.0.0.jar ./web
+java -jar ./target/lealone-orm-demo-all-1.0.0.jar
 :end
