@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         // 如果 name = 'zhh', age = 18
         // 对应的sql是: insert into user(name, age) values('zhh', 18);
         User user = new User();
-        user.name.set(name).age.set(age).insert();
+        user.name.set(name).age.set(age).insert(); // 链式调用
         return user.id.get();
     }
 

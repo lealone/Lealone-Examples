@@ -12,7 +12,7 @@
 
     <div id="test">
         say hello: <input v-model="name">
-		<button v-on:click="sayHello">submit</button>
+        <button v-on:click="sayHello">submit</button>
         <p>{{ message }}</p>
     </div>
 
@@ -21,17 +21,17 @@
         el: '#test',
         data: {
             name: "zhh",
-			message: ""
+            message: ""
         },
         methods: {
             sayHello: function() {
-			    var that = this;
-			    //获得一个服务代理
-			    var s = lealone.getService("hello_service");
-				//调用服务
+                var that = this;
+                //获得一个服务代理
+                var s = lealone.getService("hello_service");
+                //调用服务
                 s.sayHello(this.name, function(message) {
-					that.message = message;
-				});
+                    that.message = message;
+                });
             }
         }
     })
