@@ -29,7 +29,6 @@ public class FullStackDemo {
     static String jdbcUrl = "jdbc:lealone:embed:test";
 
     public static void main(String[] args) throws Exception {
-
         // 静态资源文件的根目录，如果有多个可以用逗号分隔
         String webRoot = args.length == 1 ? args[0] : "./web";
 

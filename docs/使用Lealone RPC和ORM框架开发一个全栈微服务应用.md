@@ -111,6 +111,7 @@ public class UserServiceImpl implements UserService {
 ```
 
 服务实现类就是一个最普通的接口实现类，服务框架对服务实现类是无侵入的。
+
 这里也演示了Lealone ORM框架的基本用法，ORM框架对应用代码也是无侵入的。
 
 Lealone ORM框架的更多用法演示可以尝试一下这个

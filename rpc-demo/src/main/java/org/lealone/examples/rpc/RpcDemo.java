@@ -29,7 +29,6 @@ public class RpcDemo {
     static String jdbcUrl = "jdbc:lealone:embed:test";
 
     public static void main(String[] args) throws Exception {
-
         // 静态资源文件的根目录，如果有多个可以用逗号分隔
         String webRoot = args.length == 1 ? args[0] : "./web";
 
@@ -40,10 +39,10 @@ public class RpcDemo {
         server.setWebRoot(webRoot);
         server.start();
 
-        createService(jdbcUrl);
+        createService();
     }
 
-    public static void createService(String url) throws Exception {
+    public static void createService() throws Exception {
         execute("drop service if exists hello_service");
 
         // 创建服务: hello_service，会生成一个对应的HelloService接口

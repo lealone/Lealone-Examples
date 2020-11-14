@@ -127,3 +127,16 @@ lealone-5.0.0.js 相当于一个RPC框架的客户端，通过sockjs与后端RPC
 启动成功后，在浏览器中打开下面这个URL进行测试:
 http://localhost:8080/hello.html
 
+
+
+### 6. 可能出现的问题
+
+如果执行build -p找不到lealone的依赖包，
+需要下载以下两个项目的代码: 
+
+[lealone-database](https://github.com/lealone/Lealone)
+
+[lealone-plugins](https://github.com/lealone/Lealone-Plugins)
+
+执行 build -i 把它们安装到本地的maven仓库即可。
+
