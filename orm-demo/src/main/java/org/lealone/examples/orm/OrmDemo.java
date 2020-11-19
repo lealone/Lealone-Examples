@@ -69,7 +69,7 @@ public class OrmDemo {
         assertEquals("batch update", c.notes.get());
 
         // 分页查询
-        list = dao.offset(1).limit(1).findList();
+        list = dao.offset(0).limit(1).findList();
         assertEquals(1, list.size());
 
         // delete
