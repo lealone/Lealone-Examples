@@ -217,7 +217,7 @@ Lealone ORM 框架实现关联查询时不会像其他 ORM 框架那样产生 N 
 事务默认采用的是自动提交模式，调用 beginTransaction() 后事务变成手动提交模式。
 
 
-### 4. 完整例子
+### 5. 完整例子
 
 下载项目 [lealone-orm-demo](https://github.com/lealone/Lealone-Examples/tree/main/orm-demo)
 
@@ -226,7 +226,7 @@ Lealone ORM 框架实现关联查询时不会像其他 ORM 框架那样产生 N 
 运行执行 build -r
 
 
-### 5. 可能出现的问题
+### 6. 可能出现的问题
 
 如果执行 build -p 找不到 lealone 的依赖包，
 需要下载以下两个项目的代码: 
@@ -238,12 +238,12 @@ Lealone ORM 框架实现关联查询时不会像其他 ORM 框架那样产生 N 
 执行 build -i 把它们安装到本地的 maven 仓库即可。
 
 
-### 6. 更多例子
+### 7. 更多例子
 
 请看 [orm unit test](https://github.com/lealone/Lealone/tree/master/lealone-test/src/test/java/org/lealone/test/orm)
 
 
-### 7. 完整的代码例子
+### 8. 完整的代码例子
 
 ```java
 package org.lealone.examples.orm;
