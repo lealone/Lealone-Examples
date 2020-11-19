@@ -2,9 +2,11 @@ Lealone ORM 是一个简洁优雅的类型安全的 ORM 框架，支持链式(�
 
 在建表时，Lealone ORM 可以为每个表自动生成对应的模型类代码，这些代码不需要应用开发人员修改维护。
 
-应用开发人员负责编写的代码无需导入 Lealone ORM 的任何东西(比如类、接口、注解)。
+<b>应用开发人员负责编写的代码无需导入 Lealone ORM 的任何东西(比如类、接口、注解)。</b>
 
-下文通过一个例子来介绍 Lealone ORM 大多数常用的功能，比如单表查添删除操作、多表关联查询、事务操作等等。
+
+
+下文通过一个例子来介绍 Lealone ORM 大多数常用的功能，比如单表查添删改操作、多表关联查询、事务操作等等。
 
 该例子创建了 customer 和 order 两张表，它们两者存在关联关系。
 
@@ -50,7 +52,8 @@ public class Customer extends Model<Customer> {
     public final PInteger<Customer> phone;
 ```
 
-生成的 Customer 模型类的代码是不用修改的，采用的是一种简化的充血模型，
+生成的 Customer 模型类的代码是不用修改的，采用的是一种简化的充血模型。
+
 可以基于模型类的字段来构建出跟普通 SQL 极其相似的类型安全的 DSL。
 
 因为 customer 和 order 两张表存在关联关系，所以生成的代码也体现了这种关系：

@@ -11,7 +11,7 @@
 
 ### orm-demo
 
-演示 Lealone ORM 框架最常用的功能，请继续阅读代码例子: [CrudTest](https://github.com/lealone/Lealone-Examples/tree/main/orm-demo/src/main/java/org/lealone/examples/orm/CrudTest.java)
+演示 Lealone ORM 框架最常用的功能，请继续阅读文档: [Lealone ORM 框架快速入门](https://github.com/lealone/Lealone-Examples/blob/main/docs/Lealone%20ORM%E6%A1%86%E6%9E%B6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8.md)
 
 
 ### fullstack-demo

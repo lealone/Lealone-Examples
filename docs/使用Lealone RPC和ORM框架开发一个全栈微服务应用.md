@@ -117,6 +117,8 @@ public class UserServiceImpl implements UserService {
 Lealone ORM框架的更多用法演示可以尝试一下这个
 [lealone-orm-demo](https://github.com/lealone/Lealone-Examples/tree/main/orm-demo)
 
+[Lealone ORM 框架快速入门](https://github.com/lealone/Lealone-Examples/blob/main/docs/Lealone%20ORM%E6%A1%86%E6%9E%B6%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8.md)
+
 
 ### 5. 在前端使用后端服务
 
