@@ -37,7 +37,7 @@ public class OrmDemo {
         testTransaction();
     }
 
-    // ------------ 以下代码中出现的的 where()都是可选的 ------------
+    // ------------ 以下代码中出现的的 where() 都是可选的 ------------
 
     // 单表crud操作
     static void testCrud() {

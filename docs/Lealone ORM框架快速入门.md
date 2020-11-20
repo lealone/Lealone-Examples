@@ -61,7 +61,7 @@ public class Customer extends Model<Customer> {
 ```java
     public Customer addOrder(Order m) {
         m.setCustomer(this);
-        super.addModel(m);;
+        super.addModel(m);
         return this;
     }
 

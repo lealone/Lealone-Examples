@@ -39,42 +39,17 @@ public class FullStackDemo {
         server.setWebRoot(webRoot);
         server.start();
 
-        createTable();
-        createService();
+        // 执行建表脚本，同时自动生成对应的模型类的代码
+        runScript("./src/main/resources/tables.sql");
+
+        // 执行服务创建脚本，同时自动生成对应的服务接口代码
+        runScript("./src/main/resources/services.sql");
     }
 
-    public static void createTable() throws Exception {
+    static void runScript(String scriptFile) throws Exception {
         System.setProperty("lealone.jdbc.url", jdbcUrl);
-
-        // execute("drop table if exists user");
-        // 创建表: user，会生成一个名为User的模型类
-        String sql = "create table if not exists user(id long auto_increment primary key, name varchar, age int)" //
-                + "   package 'org.lealone.examples.fullstack.generated.model'" // User类所在的包名
-                + "   generate code './src/main/java'"; // User类的源文件所在的根目录
-
-        execute(sql);
-    }
-
-    public static void createService() throws Exception {
-        execute("drop service if exists user_service");
-
-        // 创建服务: user_service，会生成一个对应的UserService接口
-        String sql = "create service if not exists user_service (" //
-                + "     add_user(name varchar, age int) long," // 定义UserService接口方法 add_user
-                + "     find_by_name(name varchar) user" // 定义UserService接口方法find_by_name
-                + "   )" //
-                + "   package 'org.lealone.examples.fullstack.generated.service'" // UserService接口所在的包名
-                + "   implement by 'org.lealone.examples.fullstack.UserServiceImpl'" // UserService接口的默认实现类
-                + "   generate code './src/main/java'"; // UserService接口源文件的根目录
-
-        execute(sql);
-    }
-
-    public static void execute(String sql) throws Exception {
-        Connection conn = DriverManager.getConnection(jdbcUrl);
-        Statement stmt = conn.createStatement();
-        stmt.executeUpdate(sql);
-        stmt.close();
-        conn.close();
+        try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("RUNSCRIPT FROM '" + scriptFile + "'");
+        }
     }
 }

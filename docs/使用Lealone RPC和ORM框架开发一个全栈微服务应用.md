@@ -21,15 +21,15 @@
 
 ### 2. 建表
 
-```java
-    public static void createTable() throws Exception {
-        // 创建表: user，会生成一个名为User的模型类
-        String sql = "create table if not exists user(id long auto_increment primary key, name varchar, age int)" //
-                + "   package 'org.lealone.examples.fullstack.generated.model'" // User类所在的包名
-                + "   generate code './src/main/java'"; // User类的源文件所在的根目录
-
-        execute(sql);
-    }
+```sql
+-- 创建表: user，会生成一个名为User的模型类
+create table if not exists user (
+  id long auto_increment primary key,
+  name varchar,
+  age int
+)
+package 'org.lealone.examples.fullstack.generated.model' -- User类所在的包名
+generate code './src/main/java' -- User类的源文件所在的根目录
 ```
 
 这一步用于创建user表，加了新的扩展语法，
@@ -62,19 +62,15 @@ User模型类生成的代码是不用修改的，采用的是一种简化的充�
 
 ### 3. 创建后端服务
 
-```java
-    public static void createService(String url) throws Exception {
-        // 创建服务: user_service，会生成一个对应的UserService接口
-        String sql = "create service if not exists user_service (" //
-                + "     add_user(name varchar, age int) long," // 定义UserService接口方法 addUser
-                + "     find_by_name(name varchar) user" // 定义UserService接口方法 findByName
-                + "   )" //
-                + "   package 'org.lealone.examples.fullstack.generated.service'" // UserService接口所在的包名
-                + "   implement by 'org.lealone.examples.fullstack.UserServiceImpl'" // UserService接口的默认实现类
-                + "   generate code './src/main/java'"; // UserService接口源文件的根目录
-
-        execute(sql);
-    }
+```sql
+-- 创建服务: user_service，会生成一个对应的UserService接口
+create service if not exists user_service (
+  add_user(name varchar, age int) long, -- 定义UserService接口方法 add_user
+  find_by_name(name varchar) user -- 定义UserService接口方法find_by_name
+)
+package 'org.lealone.examples.fullstack.generated.service' -- UserService接口所在的包名
+implement by 'org.lealone.examples.fullstack.UserServiceImpl' -- UserService接口的默认实现类
+generate code './src/main/java' -- UserService接口源文件的根目录
 ```
 
 这一步用于描述一个服务的相关信息，比如它有哪些可调用的方法，
