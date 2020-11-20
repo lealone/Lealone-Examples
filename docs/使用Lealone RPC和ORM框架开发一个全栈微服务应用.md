@@ -1,5 +1,8 @@
 这里介绍如何使用前端 Vue 框架配合 Lealone 数据库内置的 RPC 和 ORM 框架开发一个简单的全栈微服务应用。
 
+<b>Lealone 的学习成本极低，下文只有启动 HttpServer 的代码需要引入 Lealone 的类，</br>
+其他应用开发人员负责编写的代码无需导入 Lealone 的任何东西(比如类、接口、注解)。</b>
+
 ### 1. 启动 http server
 
 ```java
@@ -66,7 +69,7 @@ User模型类生成的代码是不用修改的，采用的是一种简化的充�
 -- 创建服务: user_service，会生成一个对应的UserService接口
 create service if not exists user_service (
   add_user(name varchar, age int) long, -- 定义UserService接口方法 add_user
-  find_by_name(name varchar) user -- 定义UserService接口方法find_by_name
+  find_by_name(name varchar) user -- 定义UserService接口方法 find_by_name
 )
 package 'org.lealone.examples.fullstack.generated.service' -- UserService接口所在的包名
 implement by 'org.lealone.examples.fullstack.UserServiceImpl' -- UserService接口的默认实现类
