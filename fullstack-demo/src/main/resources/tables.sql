@@ -1,5 +1,5 @@
 -- 删除表
--- drop table if exists user;
+drop table if exists user;
 
 -- 创建表: user，会生成一个名为User的模型类
 create table if not exists user (
