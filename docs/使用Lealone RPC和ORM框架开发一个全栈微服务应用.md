@@ -95,9 +95,7 @@ public class UserServiceImpl implements UserService {
     public Long addUser(String name, Integer age) {
         // 如果 name = 'zhh', age = 18
         // 对应的sql是: insert into user(name, age) values('zhh', 18);
-        User user = new User();
-        user.name.set(name).age.set(age).insert(); // 链式调用
-        return user.id.get();
+        return new User().name.set(name).age.set(age).insert(); // 链式调用，insert()返回新增记录的rowId
     }
 
     @Override
