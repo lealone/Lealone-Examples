@@ -21,7 +21,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.lealone.plugins.vertx.server.HttpServer;
+import org.lealone.server.http.HttpServer;
 
 public class RpcDemo {
 
