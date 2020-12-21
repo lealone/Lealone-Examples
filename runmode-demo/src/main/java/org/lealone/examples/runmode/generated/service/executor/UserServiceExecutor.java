@@ -39,17 +39,17 @@ public class UserServiceExecutor implements ServiceExecutor {
     }
 
     @Override
-    public String executeService(String methodName, Map<String, String> methodArgs) {
+    public String executeService(String methodName, Map<String, Object> methodArgs) {
         switch (methodName) {
         case "ADD_USER":
-            String p_name_1 = methodArgs.get("NAME");
-            Integer p_age_1 = Integer.valueOf(methodArgs.get("AGE"));
+            String p_name_1 = ServiceExecutor.toString("NAME", methodArgs);
+            Integer p_age_1 = Integer.valueOf(ServiceExecutor.toString("AGE", methodArgs));
             Long result1 = this.s.addUser(p_name_1, p_age_1);
             if (result1 == null)
                 return null;
             return result1.toString();
         case "FIND_BY_NAME":
-            String p_name_2 = methodArgs.get("NAME");
+            String p_name_2 = ServiceExecutor.toString("NAME", methodArgs);
             User result2 = this.s.findByName(p_name_2);
             if (result2 == null)
                 return null;

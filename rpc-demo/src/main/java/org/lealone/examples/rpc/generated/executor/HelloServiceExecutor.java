@@ -30,10 +30,10 @@ public class HelloServiceExecutor implements ServiceExecutor {
     }
 
     @Override
-    public String executeService(String methodName, Map<String, String> methodArgs) {
+    public String executeService(String methodName, Map<String, Object> methodArgs) {
         switch (methodName) {
         case "SAY_HELLO":
-            String p_name_1 = methodArgs.get("NAME");
+            String p_name_1 = ServiceExecutor.toString("NAME", methodArgs);
             String result1 = this.s.sayHello(p_name_1);
             if (result1 == null)
                 return null;
