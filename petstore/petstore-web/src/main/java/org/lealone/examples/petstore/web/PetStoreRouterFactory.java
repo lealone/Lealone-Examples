@@ -26,16 +26,19 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.common.template.TemplateEngine;
+import io.vertx.ext.web.handler.SessionHandler;
+import io.vertx.ext.web.sstore.SessionStore;
 
 public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
         System.setProperty("vertxweb.environment", "development");
         String webRoot = config.get("web_root");
-        String templateRoot = webRoot;
-        // templateRoot = webRoot + "/templates/";
-        PetStoreThymeleafTemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, templateRoot);
+        TemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, webRoot);
         testThymeleaf(templateEngine, router);
+
+        router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
 
         router.route("/").handler(routingContext -> {
             routingContext.redirect("/home/index.html"); // 需要对index.html进行后端渲染
@@ -44,9 +47,18 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             routingContext.fail(404);// 不允许访问Thymeleaf的fragment文件
         });
 
+        router.route("/user/logout").handler(routingContext -> {
+            routingContext.session().remove("currentUser");
+            routingContext.redirect("/home/index.html");
+        });
+
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject();
+            String currentUser = routingContext.session().get("currentUser");
+            if (currentUser != null) {
+                jsonObject.put("currentUser", currentUser);
+            }
             String file = routingContext.request().path();
             templateEngine.render(jsonObject, file).onSuccess(buffer -> {
                 response(routingContext, buffer);
@@ -56,7 +68,17 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         });
     }
 
-    private static void testThymeleaf(PetStoreThymeleafTemplateEngine templateEngine, Router router) {
+    @Override
+    protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
+            Buffer result) {
+        if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
+            JsonObject receiveJson = new JsonObject(result);
+            routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
+        }
+        super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
+    }
+
+    private static void testThymeleaf(TemplateEngine templateEngine, Router router) {
         router.route("/thymeleaf_hello").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject().put("msg", "Hello Thymeleaf!");
             templateEngine.render(jsonObject, "/thymeleaf/hello.html").onSuccess(buffer -> {

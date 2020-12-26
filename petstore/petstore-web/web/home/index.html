@@ -20,9 +20,7 @@
       </tr>
       <tr>
         <td valign="top">
-		  <div id="user-login">
-		    <div th:replace="/fragment/user/login.html :: login"></div>
-          </div>
+		  <div th:replace="/fragment/user/login.html :: login"></div>
         </td>
       </tr>
     </table>
@@ -59,27 +57,7 @@
 <script src="/common/js/axios-0.21.1.js"></script>
 <script src="/common/js/petstore-config.js"></script>
 <script src="/store/js/category_list.js"></script> 
-<script>
-	const UserLogin = {
-	  data() {
-		return {
-		  name: "",
-		  password: ""
-		}
-	  },
-	  methods: {
-		login() {
-		  axios
-		  .post(Public.UserService + '/login?password=' + this.password + '&user_id=' + this.name, {
-		  name: this.name,
-		  password: this.password
-		}) //this.$data
-		  .then(response => (this.categories = response.data))
-		}
-	  }
-	}
-	Vue.createApp(UserLogin).mount('#user-login')
-</script>
+<script src="/user/js/login.js"></script>
 
 </body>
 </html>

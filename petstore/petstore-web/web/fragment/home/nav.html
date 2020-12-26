@@ -15,8 +15,9 @@
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-          <a href="/user/login.html">登录</a>
-      </td>
+    <div th:if="${currentUser}"><a href="/user/logout">退出 <span th:text="${currentUser}"></span></a></div> 
+	<div th:unless="${currentUser}"><a href="/user/login.html">登录</a></a></div> 
+  </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
