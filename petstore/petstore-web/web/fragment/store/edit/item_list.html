@@ -1,0 +1,44 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="itemList">
+<table width="100%" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+	<td rowspan="2" width="1%"><img src="/petstore/img/bird1.jpg"></td>
+	<td class="categoryName">Birds</td>
+  </tr>
+  <tr>
+	<td colspan="2" class="subcategoryName">Finch - Great stress reliever</td>
+  </tr>
+  <tr>
+	<td colspan="2">
+		<table width="100%" border="0" cellspacing="1" cellpadding="10">
+			<tr bgcolor="#DDDDDD">
+				<th>ID</th>
+				<th>单价</th>
+				<th>描述</th>
+				<th>库存数量</th>
+				<th>&nbsp;</th>
+			</tr>
+        			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td>EST-19</td>
+				<td>15.50</td>
+				<td>Adult Male</td>
+				<td>19</td>
+				<td align="right">[<a href="#" onclick="alert('未实现')">修改</a>]</td>
+			</tr>
+				</table>
+	</td>
+  </tr>
+</table>
+</div>
+
+			
+
+
+</body>
+</html>

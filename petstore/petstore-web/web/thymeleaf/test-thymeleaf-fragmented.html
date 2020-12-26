@@ -1,0 +1,11 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link rel="shortcut icon" type="image/x-icon" th:href="@{/thymeleaf/img/Thymeleaf-favicon.ico}">
+</head>
+<body>
+<th:block th:include="/fragment/thymeleaf/test-thymeleaf-include.html :: example"></th:block>
+<p th:text="${context.getString('path')}"></p>
+</body>
+</html>

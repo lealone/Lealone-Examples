@@ -1,0 +1,26 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="top">
+<table cellspacing=0 cellpadding=0 width="100%" border=0>
+  <tr valign=bottom>
+    <td width="321" rowspan="2"><a href="/"><img src="/home/img/logo_petstore_small.png"></a> </td>
+    <td width="321" rowspan="2"><img src="/home/img/dot_transparent.png" width="10" height="10"></td>
+    <td width="100%" align="left"><a href="/"><img src="/home/img/petstore_title.png"></a></td>
+    <td width="1" align="right"><div th:replace="/fragment/home/nav.html :: nav"></td>
+  </tr>
+  <tr>
+    <td colspan=2><hr></td>
+  </tr>
+  <tr>
+    <td colspan=4>&nbsp;</td>
+  </tr>
+</table>
+</div>
+
+</body>
+</html>

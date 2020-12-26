@@ -1,0 +1,55 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="itemList">
+<table width="100%" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+	<td rowspan="2" width="1%"><img src="/store/img/lizard3.jpg"></td>
+	<td class="categoryName">Reptiles</td>
+  </tr>
+  <tr>
+	<td colspan="2" class="subcategoryName">Rattlesnake - Doubles as a watch dog
+			</td>
+  </tr>
+  <tr>
+	<td colspan="2">
+		<table width="100%" border="0" cellspacing="1" cellpadding="10">
+			<tr bgcolor="#DDDDDD">
+				<th>ID</th>
+				<th>单价</th>
+				<th>描述</th>
+				<th>库存数量</th>
+				<th>&nbsp;</th>
+			</tr>
+        			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td>EST-11</td>
+				<td>18.50</td>
+				<td>Venomless</td>
+				<td>11</td>
+				<td align="right"><input type="button" value="放到购物车" onclick="location='/store/html/item_list.html?productId=RP-SN-01&amp;action=cartAction&amp;itemId=EST-11&amp;eventSubmitDoAddItem=true'"/></td>
+			</tr>
+					<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td>EST-12</td>
+				<td>18.50</td>
+				<td>Rattleless</td>
+				<td>12</td>
+				<td align="right"><input type="button" value="放到购物车" onclick="location='/store/html/item_list.html?productId=RP-SN-01&amp;action=cartAction&amp;itemId=EST-12&amp;eventSubmitDoAddItem=true'"/></td>
+			</tr>
+		
+			<tr bgcolor="#DDDDDD">
+				<td colspan="10" align="right">
+					<input type="button" value="继 续 购 物" onclick="location='/store/html/category_list.html'"/>
+				</td>
+			</tr>
+		</table>
+	</td>
+  </tr>
+</table>
+</div>
+
+</body>
+</html>

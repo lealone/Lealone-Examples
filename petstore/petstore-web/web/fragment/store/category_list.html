@@ -1,0 +1,32 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="categoryList">
+	<div id="category-list">
+	<template v-for="category in categories">
+	<table width="100%" border="0" cellspacing="0" cellpadding="10">
+      <tr>
+        <td><img v-bind:src="'/store/img/' + category.LOGO"></td>
+        <td width="100%">
+          <div class="categoryName">{{ category.NAME }}</div>
+          <div class="subcategoryName">
+		  <template v-for="(product, index) in category.ProductList">
+		    <template v-if="index != 0"> | </template>
+            <a v-bind:href="'/store/html/item_list.html?productId=' + product.PRODUCTID" v-bind:title="product.DESCN">
+			  {{ product.NAME }}
+			</a>
+		  </template>
+          </div>
+		</td>
+      </tr>
+    </table>
+	</template>
+	</div>
+</div>
+
+</body>
+</html>

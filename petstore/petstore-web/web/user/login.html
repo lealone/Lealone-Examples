@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <title>Petstore Sample</title>
+  <link rel="stylesheet" href="/common/css/petstore-common.css">
+  <link rel="stylesheet" href="/home/css/petstore-homepage.css">
+</head>
+
+<body>
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div th:replace="/fragment/home/top.html :: top"></div></td>
+  </tr>
+  <tr>
+    <td><div th:replace="/fragment/user/login.html :: login"></div></td>
+  </tr>
+  <tr>
+    <td><div th:replace="/fragment/home/footer.html :: footer"></td>
+  </tr>
+</table>
+
+	<script src="/common/js/vue-3.0.0.js"></script>
+	<script src="/common/js/axios-0.21.1.js"></script>
+    <script src="/common/js/petstore-config.js"></script>
+
+    <script>
+	const UserLogin = {
+	  data() {
+		return {
+		  name: "",
+		  password: ""
+		}
+	  },
+	  methods: {
+		login() {
+		  axios
+		  .post(Public.UserService + '/login?password=' + this.password + '&user_id=' + this.name, {
+		  name: this.name,
+		  password: this.password
+		}) //this.$data
+		  .then(response => (this.categories = response.data))
+		}
+	  }
+	}
+	Vue.createApp(UserLogin).mount('#user-login')
+	</script>
+</body>
+</html>

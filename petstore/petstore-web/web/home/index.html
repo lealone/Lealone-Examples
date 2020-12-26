@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <title>Welcome to Petstore!</title>
+  <link rel="stylesheet" href="/common/css/petstore-common.css">
+  <link rel="stylesheet" href="/store/css/petstore-store.css" media="screen">
+  <link rel="stylesheet" href="/home/css/petstore-homepage.css">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr>
+    <td height="258" valign="top">
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td><a href="/"><img src="/home/img/logo_petstore_big.png" /></a></td>
+      </tr>
+	  <tr>
+        <td valign="top">&nbsp;</td>
+      </tr>
+      <tr>
+        <td valign="top">
+		  <div id="user-login">
+		    <div th:replace="/fragment/user/login.html :: login"></div>
+          </div>
+        </td>
+      </tr>
+    </table>
+	</td>
+    <td><img src="/home/img/dot_transparent.png" width="30"/></td>
+    <td width="100%" valign="top">
+	  <div th:replace="/fragment/home/top_no_logo.html :: topNoLogo"></div>
+      <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+        <tr valign="bottom">
+          <td width="10" align="left"><div th:replace="/fragment/home/tabs.html :: tabs"></div></td>
+        </tr>
+        <tr>
+          <td>
+		    <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
+              <tr align="left">
+                <td width="100%">
+				  <div th:replace="/fragment/store/category_list.html :: categoryList"></div>
+				</td>
+              </tr>
+            </table>
+		  </td>
+        </tr>
+      </table>
+	</td>
+  </tr>
+  <tr>
+    <td colspan="3" valign="top">
+	  <div th:replace="/fragment/home/footer.html :: footer"></div>
+    </td>
+  </tr>
+</table>
+
+<script src="/common/js/vue-3.0.0.js"></script>
+<script src="/common/js/axios-0.21.1.js"></script>
+<script src="/common/js/petstore-config.js"></script>
+<script src="/store/js/category_list.js"></script> 
+<script>
+	const UserLogin = {
+	  data() {
+		return {
+		  name: "",
+		  password: ""
+		}
+	  },
+	  methods: {
+		login() {
+		  axios
+		  .post(Public.UserService + '/login?password=' + this.password + '&user_id=' + this.name, {
+		  name: this.name,
+		  password: this.password
+		}) //this.$data
+		  .then(response => (this.categories = response.data))
+		}
+	  }
+	}
+	Vue.createApp(UserLogin).mount('#user-login')
+</script>
+
+</body>
+</html>

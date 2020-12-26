@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Petstore Sample</title>
+<link href="/store/css/petstore-store.css" rel="stylesheet" type="text/css" media="screen">
+<link href="/common/css/petstore-common.css" rel="stylesheet" type="text/css">
+<link href="/home/css/petstore-homepage.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div th:replace="/fragment/home/top.html :: top"></div></td>
+  </tr>
+  <tr>
+	<td align="center">
+	  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
+ 	    <tr>
+	      <td><div th:replace="/fragment/store/item_list.html :: itemList"></div></td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+    <td><div th:replace="/fragment/home/footer.html :: footer"></td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="account">
+<table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
+  <tr align="center">
+    <td><strong>用户信息</strong><br />
+      <hr/>
+    </td>
+  </tr>
+  <tr align="center">
+    <td><table border="0" cellpadding="0" cellspacing="10" width="10">
+      <tr>
+        <td colspan="3" class="subtitle">基本信息</td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">用户名：</td>
+        <td width="100%">zhh123</td>
+        <td class="errorMessage">&nbsp;</td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">密码：</td>
+        <td width="100%">********</td>
+        <td class="errorMessage">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="subtitle">联系信息</td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">姓氏：</td>
+        <td width="100%"></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">名字：</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">地址： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">&nbsp;</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">邮编： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">城市： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">省份： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">国家： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">电话： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">电子邮件： </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="subtitle">信用卡信息</td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">信用卡号：</td>
+        <td width="100%"></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">信用卡类型：</td>
+        <td width="100%"></td>
+      </tr>
+      <tr>
+        <td nowrap="nowrap">信用卡过期时间：</td>
+        <td width="100%" nowrap>
+          1月
+          /
+          
+        </td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><hr/></td>
+  </tr>
+  <tr align="center">
+    <td>
+      <input type="button" value="返回" onclick="location='/'"/>
+      <input type="button" value="修改用户信息" onclick="location='/user/register_account.html'"/>
+    </td>
+  </tr>
+</table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="viewCart">
+<table width="100%" border="0" cellspacing="0" cellpadding="10">
+  <tr>
+	<td class="subcategoryName"><img src="/home/img/cart.png"/> 我的购物车</td>
+  </tr>
+  <tr>
+	<td>
+	<form action="/store/html/view_cart.html" method="post">
+        <input name='_csrf_token' type='hidden' value='sukXEA88nxhCaCpbgfEM78'>
+
+		<table width="100%" border="0" cellspacing="1" cellpadding="10">
+			<tr bgcolor="#DDDDDD">
+				<th width="1%">图片</th>
+				<th>ID</th>
+				<th>名称</th>
+				<th>描述</th>
+				<th>单价</th>
+				<th>数量</th>
+				<th align="right">小计</th>
+				<th>&nbsp;</th>
+			</tr>
+
+					
+			
+
+			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td width="1%"><img src="/store/img/bird4.jpg"></td>
+				<td>EST-18</td>
+				<td>Birds，Great companion for up to 75 years</td>
+				<td>Adult Male</td>
+				<td>193.50</td>
+				<td>
+										<input type="text" name="_fm.ca.EST-18.q" value="1" size="5" maxlength="5"/>
+				</td>
+				<td align="right">193.5</td>
+				<td align="right">
+										<input type="button" value="删除" onclick="location='/store/html/view_cart.htm?action=cartAction&amp;itemId=EST-18&amp;eventSubmitDoRemoveItem=true'"/>
+				</td>
+			</tr>
+			
+			
+
+			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td width="1%"><img src="/store/img/cat3.jpg"></td>
+				<td>EST-14</td>
+				<td>Cats，Great for reducing mouse populations</td>
+				<td>Tailless</td>
+				<td>58.50</td>
+				<td>
+										<input type="text" name="_fm.ca.EST-14.q" value="1" size="5" maxlength="5"/>
+				</td>
+				<td align="right">58.5</td>
+				<td align="right">
+										<input type="button" value="删除" onclick="location='/store/html/view_cart.htm?action=cartAction&amp;itemId=EST-14&amp;eventSubmitDoRemoveItem=true'"/>
+				</td>
+			</tr>
+						<tr>
+				<td colspan="6">&nbsp;</td>
+				<td align="right"><hr size="1"/><br/>总计：252</td>
+				<td>&nbsp;</td>
+			</tr>
+		
+			<tr bgcolor="#DDDDDD">
+				<td colspan="10" align="right">
+					<input type="button" value="继续购物" onclick="location='/store/html/category_list.html'"/>
+											<input type="hidden" name="action" value="cart_action"/>
+						<input type="submit" name="event_submit_do_update" value="更新购物车"/>
+						<input type="button" value="马上去付款" onclick="alert('支付宝，网上支付，安全快速！'); alert('支付宝，让天下无贼！'); alert('该功能尚未实现！')"/>
+									</td>
+			</tr>
+		</table>
+	</form>
+	</td>
+  </tr>
+</table>
+</div>
+
+</body>
+</html>
