@@ -43,6 +43,12 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route("/").handler(routingContext -> {
             routingContext.redirect("/home/index.html"); // 需要对index.html进行后端渲染
         });
+        router.route("/user").handler(routingContext -> {
+            routingContext.redirect("/user/index.html");
+        });
+        router.route("/store").handler(routingContext -> {
+            routingContext.redirect("/store/index.html");
+        });
         router.route("/fragment/*").handler(routingContext -> {
             routingContext.fail(404);// 不允许访问Thymeleaf的fragment文件
         });

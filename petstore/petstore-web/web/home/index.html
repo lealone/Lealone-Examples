@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<div id="Home_Screen">
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td height="258" valign="top">
@@ -52,12 +53,43 @@
     </td>
   </tr>
 </table>
+</div>
 
 <script src="/common/js/vue-3.0.0.js"></script>
 <script src="/common/js/axios-0.21.1.js"></script>
 <script src="/common/js/petstore-config.js"></script>
-<script src="/store/js/category_list.js"></script> 
 <script src="/user/js/login.js"></script>
+
+<script>
+	const HomeScreen = {
+	  data() {
+		return {
+		  screenType: "home",
+		  pageType: "",
+		  categories: []
+		}
+	  },
+	  methods: {
+	    setPage(screenType, pageType) {
+		  if(this.screenType != screenType) {
+		    this.screenType = screenType;
+			location.href = "/" + screenType + "/index.html";
+			return;
+		  }
+		  this.pageType = pageType;
+		},
+		display(pageType) {
+		  return this.pageType == pageType;
+		}
+	  },
+	  mounted() {
+		axios
+		  .get(Public.StoreService + '/get_all_categories')
+		  .then(response => (this.categories = response.data))
+	  }
+	}
+	Vue.createApp(HomeScreen).mount('#Home_Screen')
+</script>
 
 </body>
 </html>

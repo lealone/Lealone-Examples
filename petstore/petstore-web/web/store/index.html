@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <title>Petstore Sample</title>
+  <link rel="stylesheet" href="/common/css/petstore-common.css">
+  <link rel="stylesheet" href="/home/css/petstore-homepage.css">
+  <link rel="stylesheet" href="/store/css/petstore-store.css">
+</head>
+
+<body>
+<div id="Store_Screen">
+<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><div th:replace="/fragment/home/top.html :: top"></div></td>
+  </tr>
+  <tr>
+	<td align="center">
+	  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
+ 	    <tr>
+	      <td>
+	        <div v-show="display('category_list')">
+	          <div th:replace="/fragment/store/category_list.html :: categoryList"></div>
+	        </div>
+	        <div style="display: none" v-show="display('item_list')">
+	          <div th:replace="/fragment/store/item_list.html :: itemList"></div>
+	        </div>
+	        <div style="display: none" v-show="display('view_cart')">
+	          <div th:replace="/fragment/store/view_cart.html :: viewCart"></div>
+	        </div>
+	        <div style="display: none" v-show="display('add_product')">
+	          <div th:replace="/fragment/store/edit/add_product.html :: addProduct"></div>
+	        </div>
+	        <div style="display: none" v-show="display('edit_category_list')">
+	          <div th:replace="/fragment/store/edit/category_list.html :: categoryList"></div>
+	        </div>
+	        <div style="display: none" v-show="display('edit_item_list')">
+	          <div th:replace="/fragment/store/edit/item_list.html :: itemList"></div>
+	        </div>
+	      </td>
+		</tr>
+	  </table>
+	</td>
+  </tr>
+  <tr>
+    <td><div th:replace="/fragment/home/footer.html :: footer"></div></td>
+  </tr>
+</table>
+</div>
+
+<script src="/common/js/vue-3.0.0.js"></script>
+<script src="/common/js/axios-0.21.1.js"></script>
+<script src="/common/js/petstore-config.js"></script>
+
+<script>
+	const StoreScreen = {
+	  data() {
+		return {
+		  screenType: "store",
+		  pageType: "category_list",
+		  categories: [],
+		  categoryId: ""
+		}
+	  },
+	  methods: {
+	    setPage(screenType, pageType) {
+		  if(this.screenType != screenType) {
+		    this.screenType = screenType;
+			location.href = "/" + screenType + "/index.html";
+			return;
+		  }
+		  this.pageType = pageType;
+		},
+		display(pageType) {
+		  return this.pageType == pageType;
+		},
+		addProduct(categoryId) {
+		  this.pageType = "add_product";
+		  this.categoryId = categoryId;
+		}
+	  },
+	  mounted() {
+		axios
+		  .get(Public.StoreService + '/get_all_categories')
+		  .then(response => (this.categories = response.data))
+	  }
+	}
+	Vue.createApp(StoreScreen).mount('#Store_Screen')
+</script>
+
+</body>
+</html>
