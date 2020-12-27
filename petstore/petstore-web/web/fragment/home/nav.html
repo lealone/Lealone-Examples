@@ -15,7 +15,7 @@
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <div th:if="${currentUser}"><a href="/user/logout" @click.prevent="">退出 <span th:text="${currentUser}"></span></a></div> 
+    <div th:if="${currentUser}"><a href="/user/logout">退出 <span th:text="${currentUser}"></span></a></div> 
 	<div th:unless="${currentUser}"><a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a></a></div> 
   </td>
   <td class="shortcut">

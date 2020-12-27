@@ -7,9 +7,6 @@
 
 <div th:fragment="login">
 <form action="/" method="post">
-  <input name='_csrf_token' type='hidden' value='Idrb34Hi9mWfqITGhdsxm2'>
-  <input type="hidden" name="action" value="LoginAction"/>
-  <input type="hidden" name="return" value=""/>
   <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
     <tr align="center">
       <td><strong>用户登录</strong><br />
@@ -22,14 +19,14 @@
         <tr>
           <td nowrap="nowrap">用户名：</td>
           <td width="100%">
-            <input type="text" v-model="name"/>
+            <input type="text" v-model="user.user_id"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">密码： </td>
           <td>
-            <input type="password" v-model="password"/>
+            <input type="password" v-model="user.password"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
@@ -42,10 +39,10 @@
       <td><table border="0" cellpadding="0" cellspacing="10" width="10">
         <tr>
           <td width="100%">
-		    <input type="image" src="/home/img/btn_login.png" name="event_submit_do_login" v-on:click.prevent="login"/>
+		    <input type="image" src="/home/img/btn_login.png" v-on:click.prevent="login"/>
 		  </td>
           <td nowrap>
-		    <a href="/user/register.html" @click.prevent="setPage('user', 'register')">还没有注册过吗？<br>赶快注册！</a>
+		    <a href="" @click.prevent="setPage('user', 'register')">还没有注册过吗？<br>赶快注册！</a>
 		  </td>
         </tr>
       </table></td>
