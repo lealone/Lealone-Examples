@@ -47,41 +47,27 @@
 </table>
 </div>
 
-<script src="/common/js/vue-3.0.0.js"></script>
-<script src="/common/js/axios-0.21.1.js"></script>
-<script src="/common/js/petstore-config.js"></script>
+<script src="/common/js/plugins/vue-3.0.0.js"></script>
+<script src="/common/js/plugins/axios-0.21.1.js"></script>
+<script src="/common/js/petstore_config.js"></script>
+<script src="/common/js/screen_switch.js"></script>
+<script src="/store/js/category_list.js"></script>
 
 <script>
 	const StoreScreen = {
+	  mixins: [screenSwitch, categoryList],
 	  data() {
 		return {
 		  screenType: "store",
 		  pageType: "category_list",
-		  categories: [],
 		  categoryId: ""
 		}
 	  },
 	  methods: {
-	    setPage(screenType, pageType) {
-		  if(this.screenType != screenType) {
-		    this.screenType = screenType;
-			location.href = "/" + screenType + "/index.html";
-			return;
-		  }
-		  this.pageType = pageType;
-		},
-		display(pageType) {
-		  return this.pageType == pageType;
-		},
 		addProduct(categoryId) {
 		  this.pageType = "add_product";
 		  this.categoryId = categoryId;
 		}
-	  },
-	  mounted() {
-		axios
-		  .get(Public.StoreService + '/get_all_categories')
-		  .then(response => (this.categories = response.data))
 	  }
 	}
 	Vue.createApp(StoreScreen).mount('#Store_Screen')

@@ -6,7 +6,6 @@
 <body>
 
 <div th:fragment="login">
-<div id="user-login">
 <form action="/" method="post">
   <input name='_csrf_token' type='hidden' value='Idrb34Hi9mWfqITGhdsxm2'>
   <input type="hidden" name="action" value="LoginAction"/>
@@ -42,14 +41,17 @@
     <tr align="center">
       <td><table border="0" cellpadding="0" cellspacing="10" width="10">
         <tr>
-          <td width="100%"><input type="image" src="/home/img/btn_login.png" name="event_submit_do_login" v-on:click="login"/></td>
-          <td nowrap><a href="/user/register.html">还没有注册过吗？<br>赶快注册！</a></td>
+          <td width="100%">
+		    <input type="image" src="/home/img/btn_login.png" name="event_submit_do_login" v-on:click.prevent="login"/>
+		  </td>
+          <td nowrap>
+		    <a href="/user/register.html" @click.prevent="setPage('user', 'register')">还没有注册过吗？<br>赶快注册！</a>
+		  </td>
         </tr>
       </table></td>
     </tr>
   </table>
 </form>
-</div>
 </div>
 
 </body>

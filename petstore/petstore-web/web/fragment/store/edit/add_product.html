@@ -6,7 +6,7 @@
 <body>
 
 <div th:fragment="addProduct">
-<form action="/store/html/edit/add_product.html" method="post" enctype="multipart/form-data">
+<form action="/service/store_service/add_product" method="post" enctype="multipart/form-data">
   <input name='_csrf_token' type='hidden' value='sukXEA88nxhCaCpbgfEM78'>
   <input type="hidden" name="action" value="add_product_action"/>
   <input type="hidden" name="categoryId" value="BIRDS"/>

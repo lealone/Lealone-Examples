@@ -1,4 +1,4 @@
-﻿	const CategoryList = {
+﻿	const categoryList = {
 	  data() {
 		return {
 		  categories: []
@@ -10,4 +10,3 @@
 		  .then(response => (this.categories = response.data))
 	  }
 	}
-	Vue.createApp(CategoryList).mount('#category-list')

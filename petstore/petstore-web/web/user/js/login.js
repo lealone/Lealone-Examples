@@ -1,4 +1,4 @@
-﻿	const UserLogin = {
+﻿	const userLogin = {
 	  data() {
 		return {
 		  name: "",
@@ -16,4 +16,3 @@
 		}
 	  }
 	}
-	Vue.createApp(UserLogin).mount('#user-login')

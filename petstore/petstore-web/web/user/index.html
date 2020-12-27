@@ -35,39 +35,19 @@
 </table>
 </div>
 
-<script src="/common/js/vue-3.0.0.js"></script>
-<script src="/common/js/axios-0.21.1.js"></script>
-<script src="/common/js/petstore-config.js"></script>
+<script src="/common/js/plugins/vue-3.0.0.js"></script>
+<script src="/common/js/plugins/axios-0.21.1.js"></script>
+<script src="/common/js/petstore_config.js"></script>
+<script src="/common/js/screen_switch.js"></script>
 <script src="/user/js/login.js"></script>
 
 <script>
 	const UserScreen = {
+	  mixins: [screenSwitch, userLogin],
 	  data() {
 		return {
 		  screenType: "user",
-		  pageType: "login",
-		  password: ""
-		}
-	  },
-	  methods: {
-	    setPage(screenType, pageType) {
-		  if(this.screenType != screenType) {
-		    this.screenType = screenType;
-			location.href = "/" + screenType + "/index.html";
-			return;
-		  }
-		  this.pageType = pageType;
-		},
-		display(pageType) {
-		  return this.pageType == pageType;
-		},
-		login() {
-		  axios
-		  .post(Public.UserService + '/login?password=' + this.password + '&user_id=' + this.name, {
-		  name: this.name,
-		  password: this.password
-		}) //this.$data
-		  .then(response => (this.categories = response.data))
+		  pageType: "login"
 		}
 	  }
 	}
