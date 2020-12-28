@@ -2,6 +2,11 @@
 <html>
 <head>
   <title>Petstore Sample</title>
+  <script src="/common/js/plugins/vue-3.0.0.js"></script>
+  <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/petstore_config.js"></script>
+  <script src="/common/js/screen_switch.js"></script>
+  <script src="/store/js/category_list.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
   <link rel="stylesheet" href="/store/css/petstore-store.css">
@@ -47,17 +52,12 @@
 </table>
 </div>
 
-<script src="/common/js/plugins/vue-3.0.0.js"></script>
-<script src="/common/js/plugins/axios-0.21.1.js"></script>
-<script src="/common/js/petstore_config.js"></script>
-<script src="/common/js/screen_switch.js"></script>
-<script src="/store/js/category_list.js"></script>
-
 <script>
 	const StoreScreen = {
 	  mixins: [screenSwitch, categoryList],
 	  data() {
 		return {
+		  currentUser: localStorage.currentUser,
 		  screenType: "store",
 		  pageType: "category_list",
 		  categoryId: ""

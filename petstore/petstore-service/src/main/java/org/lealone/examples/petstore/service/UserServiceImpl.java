@@ -7,7 +7,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String userId, String password) {
-        return User.dao.where().userId.eq(userId).and().password.eq(password).findOne();
+        User user = User.dao.where().userId.eq(userId).and().password.eq(password).findOne();
+        if (user == null)
+            throw new RuntimeException("用户名不存在或密码错误");
+        return user;
     }
 
     @Override

@@ -15,8 +15,16 @@
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <div th:if="${currentUser}"><a href="/user/logout">退出 <span th:text="${currentUser}"></span></a></div> 
-	<div th:unless="${currentUser}"><a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a></a></div> 
+    <div v-if="currentUser">
+	  <a href="/user/logout" @click.prevent="logout"><span>退出 {{ currentUser }}</span></a>
+    </div>
+    <div v-else>
+	  <a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a>
+    </div>
+	<!--
+    <div th:if="${currentUser}"><a href="/user/logout" @click="logout">退出 <span th:text="${currentUser}"></span></a></div> 
+	<div th:unless="${currentUser}"><a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a></div>
+	-->
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;

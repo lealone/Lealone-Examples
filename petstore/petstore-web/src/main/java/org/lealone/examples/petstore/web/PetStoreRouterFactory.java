@@ -58,17 +58,17 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         });
 
         router.route("/user/logout").handler(routingContext -> {
-            routingContext.session().remove("currentUser");
-            routingContext.redirect("/home/index.html");
+            // routingContext.session().remove("currentUser");
+            // routingContext.redirect("/home/index.html");
         });
 
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject();
-            String currentUser = routingContext.session().get("currentUser");
-            if (currentUser != null) {
-                jsonObject.put("currentUser", currentUser);
-            }
+            // String currentUser = routingContext.session().get("currentUser");
+            // if (currentUser != null) {
+            // jsonObject.put("currentUser", currentUser);
+            // }
             String file = routingContext.request().path();
             templateEngine.render(jsonObject, file).onSuccess(buffer -> {
                 response(routingContext, buffer);
@@ -81,10 +81,10 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
             Buffer result) {
-        if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
-            JsonObject receiveJson = new JsonObject(result);
-            routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
-        }
+        // if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
+        // JsonObject receiveJson = new JsonObject(result);
+        // routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
+        // }
         super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
     }
 
