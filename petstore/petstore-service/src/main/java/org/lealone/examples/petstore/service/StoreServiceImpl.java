@@ -8,6 +8,7 @@ import org.lealone.examples.petstore.dal.model.Item;
 import org.lealone.examples.petstore.dal.model.Product;
 import org.lealone.examples.petstore.service.generated.StoreService;
 import org.lealone.orm.json.JsonArray;
+import org.lealone.orm.json.JsonObject;
 
 public class StoreServiceImpl implements StoreService {
 
@@ -33,14 +34,23 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public String getAllProductItems(String productId) {
-        Category c = Category.dao;
-        Product p = Product.dao;
-        Item i = Item.dao;
+        // Category c = Category.dao;
+        // Product p = Product.dao;
+        // Item i = Item.dao;
+        //
+        // // TODO 还不支持三表join
+        // List<Category> list = c.join(p).on().catid.eq(p.categoryid).m(p).join(i).on().productid.eq(i.productid)
+        // .where().productid.eq(productId).m(c).findList();
 
-        // TODO 还不支持三表join
-        List<Category> list = c.join(p).on().catid.eq(p.categoryid).m(p).join(i).on().productid.eq(i.productid)
-                .where().productid.eq(productId).m(c).findList();
-        return new JsonArray(list).encode();
+        Product product = Product.dao.where().productid.eq(productId).findOne();
+        Category category = Category.dao.where().catid.eq(product.categoryid.get()).findOne();
+        List<Item> items = Item.dao.where().productid.eq(productId).findList(); // TODO 取inventory表的存货数
+
+        JsonObject json = new JsonObject();
+        json.put("category", category);
+        json.put("product", product);
+        json.put("items", new JsonArray(items));
+        return json.encode();
     }
 
     @Override

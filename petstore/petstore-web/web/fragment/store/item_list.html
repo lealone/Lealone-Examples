@@ -8,12 +8,15 @@
 <div th:fragment="itemList">
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
-	<td rowspan="2" width="1%"><img src="/store/img/lizard3.jpg"></td>
-	<td class="categoryName">Reptiles</td>
+	<td rowspan="2" width="1%"><img v-bind:src="'/store/img/' + category.LOGO"></td>
+	<td class="categoryName">{{ category.NAME }}</td>
   </tr>
   <tr>
-	<td colspan="2" class="subcategoryName">Rattlesnake - Doubles as a watch dog
-			</td>
+	<td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}
+		<template v-if="itemAdded">
+			| <span class="errorMessage">已加入购物车，您可以 [<a v-bind:href="categoryList">继续购物</a>]</span>
+		</template>
+	</td>
   </tr>
   <tr>
 	<td colspan="2">
@@ -25,24 +28,19 @@
 				<th>库存数量</th>
 				<th>&nbsp;</th>
 			</tr>
-        			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
-				<td>EST-11</td>
-				<td>18.50</td>
-				<td>Venomless</td>
-				<td>11</td>
-				<td align="right"><input type="button" value="放到购物车" onclick="location='/store/html/item_list.html?productId=RP-SN-01&amp;action=cartAction&amp;itemId=EST-11&amp;eventSubmitDoAddItem=true'"/></td>
+		<template v-for="item in items">
+			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td>{{ item.ITEMID }}</td>
+				<td>{{ item.LISTPRICE }}</td>
+				<td>{{ item.ATTR }}1</td>
+				<td>{{ item.quantity }}</td>
+				<td align="right"><input type="button" value="放到购物车" onclick="addCartItem(productId, itemId,item. productItemId)"/></td>
 			</tr>
-					<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
-				<td>EST-12</td>
-				<td>18.50</td>
-				<td>Rattleless</td>
-				<td>12</td>
-				<td align="right"><input type="button" value="放到购物车" onclick="location='/store/html/item_list.html?productId=RP-SN-01&amp;action=cartAction&amp;itemId=EST-12&amp;eventSubmitDoAddItem=true'"/></td>
-			</tr>
-		
+		</template>
+
 			<tr bgcolor="#DDDDDD">
 				<td colspan="10" align="right">
-					<input type="button" value="继 续 购 物" onclick="location='/store/html/category_list.html'"/>
+					<input type="button" value="继 续 购 物" @click.prevent=""/>
 				</td>
 			</tr>
 		</table>

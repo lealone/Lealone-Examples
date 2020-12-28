@@ -8,11 +8,11 @@
 <div th:fragment="itemList">
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
-	<td rowspan="2" width="1%"><img src="/store/img/bird1.jpg"></td>
-	<td class="categoryName">Birds</td>
+	<td rowspan="2" width="1%"><img v-bind:src="'/store/img/' + category.LOGO"></td>
+	<td class="categoryName">{{ category.NAME }}</td>
   </tr>
   <tr>
-	<td colspan="2" class="subcategoryName">Finch - Great stress reliever</td>
+	<td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}</td>
   </tr>
   <tr>
 	<td colspan="2">
@@ -24,21 +24,20 @@
 				<th>库存数量</th>
 				<th>&nbsp;</th>
 			</tr>
-        			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
-				<td>EST-19</td>
-				<td>15.50</td>
-				<td>Adult Male</td>
-				<td>19</td>
+		<template v-for="item in items">
+			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
+				<td>{{ item.ITEMID }}</td>
+				<td>{{ item.LISTPRICE }}</td>
+				<td>{{ item.ATTR }}1</td>
+				<td>{{ item.quantity }}</td>
 				<td align="right">[<a href="#" onclick="alert('未实现')">修改</a>]</td>
 			</tr>
-				</table>
+		</template>
+		</table>
 	</td>
   </tr>
 </table>
 </div>
-
-			
-
 
 </body>
 </html>
