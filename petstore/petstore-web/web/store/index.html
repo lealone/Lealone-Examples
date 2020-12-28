@@ -7,6 +7,7 @@
   <script src="/common/js/petstore_config.js"></script>
   <script src="/common/js/screen_switch.js"></script>
   <script src="/store/js/category_list.js"></script>
+  <script src="/user/js/account.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
   <link rel="stylesheet" href="/store/css/petstore-store.css">
@@ -54,7 +55,7 @@
 
 <script>
 	const StoreScreen = {
-	  mixins: [screenSwitch, categoryList],
+	  mixins: [screenSwitch, categoryList, account],
 	  data() {
 		return {
 		  currentUser: localStorage.currentUser,

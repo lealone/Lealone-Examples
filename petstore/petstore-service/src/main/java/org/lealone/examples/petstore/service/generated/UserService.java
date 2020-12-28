@@ -25,7 +25,7 @@ public interface UserService {
 
     void update(User user);
 
-    User getUser(String userId);
+    String getUser(String userId);
 
     static class ServiceProxy implements UserService {
 
@@ -77,14 +77,14 @@ public interface UserService {
         }
 
         @Override
-        public User getUser(String userId) {
+        public String getUser(String userId) {
             try {
                 ps4.setString(1, userId);
                 ResultSet rs = ps4.executeQuery();
                 rs.next();
-                JsonObject jo = new JsonObject(rs.getString(1));
+                String ret =  rs.getString(1);
                 rs.close();
-                return jo.mapTo(User.class);
+                return ret;
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("USER_SERVICE.GET_USER", e);
             }

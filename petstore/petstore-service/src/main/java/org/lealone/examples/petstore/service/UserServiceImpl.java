@@ -1,7 +1,9 @@
 package org.lealone.examples.petstore.service;
 
+import org.lealone.examples.petstore.dal.model.Account;
 import org.lealone.examples.petstore.dal.model.User;
 import org.lealone.examples.petstore.service.generated.UserService;
+import org.lealone.orm.json.JsonObject;
 
 public class UserServiceImpl implements UserService {
 
@@ -25,8 +27,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String userId) {
-        return User.dao.where().userId.eq(userId).findOne();
+    public String getUser(String userId) {
+        User user = User.dao.where().userId.eq(userId).findOne();
+        Account account = Account.dao.where().userId.eq(userId).findOne();
+
+        JsonObject json = new JsonObject();
+        json.put("user", user);
+        json.put("account", account);
+        return json.encode();
     }
 
 }

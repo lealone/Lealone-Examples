@@ -9,7 +9,7 @@ create service if not exists user_service (
   login(user_id varchar, password varchar) user,
   register(user user) void,
   update(user user) void,
-  get_user(user_id varchar) user
+  get_user(user_id varchar) varchar
 )
 package @packageName
 implement by 'org.lealone.examples.petstore.service.UserServiceImpl' -- UserService接口的默认实现类

@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td nowrap="nowrap">用户名：</td>
-        <td width="100%">zhh123</td>
+        <td width="100%">{{ userInfo.USER_ID }}</td>
         <td class="errorMessage">&nbsp;</td>
       </tr>
       <tr>
@@ -32,61 +32,59 @@
       </tr>
       <tr>
         <td nowrap="nowrap">姓氏：</td>
-        <td width="100%"></td>
+        <td width="100%">{{ account.LAST_NAME }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">名字：</td>
-        <td></td>
+        <td>{{ account.FIRST_NAME }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">地址： </td>
-        <td></td>
+        <td>{{ account.ADDRESS_1 }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">&nbsp;</td>
-        <td></td>
+        <td>{{ account.ADDRESS_2 }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">邮编： </td>
-        <td></td>
+        <td>{{ account.ZIP }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">城市： </td>
-        <td></td>
+        <td>{{ account.CITY }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">省份： </td>
-        <td></td>
+        <td>{{ account.STATE }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">国家： </td>
-        <td></td>
+        <td>{{ account.COUNTRY }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">电话： </td>
-        <td></td>
+        <td>{{ account.PHONE }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">电子邮件： </td>
-        <td></td>
+        <td>{{ account.EMAIL }}</td>
       </tr>
       <tr>
         <td colspan="2" class="subtitle">信用卡信息</td>
       </tr>
       <tr>
         <td nowrap="nowrap">信用卡号：</td>
-        <td width="100%"></td>
+        <td width="100%">{{ account.CREDIT_CARD_NUMBER }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">信用卡类型：</td>
-        <td width="100%"></td>
+        <td width="100%">{{ account.CREDIT_CARD_TYPE }}</td>
       </tr>
       <tr>
         <td nowrap="nowrap">信用卡过期时间：</td>
-        <td width="100%" nowrap>
-          1月
+        <td width="100%" nowrap> 
           /
-          
         </td>
       </tr>
     </table></td>

@@ -37,10 +37,10 @@ public class UserServiceExecutor implements ServiceExecutor {
             return ValueNull.INSTANCE;
         case "GET_USER":
             String p_userId_4 = methodArgs[0].getString();
-            User result4 = this.s.getUser(p_userId_4);
+            String result4 = this.s.getUser(p_userId_4);
             if (result4 == null)
                 return ValueNull.INSTANCE;
-            return ValueString.get(JsonObject.mapFrom(result4).encode());
+            return ValueString.get(result4);
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -66,10 +66,10 @@ public class UserServiceExecutor implements ServiceExecutor {
             return NO_RETURN_VALUE;
         case "GET_USER":
             String p_userId_4 = ServiceExecutor.toString("USER_ID", methodArgs);
-            User result4 = this.s.getUser(p_userId_4);
+            String result4 = this.s.getUser(p_userId_4);
             if (result4 == null)
                 return null;
-            return JsonObject.mapFrom(result4).encode();
+            return result4;
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -100,10 +100,10 @@ public class UserServiceExecutor implements ServiceExecutor {
         case "GET_USER":
             ja = new JsonArray(json);
             String p_userId_4 = ja.getString(0);
-            User result4 = this.s.getUser(p_userId_4);
+            String result4 = this.s.getUser(p_userId_4);
             if (result4 == null)
                 return null;
-            return JsonObject.mapFrom(result4).encode();
+            return result4;
         default:
             throw new RuntimeException("no method: " + methodName);
         }
