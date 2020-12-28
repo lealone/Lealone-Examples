@@ -8,6 +8,7 @@
   <script src="/common/js/screen_switch.js"></script>
   <script src="/store/js/category_list.js"></script>
   <script src="/store/js/item_list.js"></script>
+  <script src="/store/js/add_product.js"></script>
   <script src="/user/js/account.js"></script>
   <script src="/user/js/register.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
@@ -57,7 +58,7 @@
 
 <script>
 	const StoreScreen = {
-	  mixins: [screenSwitch, categoryList, account, storeLtemlist],
+	  mixins: [screenSwitch, categoryList, account, storeLtemlist, storeAddProduct],
 	  data() {
 		return {
 		  currentUser: localStorage.currentUser,
@@ -67,10 +68,6 @@
 		}
 	  },
 	  methods: {
-		addProduct(categoryId) {
-		  this.pageType = "add_product";
-		  this.categoryId = categoryId;
-		}
 	  }
 	}
 	Vue.createApp(StoreScreen).mount('#Store_Screen')

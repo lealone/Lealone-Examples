@@ -1,6 +1,5 @@
 package org.lealone.examples.petstore.service.generated.executor;
 
-import java.sql.Blob;
 import java.util.Map;
 import org.lealone.db.service.ServiceExecutor;
 import org.lealone.db.value.*;
@@ -31,9 +30,8 @@ public class StoreServiceExecutor implements ServiceExecutor {
             return ValueString.get(JsonObject.mapFrom(result1).encode());
         case "ADD_PRODUCT":
             Product p_product_2 =  new JsonObject(methodArgs[0].getString()).mapTo(Product.class);
-            String p_categoryId_2 = methodArgs[1].getString();
-            Blob p_picture_2 = methodArgs[2].getBlob();
-            String result2 = this.s.addProduct(p_product_2, p_categoryId_2, p_picture_2);
+            String p_logo_2 = methodArgs[1].getString();
+            String result2 = this.s.addProduct(p_product_2, p_logo_2);
             if (result2 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result2);
@@ -76,9 +74,8 @@ public class StoreServiceExecutor implements ServiceExecutor {
             return JsonObject.mapFrom(result1).encode();
         case "ADD_PRODUCT":
             Product p_product_2 =  new JsonObject(ServiceExecutor.toString("PRODUCT", methodArgs)).mapTo(Product.class);
-            String p_categoryId_2 = ServiceExecutor.toString("CATEGORY_ID", methodArgs);
-            Blob p_picture_2 = new org.lealone.db.value.ReadonlyBlob(ServiceExecutor.toString("PICTURE", methodArgs));
-            String result2 = this.s.addProduct(p_product_2, p_categoryId_2, p_picture_2);
+            String p_logo_2 = ServiceExecutor.toString("LOGO", methodArgs);
+            String result2 = this.s.addProduct(p_product_2, p_logo_2);
             if (result2 == null)
                 return null;
             return result2;
@@ -124,9 +121,8 @@ public class StoreServiceExecutor implements ServiceExecutor {
         case "ADD_PRODUCT":
             ja = new JsonArray(json);
             Product p_product_2 = ja.getJsonObject(0).mapTo(Product.class);
-            String p_categoryId_2 = ja.getString(1);
-            Blob p_picture_2 = ja.getJsonObject(2).mapTo(java.sql.Blob.class);
-            String result2 = this.s.addProduct(p_product_2, p_categoryId_2, p_picture_2);
+            String p_logo_2 = ja.getString(1);
+            String result2 = this.s.addProduct(p_product_2, p_logo_2);
             if (result2 == null)
                 return null;
             return result2;

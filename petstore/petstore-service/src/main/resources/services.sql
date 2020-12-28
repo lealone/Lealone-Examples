@@ -22,7 +22,7 @@ drop service if exists store_service;
 -- 创建服务: store_service，会生成一个对应的StoreService接口
 create service if not exists store_service (
   get_category(category_id varchar) category,
-  add_product(product product, category_id varchar, picture blob) varchar,
+  add_product(product product, logo varchar) varchar,
   get_all_categories() varchar,
   get_all_product_items(product_id varchar) varchar,
   get_product_item(item_id varchar) item,

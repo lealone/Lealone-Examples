@@ -24,9 +24,11 @@ import org.lealone.server.http.HttpRouterFactory;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.common.template.TemplateEngine;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.SessionStore;
 
@@ -60,6 +62,19 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route("/user/logout").handler(routingContext -> {
             // routingContext.session().remove("currentUser");
             // routingContext.redirect("/home/index.html");
+        });
+        router.post("/service/store_service/add_product").handler(BodyHandler.create(webRoot + "/store/img"));
+        router.post("/service/store_service/add_product").handler(routingContext -> {
+            vertx.executeBlocking(promise -> {
+                for (FileUpload f : routingContext.fileUploads()) {
+                    routingContext.request().params().set("logo", f.fileName());
+                    routingContext.request().params().set("uploadedfilename", f.uploadedFileName());
+                    // routingContext.vertx().fileSystem().delete(receiveJson.getString("filePath")
+                    break;
+                }
+                routingContext.request().params().remove("product"); // 避免BodyHandler重复
+                routingContext.next();
+            });
         });
 
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）

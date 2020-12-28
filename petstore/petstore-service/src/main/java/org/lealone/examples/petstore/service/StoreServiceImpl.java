@@ -1,6 +1,5 @@
 package org.lealone.examples.petstore.service;
 
-import java.sql.Blob;
 import java.util.List;
 
 import org.lealone.examples.petstore.dal.model.Category;
@@ -19,8 +18,9 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public String addProduct(Product product, String categoryId, Blob picture) {
-        // TODO Auto-generated method stub
+    public String addProduct(Product product, String logo) {
+        product.logo.set(logo);
+        product.insert();
         return null;
     }
 

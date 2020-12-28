@@ -1,7 +1,6 @@
 package org.lealone.examples.petstore.service.generated;
 
 import java.sql.*;
-import java.sql.Blob;
 import org.lealone.client.ClientServiceProxy;
 import org.lealone.examples.petstore.dal.model.Category;
 import org.lealone.examples.petstore.dal.model.Item;
@@ -24,7 +23,7 @@ public interface StoreService {
 
     Category getCategory(String categoryId);
 
-    String addProduct(Product product, String categoryId, Blob picture);
+    String addProduct(Product product, String logo);
 
     String getAllCategories();
 
@@ -45,7 +44,7 @@ public interface StoreService {
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_CATEGORY(?)");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE ADD_PRODUCT(?, ?, ?)");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE ADD_PRODUCT(?, ?)");
             ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_CATEGORIES()");
             ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_PRODUCT_ITEMS(?)");
             ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_PRODUCT_ITEM(?)");
@@ -67,11 +66,10 @@ public interface StoreService {
         }
 
         @Override
-        public String addProduct(Product product, String categoryId, Blob picture) {
+        public String addProduct(Product product, String logo) {
             try {
                 ps2.setString(1, JsonObject.mapFrom(product).encode());
-                ps2.setString(2, categoryId);
-                ps2.setBlob(3, picture);
+                ps2.setString(2, logo);
                 ResultSet rs = ps2.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
