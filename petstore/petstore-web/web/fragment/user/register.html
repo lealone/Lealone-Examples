@@ -7,13 +7,11 @@
 
 <div th:fragment="register">
 <form action="/user/register.html" method="post">
-  <input name='_csrf_token' type='hidden' value='sukXEA88nxhCaCpbgfEM78'>
-  <input type="hidden" name="action" value="RegisterAction"/>
   <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
     <tr align="center">
       <td><strong>用户注册</strong><br />
         <hr/>
-        <div class="errorMessage"></div>
+        <div class="errorMessage">{{ rErrorMessage }}</div>
       </td>
     </tr>
     <tr align="center">
@@ -21,21 +19,21 @@
         <tr>
           <td nowrap="nowrap">用户名：</td>
           <td width="100%">
-            <input type="text" name="_fm.r._0.u" value=""/>
+            <input type="text" v-model="rUser.user_id"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">密码： </td>
           <td>
-            <input type="password" name="_fm.r._0.p" value=""/>
+            <input type="password" v-model="rUser.password"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">再输一遍密码： </td>
           <td>
-            <input type="password" name="_fm.r._0.pa" value=""/>
+            <input type="password" v-model="rUser.password2"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
@@ -45,7 +43,7 @@
       <td><hr/></td>
     </tr>
     <tr align="center">
-      <td><input type="submit" name="event_submit_do_register" value="立即注册！"/></td>
+      <td><input type="submit" value="立即注册！" v-on:click.prevent="register"/></td>
     </tr>
   </table>
 </form>
