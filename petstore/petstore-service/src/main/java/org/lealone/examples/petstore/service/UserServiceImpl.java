@@ -21,9 +21,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(User user) {
-        // User old = User.dao.where().userId.eq(user.userId).findOne();
-        user.update();
+    public void update(Account account) {
+        Account old = Account.dao.where().userId.eq(account.userId.get()).findOne();
+        if (old == null)
+            account.insert();
+        else
+            account.update();
     }
 
     @Override

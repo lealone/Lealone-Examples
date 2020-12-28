@@ -2,6 +2,7 @@ package org.lealone.examples.petstore.service.generated;
 
 import java.sql.*;
 import org.lealone.client.ClientServiceProxy;
+import org.lealone.examples.petstore.dal.model.Account;
 import org.lealone.examples.petstore.dal.model.User;
 import org.lealone.orm.json.JsonObject;
 
@@ -23,7 +24,7 @@ public interface UserService {
 
     void register(User user);
 
-    void update(User user);
+    void update(Account account);
 
     String getUser(String userId);
 
@@ -67,9 +68,9 @@ public interface UserService {
         }
 
         @Override
-        public void update(User user) {
+        public void update(Account account) {
             try {
-                ps3.setString(1, JsonObject.mapFrom(user).encode());
+                ps3.setString(1, JsonObject.mapFrom(account).encode());
                 ps3.executeUpdate();
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("USER_SERVICE.UPDATE", e);

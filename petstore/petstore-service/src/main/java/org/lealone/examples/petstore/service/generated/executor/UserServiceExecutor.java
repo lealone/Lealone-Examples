@@ -3,6 +3,7 @@ package org.lealone.examples.petstore.service.generated.executor;
 import java.util.Map;
 import org.lealone.db.service.ServiceExecutor;
 import org.lealone.db.value.*;
+import org.lealone.examples.petstore.dal.model.Account;
 import org.lealone.examples.petstore.dal.model.User;
 import org.lealone.examples.petstore.service.UserServiceImpl;
 import org.lealone.orm.json.JsonArray;
@@ -32,8 +33,8 @@ public class UserServiceExecutor implements ServiceExecutor {
             this.s.register(p_user_2);
             return ValueNull.INSTANCE;
         case "UPDATE":
-            User p_user_3 =  new JsonObject(methodArgs[0].getString()).mapTo(User.class);
-            this.s.update(p_user_3);
+            Account p_account_3 =  new JsonObject(methodArgs[0].getString()).mapTo(Account.class);
+            this.s.update(p_account_3);
             return ValueNull.INSTANCE;
         case "GET_USER":
             String p_userId_4 = methodArgs[0].getString();
@@ -61,8 +62,8 @@ public class UserServiceExecutor implements ServiceExecutor {
             this.s.register(p_user_2);
             return NO_RETURN_VALUE;
         case "UPDATE":
-            User p_user_3 =  new JsonObject(ServiceExecutor.toString("USER", methodArgs)).mapTo(User.class);
-            this.s.update(p_user_3);
+            Account p_account_3 =  new JsonObject(ServiceExecutor.toString("ACCOUNT", methodArgs)).mapTo(Account.class);
+            this.s.update(p_account_3);
             return NO_RETURN_VALUE;
         case "GET_USER":
             String p_userId_4 = ServiceExecutor.toString("USER_ID", methodArgs);
@@ -94,8 +95,8 @@ public class UserServiceExecutor implements ServiceExecutor {
             return NO_RETURN_VALUE;
         case "UPDATE":
             ja = new JsonArray(json);
-            User p_user_3 = ja.getJsonObject(0).mapTo(User.class);
-            this.s.update(p_user_3);
+            Account p_account_3 = ja.getJsonObject(0).mapTo(Account.class);
+            this.s.update(p_account_3);
             return NO_RETURN_VALUE;
         case "GET_USER":
             ja = new JsonArray(json);

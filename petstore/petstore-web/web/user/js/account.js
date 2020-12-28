@@ -16,8 +16,10 @@
             axios.get(Public.UserService + '/get_user?user_id=' + this.currentUser)
 			.then(function (response) {
 				if(response.data) {
-			        that.account = response.data.account;
-					that.userInfo = response.data.user;
+					if(response.data.account)
+			            that.account = response.data.account;
+					if(response.data.user)
+					    that.userInfo = response.data.user;
 				}
 				that.setPage('user', 'account');
 			})

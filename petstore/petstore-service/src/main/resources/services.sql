@@ -8,7 +8,7 @@ drop service if exists user_service;
 create service if not exists user_service (
   login(user_id varchar, password varchar) user,
   register(user user) void,
-  update(user user) void,
+  update(account Account) void,
   get_user(user_id varchar) varchar
 )
 package @packageName

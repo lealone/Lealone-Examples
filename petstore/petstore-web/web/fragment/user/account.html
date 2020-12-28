@@ -95,7 +95,7 @@
   <tr align="center">
     <td>
       <input type="button" value="返回" onclick="location='/'"/>
-      <input type="button" value="修改用户信息" onclick="location='/user/register_account.html'"/>
+      <input type="button" value="修改用户信息" @click.prevent="setPage('user', 'register_account')"/>
     </td>
   </tr>
 </table>
