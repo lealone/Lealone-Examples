@@ -14,7 +14,7 @@
   <tr>
 	<td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}
 		<template v-if="itemAdded">
-			| <span class="errorMessage">已加入购物车，您可以 [<a v-bind:href="categoryList">继续购物</a>]</span>
+			| <span class="errorMessage">已加入购物车，您可以 [<a href="/" @click.prevent="setPage('store', 'category_list')">继续购物</a>]</span>
 		</template>
 	</td>
   </tr>
@@ -34,7 +34,7 @@
 				<td>{{ item.LISTPRICE }}</td>
 				<td>{{ item.ATTR }}1</td>
 				<td>{{ item.quantity }}</td>
-				<td align="right"><input type="button" value="放到购物车" onclick="addCartItem(productId, itemId,item. productItemId)"/></td>
+				<td align="right"><input type="button" value="放到购物车" @click.prevent="addCartItem(item.ITEMID)"/></td>
 			</tr>
 		</template>
 

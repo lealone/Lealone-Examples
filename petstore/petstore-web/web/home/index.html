@@ -8,6 +8,7 @@
   <script src="/common/js/screen_switch.js"></script>
   <script src="/store/js/category_list.js"></script>
   <script src="/store/js/item_list.js"></script>
+  <script src="/store/js/view_cart.js"></script>
   <script src="/user/js/login.js"></script>
   <script src="/user/js/account.js"></script>
   <script src="/user/js/register.js"></script>
@@ -66,7 +67,7 @@
 
 <script>
 	const HomeScreen = {
-	  mixins: [screenSwitch, categoryList, userLogin, account, registerUser, storeLtemlist],
+	  mixins: [screenSwitch, categoryList, userLogin, account, registerUser, storeLtemlist, storeViewCart],
 	  data() {
 		return {
 		  currentUser: localStorage.currentUser,

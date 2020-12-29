@@ -32,3 +32,18 @@ package @packageName
 implement by 'org.lealone.examples.petstore.service.StoreServiceImpl' -- StoreService接口的默认实现类
 generate code @srcPath;
 
+
+-- 删除服务: car_service
+drop service if exists car_service;
+
+-- 创建服务: car_service，会生成一个对应的CarService接口
+create service if not exists car_service (
+  add_item(car_id varchar, item_id varchar) void,
+  remove_item(car_id varchar, item_id varchar) void,
+  update(car_id varchar, item_id varchar, quantity int) void,
+  get_items(car_id varchar) varchar
+)
+package @packageName
+implement by 'org.lealone.examples.petstore.service.CarServiceImpl' -- CarService接口的默认实现类
+generate code @srcPath;
+

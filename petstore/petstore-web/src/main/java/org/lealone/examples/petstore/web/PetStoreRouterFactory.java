@@ -18,8 +18,10 @@
 package org.lealone.examples.petstore.web;
 
 import java.util.Map;
+import java.util.UUID;
 
 import org.lealone.server.http.HttpRouterFactory;
+import org.lealone.server.http.HttpServiceHandler;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -62,19 +64,8 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route("/user/logout").handler(routingContext -> {
             // routingContext.session().remove("currentUser");
             // routingContext.redirect("/home/index.html");
-        });
-        router.post("/service/store_service/add_product").handler(BodyHandler.create(webRoot + "/store/img"));
-        router.post("/service/store_service/add_product").handler(routingContext -> {
-            vertx.executeBlocking(promise -> {
-                for (FileUpload f : routingContext.fileUploads()) {
-                    routingContext.request().params().set("logo", f.fileName());
-                    routingContext.request().params().set("uploadedfilename", f.uploadedFileName());
-                    // routingContext.vertx().fileSystem().delete(receiveJson.getString("filePath")
-                    break;
-                }
-                routingContext.request().params().remove("product"); // 避免BodyHandler重复
-                routingContext.next();
-            });
+
+            routingContext.session().remove("car_id");
         });
 
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
@@ -90,6 +81,42 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             }).onFailure(cause -> {
                 routingContext.fail(cause);
             });
+        });
+    }
+
+    @Override
+    protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
+        final HttpServiceHandler serviceHandler = new HttpServiceHandler(config);
+        String servicePath = getServicePath(config);
+        String webRoot = config.get("web_root");
+        String uploadDirectory = webRoot + "/store/img";
+        router.post(servicePath).handler(BodyHandler.create(uploadDirectory));
+        router.post("/service/store_service/add_product").handler(routingContext -> {
+            vertx.executeBlocking(promise -> {
+                for (FileUpload f : routingContext.fileUploads()) {
+                    routingContext.request().params().set("logo", f.fileName());
+                    routingContext.request().params().set("uploadedfilename", f.uploadedFileName());
+                    // routingContext.vertx().fileSystem().delete(receiveJson.getString("filePath")
+                    break;
+                }
+                routingContext.request().params().remove("product"); // 避免BodyHandler重复
+                routingContext.next();
+            });
+        });
+
+        // 提取购物车ID用于调用后续的购物车服务
+        router.route("/service/car_service/*").handler(routingContext -> {
+            String car = routingContext.session().get("car_id");
+            if (car == null) {
+                car = "car-" + UUID.randomUUID();
+                routingContext.session().put("car_id", car);
+            }
+            routingContext.request().params().set("car_id", car);
+            routingContext.next();
+        });
+
+        router.route(servicePath).handler(routingContext -> {
+            handleHttpServiceRequest(serviceHandler, routingContext);
         });
     }
 

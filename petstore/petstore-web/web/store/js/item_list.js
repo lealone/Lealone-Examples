@@ -26,8 +26,6 @@
 				console.log(error);
 				that.storeLtemlistErrorMessage = "ItemList获取失败";
 			});
-		},
-		addCartItem(productId, itemId, productItemId) {
 		}
     }
 }
