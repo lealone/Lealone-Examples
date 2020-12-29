@@ -65,7 +65,7 @@
 		return {
 		  currentUser: localStorage.currentUser,
 		  screenType: "store",
-		  pageType: "category_list",
+		  pageType: sessionStorage.pageType ? sessionStorage.pageType : "category_list",
 		  categoryId: ""
 		}
 	  },

@@ -9,6 +9,12 @@
     },
     methods: {
         getItemList(productId, pageType) {
+			if(this.screenType != 'store') {
+				sessionStorage.pageType = "item_list";
+				sessionStorage.productId = productId;
+			    this.setPage('store', pageType);
+				return;
+			}
 			var that = this;
             axios.get(Public.StoreService + '/get_all_product_items?product_id=' + productId)
 			.then(function (response) {
@@ -27,5 +33,11 @@
 				that.storeLtemlistErrorMessage = "ItemList获取失败";
 			});
 		}
-    }
+    },
+	mounted() {
+		if(sessionStorage.pageType == "item_list") {
+			sessionStorage.pageType = "";
+			this.getItemList(sessionStorage.productId, "item_list");
+		}
+	}
 }

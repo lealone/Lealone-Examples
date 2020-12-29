@@ -33,16 +33,16 @@
 			<template v-for="(item, index) in items">
 			<tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
 				<td width="1%"><img src="/store/img/bird4.jpg"></td>
-				<td>{{ items.ITEMID }}</td>
+				<td>{{ item.ITEMID }}</td>
 				<td>Birds，Great companion for up to 75 years</td>
-				<td>{{ items.LISTPRICE }}</td>
-				<td>{{ items.ATTR1 }}</td>
+				<td>{{ item.LISTPRICE }}</td>
+				<td>{{ item.ATTR1 }}</td>
 				<td>
                   <input type="text" name="_fm.ca.EST-18.q" value="1" size="5" maxlength="5"/>
 				</td>
 				<td align="right">193.5</td>
 				<td align="right">
-                  <input type="button" value="删除" @click.prevent="removeCartItem(items.ITEMID)"/>
+                  <input type="button" value="删除" @click.prevent="removeCartItem(item.ITEMID)"/>
 				</td>
 			</tr>
 			</template>

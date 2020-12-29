@@ -51,7 +51,7 @@
 		return {
 		  currentUser: localStorage.currentUser,
 		  screenType: "user",
-		  pageType: "login"
+		  pageType: sessionStorage.pageType ? sessionStorage.pageType : "login"
 		}
 	  }
 	}

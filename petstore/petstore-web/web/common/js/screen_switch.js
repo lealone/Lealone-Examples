@@ -8,7 +8,7 @@
 	  methods: {
 	    setPage(screenType, pageType) {
 		  if(this.screenType != screenType) {
-		    this.screenType = screenType;
+		    sessionStorage.pageType = pageType;
 			location.href = "/" + screenType + "/index.html";
 			return;
 		  }
