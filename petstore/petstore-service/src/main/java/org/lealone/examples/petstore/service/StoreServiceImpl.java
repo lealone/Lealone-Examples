@@ -29,12 +29,6 @@ import org.lealone.orm.json.JsonObject;
 public class StoreServiceImpl implements StoreService {
 
     @Override
-    public Category getCategory(String categoryId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public String addProduct(Product product, String logo) {
         product.logo.set(logo);
         product.insert();
@@ -68,18 +62,6 @@ public class StoreServiceImpl implements StoreService {
         json.put("product", product);
         json.put("items", new JsonArray(items));
         return json.encode();
-    }
-
-    @Override
-    public Item getProductItem(String itemId) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getCartItems(String cart) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }

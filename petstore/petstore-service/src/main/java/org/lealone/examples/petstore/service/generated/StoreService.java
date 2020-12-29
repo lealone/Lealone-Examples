@@ -2,8 +2,6 @@ package org.lealone.examples.petstore.service.generated;
 
 import java.sql.*;
 import org.lealone.client.ClientServiceProxy;
-import org.lealone.examples.petstore.dal.model.Category;
-import org.lealone.examples.petstore.dal.model.Item;
 import org.lealone.examples.petstore.dal.model.Product;
 import org.lealone.orm.json.JsonObject;
 
@@ -21,56 +19,30 @@ public interface StoreService {
             return new ServiceProxy(url);
     }
 
-    Category getCategory(String categoryId);
-
     String addProduct(Product product, String logo);
 
     String getAllCategories();
 
     String getAllProductItems(String productId);
 
-    Item getProductItem(String itemId);
-
-    String getCartItems(String cart);
-
     static class ServiceProxy implements StoreService {
 
         private final PreparedStatement ps1;
         private final PreparedStatement ps2;
         private final PreparedStatement ps3;
-        private final PreparedStatement ps4;
-        private final PreparedStatement ps5;
-        private final PreparedStatement ps6;
 
         private ServiceProxy(String url) {
-            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_CATEGORY(?)");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE ADD_PRODUCT(?, ?)");
-            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_CATEGORIES()");
-            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_PRODUCT_ITEMS(?)");
-            ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_PRODUCT_ITEM(?)");
-            ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_CART_ITEMS(?)");
-        }
-
-        @Override
-        public Category getCategory(String categoryId) {
-            try {
-                ps1.setString(1, categoryId);
-                ResultSet rs = ps1.executeQuery();
-                rs.next();
-                JsonObject jo = new JsonObject(rs.getString(1));
-                rs.close();
-                return jo.mapTo(Category.class);
-            } catch (Throwable e) {
-                throw ClientServiceProxy.failed("STORE_SERVICE.GET_CATEGORY", e);
-            }
+            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE ADD_PRODUCT(?, ?)");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_CATEGORIES()");
+            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE STORE_SERVICE GET_ALL_PRODUCT_ITEMS(?)");
         }
 
         @Override
         public String addProduct(Product product, String logo) {
             try {
-                ps2.setString(1, JsonObject.mapFrom(product).encode());
-                ps2.setString(2, logo);
-                ResultSet rs = ps2.executeQuery();
+                ps1.setString(1, JsonObject.mapFrom(product).encode());
+                ps1.setString(2, logo);
+                ResultSet rs = ps1.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -83,7 +55,7 @@ public interface StoreService {
         @Override
         public String getAllCategories() {
             try {
-                ResultSet rs = ps3.executeQuery();
+                ResultSet rs = ps2.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -96,42 +68,14 @@ public interface StoreService {
         @Override
         public String getAllProductItems(String productId) {
             try {
-                ps4.setString(1, productId);
-                ResultSet rs = ps4.executeQuery();
+                ps3.setString(1, productId);
+                ResultSet rs = ps3.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
                 return ret;
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("STORE_SERVICE.GET_ALL_PRODUCT_ITEMS", e);
-            }
-        }
-
-        @Override
-        public Item getProductItem(String itemId) {
-            try {
-                ps5.setString(1, itemId);
-                ResultSet rs = ps5.executeQuery();
-                rs.next();
-                JsonObject jo = new JsonObject(rs.getString(1));
-                rs.close();
-                return jo.mapTo(Item.class);
-            } catch (Throwable e) {
-                throw ClientServiceProxy.failed("STORE_SERVICE.GET_PRODUCT_ITEM", e);
-            }
-        }
-
-        @Override
-        public String getCartItems(String cart) {
-            try {
-                ps6.setString(1, cart);
-                ResultSet rs = ps6.executeQuery();
-                rs.next();
-                String ret =  rs.getString(1);
-                rs.close();
-                return ret;
-            } catch (Throwable e) {
-                throw ClientServiceProxy.failed("STORE_SERVICE.GET_CART_ITEMS", e);
             }
         }
     }
