@@ -37,6 +37,7 @@ import io.vertx.ext.web.sstore.SessionStore;
 public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
+        // if (Boolean.parseBoolean(config.get("development")))
         System.setProperty("vertxweb.environment", "development");
         String webRoot = config.get("web_root");
         TemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, webRoot);
@@ -99,7 +100,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
                     // routingContext.vertx().fileSystem().delete(receiveJson.getString("filePath")
                     break;
                 }
-                routingContext.request().params().remove("product"); // 避免BodyHandler重复
                 routingContext.next();
             });
         });
