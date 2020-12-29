@@ -10,11 +10,11 @@ INSERT INTO profile VALUES('admin','english','DOGS',1,1);
 INSERT INTO sequence VALUES('ordernum', 1000);
 INSERT INTO sequence VALUES('orderitemnum', 1000);
 
-INSERT INTO bannerdata VALUES ('FISH','<image src="../images/banner_fish.gif">');
-INSERT INTO bannerdata VALUES ('CATS','<image src="../images/banner_cats.gif">');
-INSERT INTO bannerdata VALUES ('DOGS','<image src="../images/banner_dogs.gif">');
-INSERT INTO bannerdata VALUES ('REPTILES','<image src="../images/banner_reptiles.gif">');
-INSERT INTO bannerdata VALUES ('BIRDS','<image src="../images/banner_birds.gif">');
+INSERT INTO banner_data VALUES ('FISH','<image src="../images/banner_fish.gif">');
+INSERT INTO banner_data VALUES ('CATS','<image src="../images/banner_cats.gif">');
+INSERT INTO banner_data VALUES ('DOGS','<image src="../images/banner_dogs.gif">');
+INSERT INTO banner_data VALUES ('REPTILES','<image src="../images/banner_reptiles.gif">');
+INSERT INTO banner_data VALUES ('BIRDS','<image src="../images/banner_birds.gif">');
 
 INSERT INTO category VALUES ('FISH','Fish','cat_fish.jpg','Fish');
 INSERT INTO category VALUES ('DOGS','Dogs','cat_dog.jpg','Dogs');
