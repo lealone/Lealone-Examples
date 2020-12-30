@@ -18,7 +18,6 @@ package org.lealone.examples.petstore.web;
 
 import java.io.File;
 import java.io.Writer;
-import java.nio.charset.Charset;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -169,8 +168,7 @@ public class PetStoreThymeleafTemplateEngine implements ThymeleafTemplateEngine 
                 file = new File(templateRoot, template);
                 template = file.getAbsolutePath();
             }
-            return new StringTemplateResource(
-                    vertx.fileSystem().readFileBlocking(template).toString(Charset.defaultCharset()));
+            return new StringTemplateResource(vertx.fileSystem().readFileBlocking(template).toString("UTF-8"));
         }
     }
 }

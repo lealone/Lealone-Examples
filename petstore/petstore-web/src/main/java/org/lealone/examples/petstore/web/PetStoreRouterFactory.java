@@ -37,14 +37,21 @@ import io.vertx.ext.web.sstore.SessionStore;
 public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
-        // if (Boolean.parseBoolean(config.get("development")))
-        System.setProperty("vertxweb.environment", "development");
-        String webRoot = config.get("web_root");
-        TemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, webRoot);
-        testThymeleaf(templateEngine, router);
-
         router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
+        // 实现footer.html中的重定向功能
+        router.route("/redirect.do").handler(routingContext -> {
+            routingContext.redirect(routingContext.request().getParam("location"));
+        });
+        router.route("/user/logout").handler(routingContext -> {
+            // routingContext.session().remove("currentUser");
+            // routingContext.redirect("/home/index.html");
 
+            routingContext.session().remove("car_id");
+        });
+        setDevelopmentEnvironmentRouter(config, vertx, router);
+    }
+
+    private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
         router.route("/").handler(routingContext -> {
             routingContext.redirect("/home/index.html"); // 需要对index.html进行后端渲染
         });
@@ -54,21 +61,18 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route("/store").handler(routingContext -> {
             routingContext.redirect("/store/index.html");
         });
-        // 实现footer.html中的重定向功能
-        router.route("/redirect.do").handler(routingContext -> {
-            routingContext.redirect(routingContext.request().getParam("location"));
-        });
+
+        if (!isDevelopmentEnvironment(config))
+            return;
+
+        System.setProperty("vertxweb.environment", "development");
         router.route("/fragment/*").handler(routingContext -> {
             routingContext.fail(404);// 不允许访问Thymeleaf的fragment文件
         });
 
-        router.route("/user/logout").handler(routingContext -> {
-            // routingContext.session().remove("currentUser");
-            // routingContext.redirect("/home/index.html");
-
-            routingContext.session().remove("car_id");
-        });
-
+        String webRoot = config.get("web_root");
+        TemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, webRoot);
+        testThymeleaf(templateEngine, router);
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject();

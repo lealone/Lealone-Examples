@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-base_dir: ./target/data
+base_dir: ../data
 
 listen_address: 127.0.0.1
 
@@ -55,7 +55,8 @@ protocol_server_engines:
     enabled: true
     parameters: {
         port: 9000,
-        web_root: ../petstore-web/web,
+        environment: prod,
+        web_root: ../web,
         router_factory: "org.lealone.examples.petstore.web.PetStoreRouterFactory",
         jdbc_url: "jdbc:lealone:embed:petstore"
     }
