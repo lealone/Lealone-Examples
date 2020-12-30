@@ -26,3 +26,7 @@
 如何通过 jar 包引用的方式启动一个单机版或分布式集群版的 Lealone 数据库，</br>
 请继续阅读文档: [通过 jar 包使用 Lealone 数据库无须安装 Lealone](https://github.com/lealone/Lealone-Docs/blob/master/%E5%BA%94%E7%94%A8%E6%96%87%E6%A1%A3/%E9%80%9A%E8%BF%87jar%E5%8C%85%E4%BD%BF%E7%94%A8Lealone%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%A0%E9%A1%BB%E5%AE%89%E8%A3%85Lealone.md)
 
+
+### petstore
+
+[基于 Vue + Lealone 开发的 PetStore 应用](https://github.com/lealone/Lealone-Examples/blob/main/petstore/README.md)
