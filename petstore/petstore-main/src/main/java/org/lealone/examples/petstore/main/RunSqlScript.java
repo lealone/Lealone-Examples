@@ -24,19 +24,49 @@ import java.sql.Statement;
 public class RunSqlScript {
 
     public static void main(String[] args) throws Exception {
+        new RunSqlScript().run(args);
+    }
+
+    private String tableDir = "../petstore-dal/src/main/resources";
+    private String serviceDir = "../petstore-service/src/main/resources";
+
+    private void run(String[] args) throws Exception {
+        parseArgs(args);
+
         // 创建PetStore数据库
         String jdbcUrl = "jdbc:lealone:tcp://localhost/lealone?user=root&password=";
         // runSql(jdbcUrl, "drop database if exists petstore");
         runSql(jdbcUrl, "create database if not exists petstore");
 
         // 执行建表脚本，同时自动生成对应的模型类的代码
-        runScript("../petstore-dal/src/main/resources/tables.sql");
+        runScript(tableDir + "/tables.sql");
 
         // 初始化数据
-        runScript("../petstore-dal/src/main/resources/init-data.sql");
+        runScript(tableDir + "/init-data.sql");
 
         // 执行服务创建脚本，同时自动生成对应的服务接口代码
-        runScript("../petstore-service/src/main/resources/services.sql");
+        runScript(serviceDir + "/services.sql");
+    }
+
+    private void parseArgs(String[] args) {
+        for (int i = 0; i < args.length; i++) {
+            args[i] = args[i].trim();
+        }
+
+        for (int i = 0; i < args.length; i++) {
+            String a = args[i];
+            switch (a) {
+            case "-tableDir":
+                tableDir = args[++i];
+                break;
+            case "-serviceDir":
+                serviceDir = args[++i];
+                break;
+            default:
+                System.out.println("选项名 '" + a + "' 无效");
+                System.exit(-1);
+            }
+        }
     }
 
     static void runScript(String scriptFile) throws Exception {

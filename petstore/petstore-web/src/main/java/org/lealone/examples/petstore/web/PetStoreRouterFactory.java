@@ -37,23 +37,36 @@ import io.vertx.ext.web.sstore.SessionStore;
 public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
-        router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
-        // 实现footer.html中的重定向功能
-        router.route("/redirect.do").handler(routingContext -> {
-            routingContext.redirect(routingContext.request().getParam("location"));
-        });
-        router.route("/user/logout").handler(routingContext -> {
-            // routingContext.session().remove("currentUser");
-            // routingContext.redirect("/home/index.html");
-
-            routingContext.session().remove("car_id");
-        });
+        // route的顺序很重要，所以下面三个调用不能乱
+        setSessionHandler(vertx, router);
+        setRedirectHandler(router);
         setDevelopmentEnvironmentRouter(config, vertx, router);
     }
 
-    private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
+    private void setSessionHandler(Vertx vertx, Router router) {
+        router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
+        // 只拦截logout，login直接转到UserServiceImpl.login处理了
+        // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做
+        router.route("/user/logout").handler(routingContext -> {
+            // routingContext.session().remove("currentUser");
+            // routingContext.redirect("/home/index.html");
+            routingContext.session().remove("car_id");
+        });
+    }
+
+    @Override
+    protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
+            Buffer result) {
+        // if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
+        // JsonObject receiveJson = new JsonObject(result);
+        // routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
+        // }
+        super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
+    }
+
+    private void setRedirectHandler(Router router) {
         router.route("/").handler(routingContext -> {
-            routingContext.redirect("/home/index.html"); // 需要对index.html进行后端渲染
+            routingContext.redirect("/home/index.html");
         });
         router.route("/user").handler(routingContext -> {
             routingContext.redirect("/user/index.html");
@@ -61,7 +74,13 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route("/store").handler(routingContext -> {
             routingContext.redirect("/store/index.html");
         });
+        // 实现footer.html中的重定向功能
+        router.route("/redirect.do").handler(routingContext -> {
+            routingContext.redirect(routingContext.request().getParam("location"));
+        });
+    }
 
+    private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
         if (!isDevelopmentEnvironment(config))
             return;
 
@@ -122,16 +141,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.route(servicePath).handler(routingContext -> {
             handleHttpServiceRequest(serviceHandler, routingContext);
         });
-    }
-
-    @Override
-    protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
-            Buffer result) {
-        // if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
-        // JsonObject receiveJson = new JsonObject(result);
-        // routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
-        // }
-        super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
     }
 
     private static void testThymeleaf(TemplateEngine templateEngine, Router router) {
