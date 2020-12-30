@@ -31,3 +31,14 @@ runSqlScript
 http://localhost:9000/
 
 
+
+### 在 IDE 中开发调试
+
+
+把代码导入到 IDE 后，
+
+先运行 PetStoreDemoTest 启动应用，
+
+然后运行 RunSqlScriptTest 初始化数据，
+
+最后就能打开页面查看了。
