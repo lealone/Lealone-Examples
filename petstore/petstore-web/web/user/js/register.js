@@ -1,4 +1,4 @@
-﻿ const registerUser = { 
+﻿ const userRegister = { 
     data() {
         return {
             rUser: {user_id: "", password: "", password2: ""},

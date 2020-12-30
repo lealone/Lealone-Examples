@@ -1,4 +1,4 @@
-﻿ const account = { 
+﻿ const userAccount = { 
     data() {
         return {
             account: {},

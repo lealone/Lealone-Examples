@@ -153,7 +153,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
 
     private static void render(TemplateEngine templateEngine, RoutingContext routingContext, JsonObject context,
             String templateFileName) {
-        templateEngine.render(context, "/thymeleaf/test-thymeleaf-fragmented.html").onSuccess(buffer -> {
+        templateEngine.render(context, templateFileName).onSuccess(buffer -> {
             routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(buffer);
         }).onFailure(cause -> {
             routingContext.fail(cause);
