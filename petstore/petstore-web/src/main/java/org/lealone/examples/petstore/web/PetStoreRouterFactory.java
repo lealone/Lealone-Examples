@@ -100,11 +100,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             // jsonObject.put("currentUser", currentUser);
             // }
             String file = routingContext.request().path();
-            templateEngine.render(jsonObject, file).onSuccess(buffer -> {
-                response(routingContext, buffer);
-            }).onFailure(cause -> {
-                routingContext.fail(cause);
-            });
+            render(templateEngine, routingContext, jsonObject, file);
         });
     }
 
@@ -146,24 +142,21 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
     private static void testThymeleaf(TemplateEngine templateEngine, Router router) {
         router.route("/thymeleaf_hello").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject().put("msg", "Hello Thymeleaf!");
-            templateEngine.render(jsonObject, "/thymeleaf/hello.html").onSuccess(buffer -> {
-                response(routingContext, buffer);
-            }).onFailure(cause -> {
-                routingContext.fail(cause);
-            });
+            render(templateEngine, routingContext, jsonObject, "/thymeleaf/hello.html");
         });
         router.route("/thymeleaf_fragment").handler(routingContext -> {
-            final JsonObject context = new JsonObject().put("foo", "badger").put("bar", "fox").put("context",
+            JsonObject jsonObject = new JsonObject().put("foo", "badger").put("bar", "fox").put("context",
                     new JsonObject().put("path", "/thymeleaf/test-thymeleaf-template2.html"));
-            templateEngine.render(context, "/thymeleaf/test-thymeleaf-fragmented.html").onSuccess(buffer -> {
-                response(routingContext, buffer);
-            }).onFailure(cause -> {
-                routingContext.fail(cause);
-            });
+            render(templateEngine, routingContext, jsonObject, "/thymeleaf/test-thymeleaf-fragmented.html");
         });
     }
 
-    private static void response(RoutingContext routingContext, Buffer buffer) {
-        routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(buffer);
+    private static void render(TemplateEngine templateEngine, RoutingContext routingContext, JsonObject context,
+            String templateFileName) {
+        templateEngine.render(context, "/thymeleaf/test-thymeleaf-fragmented.html").onSuccess(buffer -> {
+            routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(buffer);
+        }).onFailure(cause -> {
+            routingContext.fail(cause);
+        });
     }
 }
