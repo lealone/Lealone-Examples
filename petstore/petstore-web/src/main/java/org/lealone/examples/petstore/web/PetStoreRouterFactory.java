@@ -17,11 +17,11 @@
  */
 package org.lealone.examples.petstore.web;
 
+import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
 import org.lealone.server.http.HttpRouterFactory;
-import org.lealone.server.http.HttpServiceHandler;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -106,21 +106,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
 
     @Override
     protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
-        String servicePath = getServicePath(config);
-        String webRoot = config.get("web_root");
-        String uploadDirectory = webRoot + "/store/img";
-        router.post(servicePath).handler(BodyHandler.create(uploadDirectory));
-        router.post("/service/store_service/add_product").handler(routingContext -> {
-            vertx.executeBlocking(promise -> {
-                for (FileUpload f : routingContext.fileUploads()) {
-                    routingContext.request().params().set("logo", f.fileName());
-                    routingContext.request().params().set("uploadedfilename", f.uploadedFileName());
-                    // routingContext.vertx().fileSystem().delete(receiveJson.getString("filePath")
-                    break;
-                }
-                routingContext.next();
-            });
-        });
+        setFileUploadHandler(config, vertx, router);
 
         // 提取购物车ID用于调用后续的购物车服务
         router.route("/service/car_service/*").handler(routingContext -> {
@@ -133,9 +119,26 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             routingContext.next();
         });
 
-        HttpServiceHandler serviceHandler = new HttpServiceHandler(config);
-        router.route(servicePath).handler(routingContext -> {
-            handleHttpServiceRequest(serviceHandler, routingContext);
+        super.setHttpServiceHandler(config, vertx, router);
+    }
+
+    private void setFileUploadHandler(Map<String, String> config, Vertx vertx, Router router) {
+        String uploadDirectory = config.get("upload_directory");
+        if (uploadDirectory == null)
+            uploadDirectory = config.get("web_root") + "/store/img/file_uploads";
+        BodyHandler bodyHandler = BodyHandler.create(uploadDirectory);
+        // 先不合并，留给父类setHttpServiceHandler中定义的BodyHandler合并，否则表单属性会重复
+        bodyHandler.setMergeFormAttributes(false);
+        router.post("/service/store_service/add_product").handler(bodyHandler);
+        router.post("/service/store_service/add_product").handler(routingContext -> {
+            for (FileUpload f : routingContext.fileUploads()) {
+                routingContext.request().params().set("logo", f.fileName());
+                File logo = new File(config.get("web_root") + "/store/img/", f.fileName());
+                File uploadedFileName = new File(f.uploadedFileName());
+                uploadedFileName.renameTo(logo);
+                break;
+            }
+            routingContext.next();
         });
     }
 
