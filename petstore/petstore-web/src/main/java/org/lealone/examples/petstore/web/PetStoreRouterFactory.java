@@ -106,7 +106,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
 
     @Override
     protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
-        final HttpServiceHandler serviceHandler = new HttpServiceHandler(config);
         String servicePath = getServicePath(config);
         String webRoot = config.get("web_root");
         String uploadDirectory = webRoot + "/store/img";
@@ -134,6 +133,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             routingContext.next();
         });
 
+        HttpServiceHandler serviceHandler = new HttpServiceHandler(config);
         router.route(servicePath).handler(routingContext -> {
             handleHttpServiceRequest(serviceHandler, routingContext);
         });
