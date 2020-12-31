@@ -6,37 +6,37 @@
 <body>
 
 <div th:fragment="nav">
-<table cellspacing=0 cellpadding=0 width="100%" border=0>
+<table cellpadding="0" cellspacing="0" width="100%" border="0">
 <tr valign="bottom">
   <td class="shortcut">
-    <a href="/user/register.html" @click.prevent="setPage('user', 'register')">注册</a>
+    <a href="/" @click.prevent="setPage('user', 'register')">注册</a>
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
     <div v-if="currentUser">
-	  <a href="/user/logout" @click.prevent="logout"><span>退出 {{ currentUser }}</span></a>
+	  <a href="/" @click.prevent="logout"><span>退出 {{ currentUser }}</span></a>
     </div>
     <div v-else>
-	  <a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a>
+	  <a href="/" @click.prevent="setPage('user', 'login')">登录</a>
     </div>
 	<!--
-    <div th:if="${currentUser}"><a href="/user/logout" @click="logout">退出 <span th:text="${currentUser}"></span></a></div> 
-	<div th:unless="${currentUser}"><a href="/user/login.html" @click.prevent="setPage('user', 'login')">登录</a></div>
+    <div th:if="${currentUser}"><a href="/" @click.prevent="logout">退出 <span th:text="${currentUser}"></span></a></div> 
+	<div th:unless="${currentUser}"><a href="/" @click.prevent="setPage('user', 'login')">登录</a></div>
 	-->
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/user/account.html" @click.prevent="getAccountInfo">用户信息</a>
+    <a href="/" @click.prevent="getAccountInfo">用户信息</a>
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/store/html/view_cart.html" @click.prevent="getCartItemList">
+    <a href="/" @click.prevent="getCartItemList">
 	  <img src="/home/img/cart.png"/>我的购物车
 	</a>
   </td>
@@ -44,7 +44,7 @@
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/store/html/edit/category_list.html" @click.prevent="setPage('store', 'edit_category_list')">库存管理</a>
+    <a href="/" @click.prevent="setPage('store', 'edit_category_list')">库存管理</a>
   </td>
 </tr>
 </table>

@@ -15,7 +15,7 @@
           <div class="subcategoryName">
 		  <template v-for="(product, index) in category.ProductList">
 		    <template v-if="index != 0"> | </template>
-            <a v-bind:href="'/store/html/item_list.html?productId=' + product.PRODUCTID" v-bind:title="product.DESCN" @click.prevent="getItemList(product.PRODUCTID, 'item_list')">
+            <a href="/" v-bind:title="product.DESCN" @click.prevent="getItemList(product.PRODUCTID, 'item_list')">
 			  {{ product.NAME }}
 			</a>
 		  </template>

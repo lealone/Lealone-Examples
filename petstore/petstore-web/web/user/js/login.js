@@ -22,6 +22,10 @@
 		logout() {
 			this.currentUser = "";
 			localStorage.removeItem("currentUser");
+			axios.get("/user/logout")
+			.then(function (response) {
+				location.href = "/";
+			});
 		}
     }
 }

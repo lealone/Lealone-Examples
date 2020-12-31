@@ -49,8 +49,8 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做
         router.route("/user/logout").handler(routingContext -> {
             // routingContext.session().remove("currentUser");
-            // routingContext.redirect("/home/index.html");
-            routingContext.session().remove("car_id");
+            // routingContext.session().remove("car_id");
+            routingContext.redirect("/home/index.html");
         });
     }
 
