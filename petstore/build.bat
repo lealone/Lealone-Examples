@@ -61,7 +61,7 @@ REM call mvn package assembly:assembly -Dmaven.test.skip=true
 
 call mvn package -Dmaven.test.skip=true
 java -cp petstore-dist/target/lealone-petstore-1.0.0.jar^
-     org.lealone.examples.petstore.web.PetStoreThymeleafTemplateCompiler^
+     org.lealone.examples.petstore.web.thymeleaf.ThymeleafTemplateCompiler^
      -webRoot petstore-web/web -targetDir petstore-dist/target
 call mvn assembly:assembly -Dmaven.test.skip=true
 goto end

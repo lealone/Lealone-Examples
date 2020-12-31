@@ -21,6 +21,7 @@ import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
+import org.lealone.examples.petstore.web.thymeleaf.ThymeleafTemplateEngineImpl;
 import org.lealone.server.http.HttpRouterFactory;
 
 import io.vertx.core.Vertx;
@@ -90,7 +91,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         });
 
         String webRoot = config.get("web_root");
-        TemplateEngine templateEngine = new PetStoreThymeleafTemplateEngine(vertx, webRoot);
+        TemplateEngine templateEngine = new ThymeleafTemplateEngineImpl(vertx, webRoot);
         testThymeleaf(templateEngine, router);
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
@@ -133,9 +134,9 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         router.post("/service/store_service/add_product").handler(routingContext -> {
             for (FileUpload f : routingContext.fileUploads()) {
                 routingContext.request().params().set("logo", f.fileName());
-                File logo = new File(config.get("web_root") + "/store/img/", f.fileName());
-                File uploadedFileName = new File(f.uploadedFileName());
-                uploadedFileName.renameTo(logo);
+                File logoFile = new File(config.get("web_root") + "/store/img/", f.fileName());
+                File uploadedFile = new File(f.uploadedFileName());
+                uploadedFile.renameTo(logoFile);
                 break;
             }
             routingContext.next();

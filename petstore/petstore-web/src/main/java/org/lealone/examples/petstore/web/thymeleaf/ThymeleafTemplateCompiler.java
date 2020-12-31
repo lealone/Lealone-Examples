@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lealone.examples.petstore.web;
+package org.lealone.examples.petstore.web.thymeleaf;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -31,10 +31,10 @@ import org.lealone.storage.fs.FileUtils;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
-public class PetStoreThymeleafTemplateCompiler {
+public class ThymeleafTemplateCompiler {
 
     public static void main(String[] args) throws IOException {
-        PetStoreThymeleafTemplateCompiler compiler = new PetStoreThymeleafTemplateCompiler();
+        ThymeleafTemplateCompiler compiler = new ThymeleafTemplateCompiler();
         compiler.parseArgs(args);
         compiler.compile();
     }
@@ -43,7 +43,7 @@ public class PetStoreThymeleafTemplateCompiler {
     private String fragmentDirName = "fragment";
     private String targetDir = "./target";
 
-    private PetStoreThymeleafTemplateEngine te;
+    private ThymeleafTemplateEngineImpl te;
 
     private void parseArgs(String[] args) {
         for (int i = 0; i < args.length; i++) {
@@ -71,7 +71,7 @@ public class PetStoreThymeleafTemplateCompiler {
 
     private void compile() throws IOException {
         Vertx vertx = Vertx.vertx();
-        te = new PetStoreThymeleafTemplateEngine(vertx, this.webRoot);
+        te = new ThymeleafTemplateEngineImpl(vertx, this.webRoot);
         File webRoot = new File(this.webRoot);
         File targetDir = new File(this.targetDir, webRoot.getName());
         if (targetDir.exists()) {

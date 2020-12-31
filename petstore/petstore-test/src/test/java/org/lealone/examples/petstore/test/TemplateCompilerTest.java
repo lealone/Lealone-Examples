@@ -19,13 +19,13 @@ package org.lealone.examples.petstore.test;
 
 import java.io.IOException;
 
-import org.lealone.examples.petstore.web.PetStoreThymeleafTemplateCompiler;
+import org.lealone.examples.petstore.web.thymeleaf.ThymeleafTemplateCompiler;
 
 public class TemplateCompilerTest {
 
     public static void main(String[] args) throws IOException {
         args = new String[] { "-webRoot", "../petstore-web/web" };
-        PetStoreThymeleafTemplateCompiler.main(args);
+        ThymeleafTemplateCompiler.main(args);
     }
 
 }

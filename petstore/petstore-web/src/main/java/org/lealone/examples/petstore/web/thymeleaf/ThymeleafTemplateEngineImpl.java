@@ -13,8 +13,7 @@
  *
  *  You may elect to redistribute this code under either of these licenses.
  */
-
-package org.lealone.examples.petstore.web;
+package org.lealone.examples.petstore.web.thymeleaf;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,13 +45,14 @@ import io.vertx.ext.web.templ.thymeleaf.ThymeleafTemplateEngine;
  * @author <a href="http://tfox.org">Tim Fox</a>
  * @author <a href="http://matty.io">Matty Southall</a>
  */
-// 主要修改了ResourceTemplateResolver，允许指定templateRoot
-public class PetStoreThymeleafTemplateEngine implements ThymeleafTemplateEngine {
+// 改编自io.vertx.ext.web.templ.thymeleaf.impl.ThymeleafTemplateEngineImpl
+// 主要修改了ResourceTemplateResolver，允许指定templateRoot，默认字符集也改成了UTF-8
+public class ThymeleafTemplateEngineImpl implements ThymeleafTemplateEngine {
 
     private final TemplateEngine templateEngine = new TemplateEngine();
     private final ResourceTemplateResolver templateResolver;
 
-    public PetStoreThymeleafTemplateEngine(Vertx vertx, String templateRoot) {
+    public ThymeleafTemplateEngineImpl(Vertx vertx, String templateRoot) {
         ResourceTemplateResolver templateResolver = new ResourceTemplateResolver(vertx, templateRoot);
         templateResolver.setCacheable(!WebEnvironment.development());
         templateResolver.setTemplateMode(ThymeleafTemplateEngine.DEFAULT_TEMPLATE_MODE);
