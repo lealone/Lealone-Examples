@@ -17,6 +17,7 @@
 package org.lealone.examples.petstore.web;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Writer;
 import java.util.Locale;
 import java.util.Map;
@@ -156,19 +157,33 @@ public class PetStoreThymeleafTemplateEngine implements ThymeleafTemplateEngine 
         ResourceTemplateResolver(Vertx vertx, String templateRoot) {
             super();
             this.vertx = vertx;
-            this.templateRoot = templateRoot;
+            try {
+                this.templateRoot = new File(templateRoot).getCanonicalPath();
+            } catch (IOException e) {
+                throw new RuntimeException("Invalid templateRoot: " + templateRoot);
+            }
             setName("vertx/Thymeleaf3");
         }
 
         @Override
         protected ITemplateResource computeTemplateResource(IEngineConfiguration configuration, String ownerTemplate,
                 String template, Map<String, Object> templateResolutionAttributes) {
-            File file = new File(template);
-            if (!file.isAbsolute()) {
-                file = new File(templateRoot, template);
-                template = file.getAbsolutePath();
+            String templatePath;
+            try {
+                // 模板文件的位置总是在templateRoot之下
+                templatePath = new File(template).getCanonicalPath();
+                if (!templatePath.startsWith(templateRoot)) {
+                    templatePath = new File(templateRoot, template).getCanonicalPath();
+                    if (!templatePath.startsWith(templateRoot)) {
+                        templatePath = null;
+                    }
+                }
+            } catch (IOException e) {
+                templatePath = null;
             }
-            return new StringTemplateResource(vertx.fileSystem().readFileBlocking(template).toString("UTF-8"));
+            if (templatePath == null)
+                throw new RuntimeException("Invalid template file: " + template + ", template root: " + templateRoot);
+            return new StringTemplateResource(vertx.fileSystem().readFileBlocking(templatePath).toString("UTF-8"));
         }
     }
 }
