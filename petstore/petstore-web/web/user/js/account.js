@@ -2,31 +2,33 @@
     data() {
         return {
             account: {},
-			userInfo: {},
+			user: {},
 			errorMessage: ""
         }
     },
     methods: {
         getAccountInfo() {
-			if(!this.currentUser) {
-				this.setPage('user', 'login');
+			if(!this.router.currentUser) {
+				this.router.setPage('user', 'login');
 				return;
 			}
 			var that = this;
-            axios.get(Public.UserService + '/get_user?user_id=' + this.currentUser)
+            axios.get(Public.UserService + '/get_user?user_id=' + this.router.currentUser)
 			.then(function (response) {
 				if(response.data) {
 					if(response.data.account)
 			            that.account = response.data.account;
 					if(response.data.user)
-					    that.userInfo = response.data.user;
+					    that.user = response.data.user;
 				}
-				that.setPage('user', 'account');
 			})
 			.catch(function (error) {
 				console.log(error);
 				that.errorMessage = "用户信息获取失败";
 			});
 		}
-    }
+    },
+	mounted() {
+		this.getAccountInfo();
+	}
 }

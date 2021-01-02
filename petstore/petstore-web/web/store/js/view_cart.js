@@ -3,7 +3,7 @@
         return {
             items: [],
 			itemAdded: false,
-			storeLtemlistErrorMessage: ""
+			errorMessage: ""
         }
     },
     methods: {
@@ -15,11 +15,11 @@
 					if(response.data.items)
 					    that.items = response.data.items;
 				}
-				that.setPage('store', 'view_cart');
+				that.router.setPage('store', 'view_cart');
 			})
 			.catch(function (error) {
 				console.log(error);
-				that.storeLtemlistErrorMessage = "ItemList获取失败";
+				that.errorMessage = "ItemList获取失败";
 			});
 		},
 		addCartItem(itemId) {
@@ -27,11 +27,11 @@
             axios.post(Public.CarService + '/add_item?item_id=' + itemId)
 			.then(function (response) {
 				that.itemAdded = true;
-				that.setPage('store', "item_list");
+				that.router.setPage('store', "item_list");
 			})
 			.catch(function (error) {
 				console.log(error);
-				that.storeLtemlistErrorMessage = "add_item失败";
+				that.errorMessage = "add_item失败";
 			});
 		},
 		removeCartItem(itemId) {
@@ -39,12 +39,12 @@
             axios.post(Public.CarService + '/remove_item?item_id=' + itemId)
 			.then(function (response) {
 				that.itemAdded = false;
-				that.setPage('store', "view_cart");
+				that.router.setPage('store', "view_cart");
 				that.getCartItemList();
 			})
 			.catch(function (error) {
 				console.log(error);
-				that.storeLtemlistErrorMessage = "remove_item失败";
+				that.errorMessage = "remove_item失败";
 			});
 		},
 		updateCar() {
@@ -52,13 +52,16 @@
             axios.post(Public.CarService + '/update')
 			.then(function (response) {
 				that.itemAdded = false;
-				that.setPage('store', "view_cart");
+				that.router.setPage('store', "view_cart");
 				//that.getCartItemList();
 			})
 			.catch(function (error) {
 				console.log(error);
-				that.storeLtemlistErrorMessage = "updateCar失败";
+				that.errorMessage = "updateCar失败";
 			});
 		}
-    }
+    },
+	mounted() {
+		 this.getCartItemList();
+	}
 }

@@ -5,10 +5,10 @@
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
   <script src="/common/js/petstore_config.js"></script>
-  <script src="/common/js/screen_switch.js"></script>
   <script src="/user/js/login.js"></script>
   <script src="/user/js/account.js"></script>
   <script src="/user/js/register.js"></script>
+  <script src="/user/js/register_account.js"></script>
   <script src="/store/js/item_list.js"></script>
   <script src="/store/js/view_cart.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
@@ -24,17 +24,17 @@
   </tr>
   <tr>
     <td>
-	  <div v-show="display('login')">
-	    <div th:replace="/fragment/user/login.html :: login"></div>
+	  <div v-if="router.display('login')">
+	    <login :router="router"/>
       </div>
-	  <div style="display: none" v-show="display('account')">
-	    <div th:replace="/fragment/user/account.html :: account"></div>
+	  <div v-if="router.display('account')">
+	    <account :router="router"/>
 	  </div>
-	  <div style="display: none" v-show="display('register')">
-	    <div th:replace="/fragment/user/register.html :: register"></div>
+	  <div v-if="router.display('register')">
+	    <register :router="router"/>
 	  </div>
-	  <div style="display: none" v-show="display('register_account')">
-	    <div th:replace="/fragment/user/register_account.html :: register_account"></div>
+	  <div v-if="router.display('register_account')">
+	    <register_account :router="router"/>
 	  </div>
 	</td>
   </tr>
@@ -44,18 +44,25 @@
 </table>
 </div>
 
+<template id="login" th:insert="/fragment/user/login.html :: login"/>
+<template id="account" th:insert="/fragment/user/account.html :: account"/>
+<template id="register" th:insert="/fragment/user/register.html :: register"/>
+<template id="register_account" th:insert="/fragment/user/register_account.html :: register_account"/>
+<template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
+
 <script>
-	const UserScreen = {
-	  mixins: [screenSwitch, userLogin, userAccount, userRegister, storeLtemlist, storeViewCart],
-	  data() {
-		return {
-		  currentUser: localStorage.currentUser,
-		  screenType: "user",
-		  pageType: sessionStorage.pageType ? sessionStorage.pageType : "login"
-		}
-	  }
-	}
-	Vue.createApp(UserScreen).mount('#User_Screen')
+	router.screen = "user";
+	router.page = sessionStorage.page ? sessionStorage.page : "login";
+	router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
+	const app = Vue.createApp({ data() { return { router: router } } });
+	
+	injectComponent(app, 'login', userLogin);
+	injectComponent(app, 'account', userAccount);
+	injectComponent(app, 'register', userRegister);
+	injectComponent(app, 'register_account', userRegisterAccount);
+	injectComponent(app, 'petstore_nav', userLogin);
+
+	app.mount('#User_Screen')
 </script>
 
 </body>

@@ -19,14 +19,14 @@
         <tr>
           <td nowrap="nowrap">用户名：</td>
           <td width="100%">
-            <input type="text" v-model="user.user_id"/>
+            <input type="text" v-model="user_id"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">密码： </td>
           <td>
-            <input type="password" v-model="user.password"/>
+            <input type="password" v-model="password"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
@@ -42,7 +42,7 @@
 		    <input type="image" src="/home/img/btn_login.png" v-on:click.prevent="login"/>
 		  </td>
           <td nowrap>
-		    <a href="/" @click.prevent="setPage('user', 'register')">还没有注册过吗？<br>赶快注册！</a>
+		    <a href="/" @click.prevent="router.setPage('user', 'register')">还没有注册过吗？<br>赶快注册！</a>
 		  </td>
         </tr>
       </table></td>

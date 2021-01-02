@@ -20,7 +20,7 @@
         </tr>
         <tr>
           <td nowrap="nowrap">用户名：</td>
-          <td width="100%">{{ currentUser }}</td>
+          <td width="100%">{{ router.currentUser }}</td>
           <td class="errorMessage">&nbsp;</td>
         </tr>
         <tr>
@@ -34,56 +34,56 @@
         <tr>
           <td nowrap="nowrap">姓氏：</td>
           <td width="100%">
-            <input type="text" v-model="regAccount.last_name" size="30"/>
+            <input type="text" v-model="account.last_name" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">名字：</td>
           <td width="100%">
-            <input type="text" v-model="regAccount.first_name" size="30"/>
+            <input type="text" v-model="account.first_name" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">地址： </td>
           <td>
-            <input type="text" v-model="regAccount.address1" size="60"/>
+            <input type="text" v-model="account.address1" size="60"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">&nbsp;</td>
           <td>
-            <input type="text" v-model="regAccount.address2" size="60"/>
+            <input type="text" v-model="account.address2" size="60"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">邮编： </td>
           <td>
-            <input type="text" v-model="regAccount.zip" size="20"/>
+            <input type="text" v-model="account.zip" size="20"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">城市： </td>
           <td>
-            <input type="text" v-model="regAccount.city" size="30"/>
+            <input type="text" v-model="account.city" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">省份： </td>
           <td>
-            <input type="text" v-model="regAccount.state" size="30"/>
+            <input type="text" v-model="account.state" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">国家： </td>
           <td>
-			<select v-model="regAccount.country">
+			<select v-model="account.country">
 			  <option value="">-- 请选择国家 --</option>
 			  <option value="AL" >阿尔巴尼亚</option>
 			  <option value="DZ" >阿尔及利亚</option>
@@ -276,14 +276,14 @@
         <tr>
           <td nowrap="nowrap">电话： </td>
           <td>
-            <input type="text" v-model="regAccount.phone" size="30"/>
+            <input type="text" v-model="account.phone" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">电子邮件： </td>
           <td>
-            <input type="text" v-model="regAccount.email" size="60"/>
+            <input type="text" v-model="account.email" size="60"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
@@ -293,14 +293,14 @@
         <tr>
           <td nowrap="nowrap">信用卡号：</td>
           <td width="100%">
-            <input type="text" v-model="regAccount.credit_card_number" size="30"/>
+            <input type="text" v-model="account.credit_card_number" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">信用卡类型：</td>
           <td width="100%">
-			<select v-model="regAccount.credit_card_type">
+			<select v-model="account.credit_card_type">
 			  <option value="">-- 请选择信用卡类型 --</option>
 			  <option value="MasterCard" >MasterCard</option>
 			  <option value="Visa" >Visa</option>
@@ -311,7 +311,7 @@
         <tr>
           <td nowrap="nowrap">信用卡过期时间：</td>
           <td width="100%" nowrap>
-			<select v-model="regAccount.creditCardExpiryMonth">
+			<select v-model="account.creditCardExpiryMonth">
 			  <option value="">-- 请选择月份 --</option>
 			  <option value="1"  selected >1月</option>
 			  <option value="2" >2月</option>
@@ -327,7 +327,7 @@
 			  <option value="12" >12月</option>
 			</select>
             /
-			<select v-model="regAccount.creditCardExpiryYear">
+			<select v-model="account.creditCardExpiryYear">
 			  <option value="">-- 请选择年份 --</option>
 			  <option value="1975" >1975</option>
 			  <option value="1976" >1976</option>
@@ -418,7 +418,7 @@
       <td><hr/></td>
     </tr>
     <tr align="center">
-      <td><input type="submit" value="保存上面的信息" v-on:click.prevent="update"/></td>
+      <td><input type="submit" value="保存上面的信息" @click.prevent="update"/></td>
     </tr>
   </table>
 

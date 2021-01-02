@@ -4,15 +4,13 @@
             category: {},
             product: {},
             items: {},
-			storeLtemlistErrorMessage: ""
+			errorMessage: ""
         }
     },
     methods: {
-        getItemList(productId, pageType) {
-			if(this.screenType != 'store') {
-				sessionStorage.pageType = "item_list";
-				sessionStorage.productId = productId;
-			    this.setPage('store', pageType);
+        getItemList(productId, page) {
+			if(this.router.screen != 'store') {
+			    this.router.setPage('store', page);
 				return;
 			}
 			var that = this;
@@ -26,18 +24,19 @@
 					if(response.data.items)
 					    that.items = response.data.items;
 				}
-				that.setPage('store', pageType);
 			})
 			.catch(function (error) {
 				console.log(error);
-				that.storeLtemlistErrorMessage = "ItemList获取失败";
+				that.errorMessage = "ItemList获取失败";
 			});
 		}
     },
 	mounted() {
-		if(sessionStorage.pageType == "item_list") {
-			sessionStorage.pageType = "";
-			this.getItemList(sessionStorage.productId, "item_list");
+		if(this.router.page == "item_list" || this.router.page == "edit_item_list") {
+			var page = this.router.page;
+			var productId = this.router.params.pop();
+			if(productId)
+				this.getItemList(productId, page);
 		}
 	}
 }

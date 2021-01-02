@@ -1,16 +1,17 @@
 ﻿ const userLogin = { 
     data() {
         return {
-            user: {user_id: "", password: ""},
+            user_id: "",
+			password: "",
 			errorMessage: ""
         }
     },
     methods: {
         login() {
 			var that = this;
-            axios.post(Public.UserService + '/login', this.user)
+            axios.post(Public.UserService + '/login', this.$data)
 			.then(function (response) {
-			    that.currentUser = response.data.USER_ID;
+			    that.router.currentUser = response.data.USER_ID;
 				localStorage.currentUser = response.data.USER_ID;
 				location.href = "/";
 			})
@@ -20,7 +21,6 @@
 			});
 		},
 		logout() {
-			this.currentUser = "";
 			localStorage.removeItem("currentUser");
 			axios.get("/user/logout")
 			.then(function (response) {

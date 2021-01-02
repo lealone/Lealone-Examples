@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td nowrap="nowrap">用户名：</td>
-        <td width="100%">{{ userInfo.USER_ID }}</td>
+        <td width="100%">{{ user.USER_ID }}</td>
         <td class="errorMessage">&nbsp;</td>
       </tr>
       <tr>
@@ -94,8 +94,8 @@
   </tr>
   <tr align="center">
     <td>
-      <input type="button" value="返回" onclick="location='/'"/>
-      <input type="button" value="修改用户信息" @click.prevent="setPage('user', 'register_account')"/>
+      <input type="button" value="返回" onclick="location='/'"/>&nbsp;
+      <input type="button" value="修改用户信息" @click.prevent="router.setPage('user', 'register_account')"/>
     </td>
   </tr>
 </table>
