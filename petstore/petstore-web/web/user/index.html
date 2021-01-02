@@ -49,7 +49,7 @@
 <template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-	const app = createVueApp("user", "login"); 
+    const app = createVueApp("user", "login"); 
     
     injectComponent(app, 'login', userLogin);
     injectComponent(app, 'account', userAccount);

@@ -2,33 +2,33 @@
     data() {
         return {
             account: {},
-			user: {},
-			errorMessage: ""
+            user: {},
+            errorMessage: ""
         }
     },
     methods: {
         getAccountInfo() {
-			if(!this.router.currentUser) {
-				this.router.setPage('user', 'login');
-				return;
-			}
-			var that = this;
+            if(!this.router.currentUser) {
+                this.router.setPage('user', 'login');
+                return;
+            }
+            var that = this;
             axios.get(PetStore.UserService + '/get_user?user_id=' + this.router.currentUser)
-			.then(function (response) {
-				if(response.data) {
-					if(response.data.account)
-			            that.account = response.data.account;
-					if(response.data.user)
-					    that.user = response.data.user;
-				}
-			})
-			.catch(function (error) {
-				console.log(error);
-				that.errorMessage = "用户信息获取失败";
-			});
-		}
+            .then(function (response) {
+                if(response.data) {
+                    if(response.data.account)
+                        that.account = response.data.account;
+                    if(response.data.user)
+                        that.user = response.data.user;
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                that.errorMessage = "用户信息获取失败";
+            });
+        }
     },
-	mounted() {
-		this.getAccountInfo();
-	}
+    mounted() {
+        this.getAccountInfo();
+    }
 }

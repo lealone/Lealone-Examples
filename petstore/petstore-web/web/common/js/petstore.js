@@ -10,22 +10,22 @@ const Router = {
     currentUser: localStorage.currentUser,
     screen: "user" ,
     page: "login", 
-	params: [],
+    params: [],
 
     setPage(screen, page) {
-		var len = arguments.length;
+        var len = arguments.length;
         for(var i=2; i<len; i++){
             this.params.push(arguments[i]);
         }
         if(this.screen != screen) {
             this.screen = screen;
-		    this.page = page;
-			sessionStorage.page = page;
-			sessionStorage.params = this.params.join();
-			location.href = "/" + screen + "/index.html";
-			return;
+            this.page = page;
+            sessionStorage.page = page;
+            sessionStorage.params = this.params.join();
+            location.href = "/" + screen + "/index.html";
+            return;
         }
-		this.page = page;
+        this.page = page;
     },
 
     display(page) {
@@ -43,15 +43,15 @@ function createVueApp(screen, defaultPage) {
 
 
 function injectComponent(app, name) {
-	var mixins = [];
-	var len = arguments.length;
+    var mixins = [];
+    var len = arguments.length;
     for(var i=2; i<len; i++){
         mixins.push(arguments[i]);
     }
     app.component(name, {
         mixins: mixins, 
-		props: ['router'],
+        props: ['router'],
         template: document.getElementById(name).innerHTML
-	})
+    })
 }
 
