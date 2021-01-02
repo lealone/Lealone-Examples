@@ -8,11 +8,7 @@
         }
     },
     methods: {
-        getItemList(productId, page) {
-            if(this.router.screen != 'store') {
-                this.router.setPage('store', page);
-                return;
-            }
+        getItemList(productId) {
             var that = this;
             axios.get(PetStore.StoreService + '/get_all_product_items?product_id=' + productId)
             .then(function (response) {
@@ -33,10 +29,9 @@
     },
     mounted() {
         if(this.router.page == "item-list" || this.router.page == "edit-item-list") {
-            var page = this.router.page;
             var productId = this.router.params.pop();
             if(productId)
-                this.getItemList(productId, page);
+                this.getItemList(productId);
         }
     }
 }
