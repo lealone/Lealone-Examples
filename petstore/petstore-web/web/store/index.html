@@ -24,32 +24,32 @@
     <td><div th:replace="/fragment/home/top.html :: top"></div></td>
   </tr>
   <tr>
-	<td align="center">
-	  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
- 	    <tr>
-	      <td>
-	        <div v-if="router.display('edit_category_list')">
-	          <edit_category_list :router="router"/>
-	        </div>
-	        <div v-if="router.display('item_list')">
-	          <item_list :router="router"/>
-	        </div>
-	        <div v-if="router.display('view_cart')">
-	          <view_cart :router="router"/>
-	        </div>
-	        <div v-if="router.display('add_product')">
-	          <add_product :router="router"/>
-	        </div>
-	        <div v-if="router.display('category_list')">
-	          <category_list :router="router"/>
-	        </div>
-	        <div v-if="router.display('edit_item_list')">
-	          <edit_item_list :router="router"/>
-	        </div>
-	      </td>
-		</tr>
-	  </table>
-	</td>
+    <td align="center">
+      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
+         <tr>
+          <td>
+            <div v-if="router.display('edit_category_list')">
+              <edit_category_list :router="router"/>
+            </div>
+            <div v-if="router.display('item_list')">
+              <item_list :router="router"/>
+            </div>
+            <div v-if="router.display('view_cart')">
+              <view_cart :router="router"/>
+            </div>
+            <div v-if="router.display('add_product')">
+              <add_product :router="router"/>
+            </div>
+            <div v-if="router.display('category_list')">
+              <category_list :router="router"/>
+            </div>
+            <div v-if="router.display('edit_item_list')">
+              <edit_item_list :router="router"/>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
   </tr>
   <tr>
     <td><div th:replace="/fragment/home/footer.html :: footer"></div></td>
@@ -66,20 +66,20 @@
 <template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-	router.screen = "store";
-	router.page = sessionStorage.page ? sessionStorage.page : "edit_category_list"; 
-	router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
+    router.screen = "store";
+    router.page = sessionStorage.page ? sessionStorage.page : "edit_category_list"; 
+    router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
     const app = Vue.createApp({ data() { return { router: router } } }); 
 
-	injectComponent(app, 'category_list', storeCategoryList);
+    injectComponent(app, 'category_list', storeCategoryList);
     injectComponent(app, 'item_list', storeLtemlist, storeViewCart);
-	injectComponent(app, 'view_cart', storeViewCart);
+    injectComponent(app, 'view_cart', storeViewCart);
     injectComponent(app, 'edit_category_list', storeCategoryList);
-	injectComponent(app, 'edit_item_list', storeLtemlist);
+    injectComponent(app, 'edit_item_list', storeLtemlist);
     injectComponent(app, 'add_product', storeAddProduct);
-	injectComponent(app, 'petstore_nav', userLogin);
+    injectComponent(app, 'petstore_nav', userLogin);
 
-	app.mount('#Store_Screen')
+    app.mount('#Store_Screen')
 </script>
 
 </body>

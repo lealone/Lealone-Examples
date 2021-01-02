@@ -21,44 +21,44 @@
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td height="258" valign="top">
-	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
       <tr>
         <td><a href="/"><img src="/home/img/logo_petstore_big.png"/></a></td>
       </tr>
-	  <tr>
+      <tr>
         <td valign="top">&nbsp;</td>
       </tr>
       <tr>
         <td valign="top"> 
-		  <login :router="router"/>
+          <login :router="router"/>
         </td>
       </tr>
     </table>
-	</td>
+    </td>
     <td><img src="/home/img/dot_transparent.png" width="30"/></td>
     <td width="100%" valign="top">
-	  <div th:replace="/fragment/home/top_no_logo.html :: topNoLogo"></div>
+      <div th:replace="/fragment/home/top_no_logo.html :: topNoLogo"></div>
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr valign="bottom">
           <td width="10" align="left"><div th:replace="/fragment/home/tabs.html :: tabs"></div></td>
         </tr>
         <tr>
           <td>
-		    <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
+            <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
               <tr align="left">
                 <td width="100%">
-				  <category_list :router="router"/>
-				</td>
+                  <category_list :router="router"/>
+                </td>
               </tr>
             </table>
-		  </td>
+          </td>
         </tr>
       </table>
-	</td>
+    </td>
   </tr>
   <tr>
     <td colspan="3" valign="top">
-	  <div th:replace="/fragment/home/footer.html :: footer"></div>
+      <div th:replace="/fragment/home/footer.html :: footer"></div>
     </td>
   </tr>
 </table>
@@ -69,15 +69,15 @@
 <template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-	router.screen = "home";
-	router.page = "login";
-	const app = Vue.createApp({ data() { return { router: router } } }); 
+    router.screen = "home";
+    router.page = "login";
+    const app = Vue.createApp({ data() { return { router: router } } }); 
 
-	injectComponent(app, 'login', userLogin);
+    injectComponent(app, 'login', userLogin);
     injectComponent(app, 'category_list', storeCategoryList);
-	injectComponent(app, 'petstore_nav', userLogin);
+    injectComponent(app, 'petstore_nav', userLogin);
 
-	app.mount('#Home_Screen')
+    app.mount('#Home_Screen')
 </script>
 
 </body>

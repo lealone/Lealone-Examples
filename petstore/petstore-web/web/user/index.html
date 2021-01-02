@@ -24,19 +24,19 @@
   </tr>
   <tr>
     <td>
-	  <div v-if="router.display('login')">
-	    <login :router="router"/>
+      <div v-if="router.display('login')">
+        <login :router="router"/>
       </div>
-	  <div v-if="router.display('account')">
-	    <account :router="router"/>
-	  </div>
-	  <div v-if="router.display('register')">
-	    <register :router="router"/>
-	  </div>
-	  <div v-if="router.display('register_account')">
-	    <register_account :router="router"/>
-	  </div>
-	</td>
+      <div v-if="router.display('account')">
+        <account :router="router"/>
+      </div>
+      <div v-if="router.display('register')">
+        <register :router="router"/>
+      </div>
+      <div v-if="router.display('register_account')">
+        <register_account :router="router"/>
+      </div>
+    </td>
   </tr>
   <tr>
     <td><div th:replace="/fragment/home/footer.html :: footer"></div></td>
@@ -51,18 +51,18 @@
 <template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-	router.screen = "user";
-	router.page = sessionStorage.page ? sessionStorage.page : "login";
-	router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
-	const app = Vue.createApp({ data() { return { router: router } } });
-	
-	injectComponent(app, 'login', userLogin);
-	injectComponent(app, 'account', userAccount);
-	injectComponent(app, 'register', userRegister);
-	injectComponent(app, 'register_account', userRegisterAccount);
-	injectComponent(app, 'petstore_nav', userLogin);
+    router.screen = "user";
+    router.page = sessionStorage.page ? sessionStorage.page : "login";
+    router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
+    const app = Vue.createApp({ data() { return { router: router } } });
+    
+    injectComponent(app, 'login', userLogin);
+    injectComponent(app, 'account', userAccount);
+    injectComponent(app, 'register', userRegister);
+    injectComponent(app, 'register_account', userRegisterAccount);
+    injectComponent(app, 'petstore_nav', userLogin);
 
-	app.mount('#User_Screen')
+    app.mount('#User_Screen')
 </script>
 
 </body>

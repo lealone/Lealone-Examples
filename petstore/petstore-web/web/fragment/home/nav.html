@@ -16,15 +16,15 @@
   </td>
   <td class="shortcut">
     <div v-if="router.currentUser">
-	  <a href="/" @click.prevent="logout"><span>退出 {{ router.currentUser }}</span></a>
+      <a href="/" @click.prevent="logout"><span>退出 {{ router.currentUser }}</span></a>
     </div>
     <div v-else>
-	  <a href="/" @click.prevent="router.setPage('user', 'login')">登录</a>
+      <a href="/" @click.prevent="router.setPage('user', 'login')">登录</a>
     </div>
-	<!--
+    <!--
     <div th:if="${currentUser}"><a href="/" @click.prevent="logout">退出 <span th:text="${currentUser}"></span></a></div> 
-	<div th:unless="${currentUser}"><a href="/" @click.prevent="router.setPage('user', 'login')">登录</a></div>
-	-->
+    <div th:unless="${currentUser}"><a href="/" @click.prevent="router.setPage('user', 'login')">登录</a></div>
+    -->
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
@@ -37,8 +37,8 @@
   </td>
   <td class="shortcut">
     <a href="/" @click.prevent="router.setPage('store', 'view_cart')">
-	  <img src="/home/img/cart.png"/>我的购物车
-	</a>
+      <img src="/home/img/cart.png"/>我的购物车
+    </a>
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
