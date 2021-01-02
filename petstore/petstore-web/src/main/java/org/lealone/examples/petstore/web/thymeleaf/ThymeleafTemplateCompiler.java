@@ -89,7 +89,7 @@ public class ThymeleafTemplateCompiler {
     private void compileRecursive(File targetDir, File file) throws IOException {
         String fileName = file.getName();
         if (file.isDirectory()) {
-            if (fileName.equals(fragmentDirName) || fileName.equals("thymeleaf"))
+            if (fileName.equals(fragmentDirName))
                 return;
             targetDir = new File(targetDir, fileName);
             targetDir.mkdir();

@@ -92,7 +92,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
 
         String webRoot = config.get("web_root");
         TemplateEngine templateEngine = new ThymeleafTemplateEngineImpl(vertx, webRoot);
-        testThymeleaf(templateEngine, router);
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject();
@@ -140,18 +139,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
                 break;
             }
             routingContext.next();
-        });
-    }
-
-    private static void testThymeleaf(TemplateEngine templateEngine, Router router) {
-        router.route("/thymeleaf_hello").handler(routingContext -> {
-            JsonObject jsonObject = new JsonObject().put("msg", "Hello Thymeleaf!");
-            render(templateEngine, routingContext, jsonObject, "/thymeleaf/hello.html");
-        });
-        router.route("/thymeleaf_fragment").handler(routingContext -> {
-            JsonObject jsonObject = new JsonObject().put("foo", "badger").put("bar", "fox").put("context",
-                    new JsonObject().put("path", "/thymeleaf/test-thymeleaf-template2.html"));
-            render(templateEngine, routingContext, jsonObject, "/thymeleaf/test-thymeleaf-fragmented.html");
         });
     }
 
