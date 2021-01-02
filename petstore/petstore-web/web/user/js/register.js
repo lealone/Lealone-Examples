@@ -12,7 +12,7 @@
 				return;
 			}
 			var that = this;
-            axios.post(Public.UserService + '/register', {user: JSON.stringify(this.user)})
+            axios.post(PetStore.UserService + '/register', {user: JSON.stringify(this.user)})
 			.then(function (response) {
 				if(!that.router.currentUser) {
 			        that.router.currentUser = that.user.user_id;

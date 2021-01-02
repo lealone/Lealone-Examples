@@ -4,13 +4,11 @@
   <title>Petstore Sample</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
-  <script src="/common/js/petstore_config.js"></script>
+  <script src="/common/js/petstore.js"></script>
   <script src="/store/js/category_list.js"></script>
   <script src="/store/js/item_list.js"></script>
   <script src="/store/js/add_product.js"></script>
   <script src="/store/js/view_cart.js"></script>
-  <script src="/user/js/account.js"></script>
-  <script src="/user/js/register.js"></script>
   <script src="/user/js/login.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
@@ -18,7 +16,7 @@
 </head>
 
 <body>
-<div id="Store_Screen">
+<div id="storeApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><div th:replace="/fragment/home/top.html :: top"></div></td>
@@ -29,22 +27,22 @@
          <tr>
           <td>
             <div v-if="router.display('edit_category_list')">
-              <edit_category_list :router="router"/>
+              <edit-category-list :router="router"/>
             </div>
             <div v-if="router.display('item_list')">
-              <item_list :router="router"/>
+              <item-list :router="router"/>
             </div>
             <div v-if="router.display('view_cart')">
-              <view_cart :router="router"/>
+              <view-cart :router="router"/>
             </div>
             <div v-if="router.display('add_product')">
-              <add_product :router="router"/>
+              <add-product :router="router"/>
             </div>
             <div v-if="router.display('category_list')">
-              <category_list :router="router"/>
+              <category-list :router="router"/>
             </div>
             <div v-if="router.display('edit_item_list')">
-              <edit_item_list :router="router"/>
+              <edit-item-list :router="router"/>
             </div>
           </td>
         </tr>
@@ -57,29 +55,26 @@
 </table>
 </div>
 
-<template id="category_list" th:insert="/fragment/store/category_list.html :: categoryList"/>
-<template id="item_list" th:insert="/fragment/store/item_list.html :: itemList"/>
-<template id="view_cart" th:insert="/fragment/store/view_cart.html :: viewCart"/>
-<template id="edit_category_list" th:insert="/fragment/store/edit/category_list.html :: categoryList"/>
-<template id="edit_item_list" th:insert="/fragment/store/edit/item_list.html :: itemList"/>
-<template id="add_product" th:insert="/fragment/store/edit/add_product.html :: addProduct"/>
-<template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="category-list" th:insert="/fragment/store/category_list.html :: categoryList"/>
+<template id="item-list" th:insert="/fragment/store/item_list.html :: itemList"/>
+<template id="view-cart" th:insert="/fragment/store/view_cart.html :: viewCart"/>
+<template id="edit-category-list" th:insert="/fragment/store/edit/category_list.html :: categoryList"/>
+<template id="edit-item-list" th:insert="/fragment/store/edit/item_list.html :: itemList"/>
+<template id="add-product" th:insert="/fragment/store/edit/add_product.html :: addProduct"/>
+<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-    router.screen = "store";
-    router.page = sessionStorage.page ? sessionStorage.page : "edit_category_list"; 
-    router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
-    const app = Vue.createApp({ data() { return { router: router } } }); 
+    const app = createVueApp("store", "edit_category_list"); 
 
-    injectComponent(app, 'category_list', storeCategoryList);
-    injectComponent(app, 'item_list', storeLtemlist, storeViewCart);
-    injectComponent(app, 'view_cart', storeViewCart);
-    injectComponent(app, 'edit_category_list', storeCategoryList);
-    injectComponent(app, 'edit_item_list', storeLtemlist);
-    injectComponent(app, 'add_product', storeAddProduct);
-    injectComponent(app, 'petstore_nav', userLogin);
+    injectComponent(app, 'category-list', storeCategoryList);
+    injectComponent(app, 'item-list', storeLtemlist, storeViewCart);
+    injectComponent(app, 'view-cart', storeViewCart);
+    injectComponent(app, 'edit-category-list', storeCategoryList);
+    injectComponent(app, 'edit-item-list', storeLtemlist);
+    injectComponent(app, 'add-product', storeAddProduct);
+    injectComponent(app, 'petstore-nav', userLogin);
 
-    app.mount('#Store_Screen')
+    app.mount('#storeApp')
 </script>
 
 </body>

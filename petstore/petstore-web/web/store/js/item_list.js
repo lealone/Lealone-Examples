@@ -14,7 +14,7 @@
 				return;
 			}
 			var that = this;
-            axios.get(Public.StoreService + '/get_all_product_items?product_id=' + productId)
+            axios.get(PetStore.StoreService + '/get_all_product_items?product_id=' + productId)
 			.then(function (response) {
 				if(response.data) {
 					if(response.data.category)

@@ -24,7 +24,7 @@
                 }
             };
 			var that = this;
-            axios.post(Public.StoreService + '/add_product', formData, config)
+            axios.post(PetStore.StoreService + '/add_product', formData, config)
 			.then(function (response) {
 				that.router.setPage("store", "edit_category_list");
 			})

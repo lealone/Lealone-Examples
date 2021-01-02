@@ -13,7 +13,7 @@
 				return;
 			}
 			var that = this;
-            axios.get(Public.UserService + '/get_user?user_id=' + this.router.currentUser)
+            axios.get(PetStore.UserService + '/get_user?user_id=' + this.router.currentUser)
 			.then(function (response) {
 				if(response.data) {
 					if(response.data.account)

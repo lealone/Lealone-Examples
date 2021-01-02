@@ -9,7 +9,7 @@
     methods: {
         login() {
 			var that = this;
-            axios.post(Public.UserService + '/login', this.$data)
+            axios.post(PetStore.UserService + '/login', this.$data)
 			.then(function (response) {
 			    that.router.currentUser = response.data.USER_ID;
 				localStorage.currentUser = response.data.USER_ID;

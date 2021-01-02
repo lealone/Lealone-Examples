@@ -4,20 +4,16 @@
   <title>Welcome to Petstore!</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
-  <script src="/common/js/petstore_config.js"></script>
+  <script src="/common/js/petstore.js"></script>
   <script src="/store/js/category_list.js"></script>
-  <script src="/store/js/item_list.js"></script>
-  <script src="/store/js/view_cart.js"></script>
   <script src="/user/js/login.js"></script>
-  <script src="/user/js/account.js"></script>
-  <script src="/user/js/register.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/store/css/petstore-store.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css" media="screen">
 </head>
 
 <body>
-<div id="Home_Screen">
+<div id="homeApp">
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
     <td height="258" valign="top">
@@ -47,7 +43,7 @@
             <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
               <tr align="left">
                 <td width="100%">
-                  <category_list :router="router"/>
+                  <category-list :router="router"/>
                 </td>
               </tr>
             </table>
@@ -65,19 +61,17 @@
 </div>
 
 <template id="login" th:insert="/fragment/user/login.html :: login"/>
-<template id="category_list" th:insert="/fragment/store/category_list.html :: categoryList"/>
-<template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="category-list" th:insert="/fragment/store/category_list.html :: categoryList"/>
+<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-    router.screen = "home";
-    router.page = "login";
-    const app = Vue.createApp({ data() { return { router: router } } }); 
+    const app = createVueApp("home", "login"); 
 
     injectComponent(app, 'login', userLogin);
-    injectComponent(app, 'category_list', storeCategoryList);
-    injectComponent(app, 'petstore_nav', userLogin);
+    injectComponent(app, 'category-list', storeCategoryList);
+    injectComponent(app, 'petstore-nav', userLogin);
 
-    app.mount('#Home_Screen')
+    app.mount('#homeApp')
 </script>
 
 </body>

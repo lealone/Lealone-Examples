@@ -9,7 +9,7 @@
 		update() {
 			var that = this;
 			this.account.user_id = this.router.currentUser;
-            axios.post(Public.UserService + '/update', {account: JSON.stringify(this.account)})
+            axios.post(PetStore.UserService + '/update', {account: JSON.stringify(this.account)})
 			.then(function (response) {
 				that.router.setPage('user', 'account');
 			})

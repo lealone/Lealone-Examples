@@ -4,20 +4,18 @@
   <title>Petstore Sample</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
-  <script src="/common/js/petstore_config.js"></script>
+  <script src="/common/js/petstore.js"></script>
   <script src="/user/js/login.js"></script>
   <script src="/user/js/account.js"></script>
   <script src="/user/js/register.js"></script>
   <script src="/user/js/register_account.js"></script>
-  <script src="/store/js/item_list.js"></script>
-  <script src="/store/js/view_cart.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
   <link rel="stylesheet" href="/user/css/petstore-user.css" media="screen">
 </head>
 
 <body>
-<div id="User_Screen">
+<div id="userApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td><div th:replace="/fragment/home/top.html :: top"></div></td>
@@ -34,7 +32,7 @@
         <register :router="router"/>
       </div>
       <div v-if="router.display('register_account')">
-        <register_account :router="router"/>
+        <register-account :router="router"/>
       </div>
     </td>
   </tr>
@@ -47,22 +45,19 @@
 <template id="login" th:insert="/fragment/user/login.html :: login"/>
 <template id="account" th:insert="/fragment/user/account.html :: account"/>
 <template id="register" th:insert="/fragment/user/register.html :: register"/>
-<template id="register_account" th:insert="/fragment/user/register_account.html :: register_account"/>
-<template id="petstore_nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="register-account" th:insert="/fragment/user/register_account.html :: register_account"/>
+<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-    router.screen = "user";
-    router.page = sessionStorage.page ? sessionStorage.page : "login";
-    router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
-    const app = Vue.createApp({ data() { return { router: router } } });
+	const app = createVueApp("user", "login"); 
     
     injectComponent(app, 'login', userLogin);
     injectComponent(app, 'account', userAccount);
     injectComponent(app, 'register', userRegister);
-    injectComponent(app, 'register_account', userRegisterAccount);
-    injectComponent(app, 'petstore_nav', userLogin);
+    injectComponent(app, 'register-account', userRegisterAccount);
+    injectComponent(app, 'petstore-nav', userLogin);
 
-    app.mount('#User_Screen')
+    app.mount('#userApp')
 </script>
 
 </body>
