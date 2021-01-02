@@ -5,10 +5,10 @@
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
   <script src="/common/js/petstore.js"></script>
-  <script src="/store/js/category_list.js"></script>
-  <script src="/store/js/item_list.js"></script>
-  <script src="/store/js/add_product.js"></script>
-  <script src="/store/js/view_cart.js"></script>
+  <script src="/store/js/category-list.js"></script>
+  <script src="/store/js/item-list.js"></script>
+  <script src="/store/js/add-product.js"></script>
+  <script src="/store/js/view-cart.js"></script>
   <script src="/user/js/login.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
@@ -26,22 +26,22 @@
       <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
          <tr>
           <td>
-            <div v-if="router.display('edit_category_list')">
+            <div v-if="router.display('edit-category-list')">
               <edit-category-list :router="router"/>
             </div>
-            <div v-if="router.display('item_list')">
+            <div v-if="router.display('item-list')">
               <item-list :router="router"/>
             </div>
-            <div v-if="router.display('view_cart')">
+            <div v-if="router.display('view-cart')">
               <view-cart :router="router"/>
             </div>
-            <div v-if="router.display('add_product')">
+            <div v-if="router.display('add-product')">
               <add-product :router="router"/>
             </div>
-            <div v-if="router.display('category_list')">
+            <div v-if="router.display('category-list')">
               <category-list :router="router"/>
             </div>
-            <div v-if="router.display('edit_item_list')">
+            <div v-if="router.display('edit-item-list')">
               <edit-item-list :router="router"/>
             </div>
           </td>
@@ -55,16 +55,16 @@
 </table>
 </div>
 
-<template id="category-list" th:insert="/fragment/store/category_list.html :: categoryList"/>
-<template id="item-list" th:insert="/fragment/store/item_list.html :: itemList"/>
-<template id="view-cart" th:insert="/fragment/store/view_cart.html :: viewCart"/>
-<template id="edit-category-list" th:insert="/fragment/store/edit/category_list.html :: categoryList"/>
-<template id="edit-item-list" th:insert="/fragment/store/edit/item_list.html :: itemList"/>
-<template id="add-product" th:insert="/fragment/store/edit/add_product.html :: addProduct"/>
+<template id="category-list" th:insert="/fragment/store/category-list.html :: category-list"/>
+<template id="item-list" th:insert="/fragment/store/item-list.html :: item-list"/>
+<template id="view-cart" th:insert="/fragment/store/view-cart.html :: view-cart"/>
+<template id="edit-category-list" th:insert="/fragment/store/edit/category-list.html :: edit-category-list"/>
+<template id="edit-item-list" th:insert="/fragment/store/edit/item-list.html :: edit-item-list"/>
+<template id="add-product" th:insert="/fragment/store/edit/add-product.html :: add-product"/>
 <template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>
-    const app = createVueApp("store", "edit_category_list"); 
+    const app = createVueApp("store", "edit-category-list"); 
 
     injectComponent(app, 'category-list', storeCategoryList);
     injectComponent(app, 'item-list', storeLtemlist, storeViewCart);

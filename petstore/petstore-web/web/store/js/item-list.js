@@ -32,7 +32,7 @@
 		}
     },
 	mounted() {
-		if(this.router.page == "item_list" || this.router.page == "edit_item_list") {
+		if(this.router.page == "item-list" || this.router.page == "edit-item-list") {
 			var page = this.router.page;
 			var productId = this.router.params.pop();
 			if(productId)

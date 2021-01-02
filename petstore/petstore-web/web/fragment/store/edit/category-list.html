@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<div th:fragment="categoryList">
+<div th:fragment="edit-category-list">
     <template v-for="category in categories">
     <table width="100%" border="0" cellspacing="0" cellpadding="10">
       <tr>
@@ -19,13 +19,13 @@
               <td class="subcategoryName">
               <template v-for="(product, index) in category.ProductList">
                 <template v-if="index != 0"> | </template>
-                <a href="/" v-bind:title="product.DESCN" @click.prevent="router.setPage('store', 'edit_item_list', product.PRODUCTID)">
+                <a href="/" v-bind:title="product.DESCN" @click.prevent="router.setPage('store', 'edit-item-list', product.PRODUCTID)">
                   {{ product.NAME }}
                 </a>
               </template>
               </td>
               <td align="right">
-                <input type="button" value="添加产品" @click="router.setPage('store', 'add_product', category.CATID)"/>
+                <input type="button" value="添加产品" @click="router.setPage('store', 'add-product', category.CATID)"/>
               </td>
             </tr>
           </table>

@@ -26,7 +26,7 @@
 			var that = this;
             axios.post(PetStore.StoreService + '/add_product', formData, config)
 			.then(function (response) {
-				that.router.setPage("store", "edit_category_list");
+				that.router.setPage("store", "edit-category-list");
 			})
 			.catch(function (error) {
 				console.log(error);

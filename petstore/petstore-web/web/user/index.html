@@ -8,7 +8,7 @@
   <script src="/user/js/login.js"></script>
   <script src="/user/js/account.js"></script>
   <script src="/user/js/register.js"></script>
-  <script src="/user/js/register_account.js"></script>
+  <script src="/user/js/register-account.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
   <link rel="stylesheet" href="/user/css/petstore-user.css" media="screen">
@@ -31,7 +31,7 @@
       <div v-if="router.display('register')">
         <register :router="router"/>
       </div>
-      <div v-if="router.display('register_account')">
+      <div v-if="router.display('register-account')">
         <register-account :router="router"/>
       </div>
     </td>
@@ -45,7 +45,7 @@
 <template id="login" th:insert="/fragment/user/login.html :: login"/>
 <template id="account" th:insert="/fragment/user/account.html :: account"/>
 <template id="register" th:insert="/fragment/user/register.html :: register"/>
-<template id="register-account" th:insert="/fragment/user/register_account.html :: register_account"/>
+<template id="register-account" th:insert="/fragment/user/register-account.html :: register-account"/>
 <template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
 <script>

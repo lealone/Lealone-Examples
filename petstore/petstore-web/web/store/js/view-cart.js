@@ -15,7 +15,7 @@
 					if(response.data.items)
 					    that.items = response.data.items;
 				}
-				that.router.setPage('store', 'view_cart');
+				that.router.setPage('store', 'view-cart');
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -27,7 +27,7 @@
             axios.post(PetStore.CarService + '/add_item?item_id=' + itemId)
 			.then(function (response) {
 				that.itemAdded = true;
-				that.router.setPage('store', "item_list");
+				that.router.setPage('store', "item-list");
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -39,7 +39,7 @@
             axios.post(PetStore.CarService + '/remove_item?item_id=' + itemId)
 			.then(function (response) {
 				that.itemAdded = false;
-				that.router.setPage('store', "view_cart");
+				that.router.setPage('store', "view-cart");
 				that.getCartItemList();
 			})
 			.catch(function (error) {
@@ -52,7 +52,7 @@
             axios.post(PetStore.CarService + '/update')
 			.then(function (response) {
 				that.itemAdded = false;
-				that.router.setPage('store', "view_cart");
+				that.router.setPage('store', "view-cart");
 				//that.getCartItemList();
 			})
 			.catch(function (error) {
@@ -62,7 +62,7 @@
 		}
     },
 	mounted() {
-		if(this.router.page == "view_cart") {
+		if(this.router.page == "view-cart") {
 			this.getCartItemList();
 		}
 	}
