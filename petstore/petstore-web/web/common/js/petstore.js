@@ -13,7 +13,7 @@ const Router = {
     params: [],
 
     setPage(screen, page) {
-		var state = JSON.stringify(this);
+        var state = JSON.stringify(this);
         var len = arguments.length;
         for(var i = 2; i < len; i++){
             this.params.push(arguments[i]);
@@ -27,11 +27,11 @@ const Router = {
             location.href = "/" + screen + "/index.html";
             return;
         }
-		//加两次，不然popstate有可能返回null，原因不明
+        //加两次，不然popstate有可能返回null，原因不明
         window.history.pushState(state, page, "/" + this.screen + "/index.html");
         this.page = page;
-		state = JSON.stringify(this);
-		window.history.pushState(state, page, "/" + this.screen + "/index.html");
+        state = JSON.stringify(this);
+        window.history.pushState(state, page, "/" + this.screen + "/index.html");
     },
 
     display(page) {
