@@ -29,8 +29,9 @@ const Router = {
         }
 		//加两次，不然popstate有可能返回null，原因不明
         window.history.pushState(state, page, "/" + this.screen + "/index.html");
-		window.history.pushState(state, page, "/" + this.screen + "/index.html");
         this.page = page;
+		state = JSON.stringify(this);
+		window.history.pushState(state, page, "/" + this.screen + "/index.html");
     },
 
     display(page) {
