@@ -15,7 +15,7 @@
                     if(response.data.items)
                         that.items = response.data.items;
                 }
-                that.router.setPage('store', 'view-cart');
+                //that.router.setPage('store', 'view-cart');
             })
             .catch(function (error) {
                 console.log(error);

@@ -13,10 +13,12 @@ const Router = {
     params: [],
 
     setPage(screen, page) {
+		var state = JSON.stringify(this);
         var len = arguments.length;
-        for(var i=2; i<len; i++){
+        for(var i = 2; i < len; i++){
             this.params.push(arguments[i]);
         }
+
         if(this.screen != screen) {
             this.screen = screen;
             this.page = page;
@@ -25,6 +27,9 @@ const Router = {
             location.href = "/" + screen + "/index.html";
             return;
         }
+		//加两次，不然popstate有可能返回null，原因不明
+        window.history.pushState(state, page, "/" + this.screen + "/index.html");
+		window.history.pushState(state, page, "/" + this.screen + "/index.html");
         this.page = page;
     },
 
@@ -36,9 +41,30 @@ const Router = {
 
 function createVueApp(screen, defaultPage) {
     Router.screen = screen;
-    Router.page = sessionStorage.page ? sessionStorage.page : defaultPage; 
+    Router.page = sessionStorage.page ? sessionStorage.page : defaultPage;
     Router.params = sessionStorage.params ? sessionStorage.params.split(",") : [];
-    return Vue.createApp({ data() { return { router: Router } } }); 
+    sessionStorage.removeItem("page");
+    sessionStorage.removeItem("params");
+    return Vue.createApp({
+        data() { return { router: Router } },
+        mounted() {
+            var that = this;
+            window.addEventListener('popstate', function(evt){
+                var state = JSON.parse(evt.state);
+                if(!state) return;
+                if(that.router.screen != state.screen) {
+                    sessionStorage.page = state.page;
+                    sessionStorage.params = state.params.join();
+                    location.href = "/" + state.screen + "/index.html";
+                    return;
+                }
+                that.router.currentUser = state.currentUser;
+                that.router.params = state.params;
+                that.router.screen = state.screen;
+                that.router.page = state.page;
+            }, false);
+        }
+    }); 
 }
 
 

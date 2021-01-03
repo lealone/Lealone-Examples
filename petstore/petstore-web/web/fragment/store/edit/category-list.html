@@ -25,7 +25,7 @@
               </template>
               </td>
               <td align="right">
-                <input type="button" value="添加产品" @click="router.setPage('store', 'add-product', category.CATID)"/>
+                <input type="button" value="添加产品" @click.prevent="router.setPage('store', 'add-product', category.CATID)"/>
               </td>
             </tr>
           </table>

@@ -55,7 +55,10 @@
       <td><hr/></td>
     </tr>
     <tr align="center">
-      <td><input type="submit" value="添加" @click.prevent="addProduct()"/></td>
+      <td>
+	    <input type="submit" value="添加" @click.prevent="addProduct()"/>&nbsp;
+	    <input type="button" value="返回" onclick="window.history.back()"/>
+	  </td>
     </tr>
   </table>
 </form>
