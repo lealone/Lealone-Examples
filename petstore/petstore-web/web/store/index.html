@@ -26,24 +26,9 @@
       <table width="80%" border="0" cellspacing="0" cellpadding="0" class="box">
          <tr>
           <td>
-            <div v-if="router.display('edit-category-list')">
-              <edit-category-list :router="router"/>
-            </div>
-            <div v-if="router.display('item-list')">
-              <item-list :router="router"/>
-            </div>
-            <div v-if="router.display('view-cart')">
-              <view-cart :router="router"/>
-            </div>
-            <div v-if="router.display('add-product')">
-              <add-product :router="router"/>
-            </div>
-            <div v-if="router.display('category-list')">
-              <category-list :router="router"/>
-            </div>
-            <div v-if="router.display('edit-item-list')">
-              <edit-item-list :router="router"/>
-            </div>
+            <keep-alive>
+              <component :is="currentComponent" :router="router"/>
+            </keep-alive>
           </td>
         </tr>
       </table>

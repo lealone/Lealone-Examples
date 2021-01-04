@@ -22,18 +22,9 @@
   </tr>
   <tr>
     <td>
-      <div v-if="router.display('login')">
-        <login :router="router"/>
-      </div>
-      <div v-if="router.display('account')">
-        <account :router="router"/>
-      </div>
-      <div v-if="router.display('register')">
-        <register :router="router"/>
-      </div>
-      <div v-if="router.display('register-account')">
-        <register-account :router="router"/>
-      </div>
+      <keep-alive>
+        <component :is="currentComponent" :router="router"/>
+      </keep-alive>
     </td>
   </tr>
   <tr>

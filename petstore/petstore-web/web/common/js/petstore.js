@@ -32,11 +32,7 @@ const Router = {
         this.page = page;
         state = JSON.stringify(this);
         window.history.pushState(state, page, "/" + this.screen + "/index.html");
-    },
-
-    display(page) {
-        return this.page == page;
-    } 
+    }
 }
 
 
@@ -48,6 +44,11 @@ function createVueApp(screen, defaultPage) {
     sessionStorage.removeItem("params");
     return Vue.createApp({
         data() { return { router: Router } },
+        computed: {
+            currentComponent() {
+                return this.router.page;
+            }
+        },
         mounted() {
             var that = this;
             window.addEventListener('popstate', function(evt){
