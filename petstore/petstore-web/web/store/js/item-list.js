@@ -1,4 +1,4 @@
-﻿const storeLtemlist = { 
+﻿const storeItemlist = { 
     data() {
         return {
             category: {},

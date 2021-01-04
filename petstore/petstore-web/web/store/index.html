@@ -67,10 +67,10 @@
     const app = createVueApp("store", "edit-category-list"); 
 
     injectComponent(app, 'category-list', storeCategoryList);
-    injectComponent(app, 'item-list', storeLtemlist, storeViewCart);
+    injectComponent(app, 'item-list', storeItemlist, storeViewCart);
     injectComponent(app, 'view-cart', storeViewCart);
     injectComponent(app, 'edit-category-list', storeCategoryList);
-    injectComponent(app, 'edit-item-list', storeLtemlist);
+    injectComponent(app, 'edit-item-list', storeItemlist);
     injectComponent(app, 'add-product', storeAddProduct);
     injectComponent(app, 'petstore-nav', userLogin);
 
