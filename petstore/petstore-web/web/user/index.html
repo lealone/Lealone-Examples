@@ -5,10 +5,6 @@
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
   <script src="/common/js/petstore.js"></script>
-  <script src="/user/js/login.js"></script>
-  <script src="/user/js/account.js"></script>
-  <script src="/user/js/register.js"></script>
-  <script src="/user/js/register-account.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
   <link rel="stylesheet" href="/user/css/petstore-user.css" media="screen">
@@ -39,8 +35,12 @@
 <template id="register-account" th:insert="/fragment/user/register-account.html :: register-account"/>
 <template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
 
+<script src="/user/js/login.js"></script>
+<script src="/user/js/account.js"></script>
+<script src="/user/js/register.js"></script>
+<script src="/user/js/register-account.js"></script>
 <script>
-    const app = createVueApp("user", "login"); 
+    const app = createVueApp("user", "login"); //打开user子应用时，默认显示login页
     
     injectComponent(app, 'login', userLogin);
     injectComponent(app, 'account', userAccount);
