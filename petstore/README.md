@@ -42,3 +42,15 @@ http://localhost:9000/
 然后运行 RunSqlScriptTest 初始化数据，
 
 最后就能打开页面查看了。
+
+
+
+### 可能出现的问题
+
+如果执行 build -p 找不到 Lealone 的依赖包，
+需要下载以下项目的代码: 
+
+[lealone-database](https://github.com/lealone/Lealone)
+
+
+执行 build -i 把它们安装到本地的 maven 仓库即可。
