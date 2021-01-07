@@ -119,10 +119,6 @@ class WebHandler extends WebApp {
         }
     }
 
-    private void trace(String s) {
-        server.trace(s);
-    }
-
     @SuppressWarnings("unchecked")
     void process(RoutingContext routingContext, CaseInsensitiveMap<Object> params) throws IOException {
         parseHeader(routingContext);
