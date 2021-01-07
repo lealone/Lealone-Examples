@@ -153,7 +153,6 @@ class WebOpsHandler extends WebQueryHandler {
             routingContext.fail(404);
             return;
         }
-
         routingContext.response().setStatusCode(200);
         routingContext.response().putHeader("Content-Type", "text/html");
         routingContext.response().putHeader("Cache-Control", "no-cache");
@@ -199,24 +198,14 @@ class WebOpsHandler extends WebQueryHandler {
      * @param networkConnectionInfo the network connection information
      * @return the name of the file to return to the client
      */
-    String processRequest(String file, NetworkConnectionInfo networkConnectionInfo) {
-        int index = file.lastIndexOf('.');
-        String suffix;
-        if (index >= 0) {
-            suffix = file.substring(index + 1);
-        } else {
-            suffix = "";
-        }
-        if ("html".equals(suffix) || "do".equals(suffix) || "jsp".equals(suffix)) {
-            if (session == null) {
-                session = server.createNewSession(
-                        NetUtils.ipToShortForm(null, networkConnectionInfo.getClientAddr(), false).toString());
-                if (!"notAllowed.jsp".equals(file)) {
-                    file = "index.do";
-                }
+    private String processRequest(String file, NetworkConnectionInfo networkConnectionInfo) {
+        if (session == null) {
+            session = server.createNewSession(
+                    NetUtils.ipToShortForm(null, networkConnectionInfo.getClientAddr(), false).toString());
+            if (!"notAllowed.jsp".equals(file)) {
+                file = "index.do";
             }
         }
-        trace(file);
         if (file.endsWith(".do")) {
             file = process(file, networkConnectionInfo);
         } else if (file.endsWith(".jsp")) {
