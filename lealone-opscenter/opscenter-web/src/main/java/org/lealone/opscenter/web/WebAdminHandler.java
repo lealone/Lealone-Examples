@@ -33,7 +33,7 @@ public class WebAdminHandler extends WebHandler {
         super(server);
     }
 
-    String process(String file) {
+    String processAdminCommand(String file) {
         while (file.endsWith(".do")) {
             switch (file) {
             case "admin.do":

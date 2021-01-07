@@ -96,7 +96,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         // 用正则表达式判断路径是否以“.do”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)do").handler(routingContext -> {
             try {
-                new WebHandler(webServer).process(routingContext, getMethodArgs(routingContext));
+                new WebOpsHandler(webServer).process(routingContext, getMethodArgs(routingContext));
             } catch (IOException e) {
                 routingContext.failed();
             }
@@ -104,7 +104,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
 
         router.routeWithRegex(".*\\.(?i)jsp").handler(routingContext -> {
             try {
-                new WebHandler(webServer).process(routingContext, getMethodArgs(routingContext));
+                new WebOpsHandler(webServer).process(routingContext, getMethodArgs(routingContext));
             } catch (IOException e) {
                 routingContext.failed();
             }
