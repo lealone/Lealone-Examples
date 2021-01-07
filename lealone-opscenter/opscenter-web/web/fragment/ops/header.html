@@ -1,0 +1,164 @@
+<!doctype html>
+<!--
+Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 (https://h2database.com/html/license.html).
+Initial Developer: H2 Group
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+
+<div th:fragment="header">
+    <form name="header" method="post" action="header.jsp?jsessionid=220f55b36da2098b8b89f75a6963c7c1">
+        <table class="toolbar" cellspacing="0" cellpadding="0">
+            <tr class="toolbar">
+                <td class="toolbar">
+                    <a href="logout.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="_parent">
+                        <img src="/ops/img/icon_disconnect.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Disconnect"
+                            title="Disconnect" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                    <a href="tables.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="h2menu">
+                        <img src="/ops/img/icon_refresh.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Refresh"
+                            title="Refresh" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    <input type="checkbox" name="autoCommit" value="autoCommit" onclick=
+                        "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.';"/>
+                </td>
+                <td class="toolbar">
+                    Auto commit&nbsp;
+                </td>
+                <td class="toolbar">
+                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=ROLLBACK" target="h2result">
+                        <img src="/ops/img/icon_rollback.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Rollback"
+                            title="Rollback" border="1"/>
+                    </a>
+                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=COMMIT" target="h2result">
+                        <img src="/ops/img/icon_commit.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Commit"
+                            title="Commit" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    &nbsp;Max rows:&nbsp;
+                </td>
+                <td class="toolbar">
+                    <select name="rowcount" size="1" onchange=
+                    "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@maxrows+'+header.rowcount.value+'.';">
+                    <option value="0">
+                            All
+                        </option>
+                        <option value="10000">
+                            10000
+                        </option>
+                        <option selected="selected" value="1000">
+                            1000
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="10">
+                            10
+                        </option>
+                    </select>&nbsp;
+                </td>
+                <td class="toolbar">
+                    <a href="javascript:parent.h2query.submitAll();">
+                        <img src="/ops/img/icon_run.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Run"
+                            title="Run" border="1"/>
+                    </a>
+                </td>
+                <td class="toolbar">
+                    <a href="javascript:parent.h2query.submitSelected();">
+                        <img src="/ops/img/icon_run_selected.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Run Selected"
+                            title="Run Selected" border="1"/>
+                    </a>
+                </td>
+                <td class="toolbar">
+                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@cancel." target="h2result">
+                        <img src="/ops/img/icon_stop.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Cancel the current statement"
+                            title="Cancel the current statement" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@history." target="h2result">
+                        <img src="/ops/img/icon_history.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Command history"
+                            title="Command history" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    Auto complete&nbsp;
+                    <select name="autoComplete" size="1"
+                        onchange="javascript:parent.h2query.setAutoComplete(this.value)">
+                        <option selected="selected" value="0">
+                            Off
+                        </option>
+                        <option value="1">
+                            Normal
+                        </option>
+                        <option value="2">
+                            Full
+                        </option>
+                    </select>&nbsp;
+                </td>
+                <td class="toolbar">
+                    Auto select&nbsp;
+                    <select name="autoSelect" size="1"
+                        onchange="javascript:parent.h2query.setAutoSelect(this.value)">
+                        <option value="0">
+                            Off
+                        </option>
+                        <option selected="selected" value="1">
+                            On
+                        </option>
+                    </select>
+                </td>
+                <td class="toolbar">
+                    <a href="help.jsp?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="h2result">
+                        <img src="/ops/img/icon_help.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Help"
+                            title="Help" border="1"/>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </form>
+<script type="text/javascript">
+<!--
+    document.header.autoCommit.checked = 'checked' != '';
+//-->
+</script>
+</div>
+
+</body>
+</html>
