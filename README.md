@@ -29,4 +29,11 @@
 
 ### petstore
 
-[基于 Vue + Lealone 开发的 PetStore 应用](https://github.com/lealone/Lealone-Examples/blob/main/petstore/README.md)
+基于 Vue + Lealone 开发的 [PetStore 应用](https://github.com/lealone/Lealone-Examples/blob/main/petstore/README.md)
+
+
+### lealone-opscenter
+
+基于 Vue + Lealone 开发的 [Lealone Ops Center](https://github.com/lealone/Lealone-Examples/tree/main/lealone-opscenter)
+
+Ops Center 是一个 web 应用，通过 Ops Center 可以操作数据库。
