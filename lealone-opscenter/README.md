@@ -1,6 +1,6 @@
 # Lealone-OpsCenter
 
-基于 Vue + Lealone 开发的 Lealone Ops Center
+基于 Vue + Lealone 开发的 Lealone Ops Center，改编自 [H2 数据库的 Web Console](http://www.h2database.com/html/quickstart.html)
 
 
 
@@ -39,6 +39,6 @@ http://localhost:9000/
 
 先运行 OpsCenterTest 启动应用，
 
-然后运行 RunSqlScriptTest 初始化数据，
+然后运行 OpsCenterSqlScriptTest 初始化数据，
 
 最后就能打开页面查看了。
