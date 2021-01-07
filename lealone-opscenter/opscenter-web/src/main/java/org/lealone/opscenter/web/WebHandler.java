@@ -63,38 +63,12 @@ public class WebHandler {
     protected Properties attributes;
 
     /**
-     * The mime type of the current response.
-     */
-    protected String mimeType;
-
-    /**
-     * Whether the response can be cached.
-     */
-    protected boolean cache;
-
-    /**
-     * Whether to close the connection.
-     */
-    protected boolean stop;
-
-    /**
      * The language in the HTTP header.
      */
     protected String headerLanguage;
 
     WebHandler(WebServer server) {
         this.server = server;
-    }
-
-    /**
-     * Set the web session and attributes.
-     *
-     * @param session the session
-     * @param attributes the attributes
-     */
-    void setSession(WebSession session, Properties attributes) {
-        this.session = session;
-        this.attributes = attributes;
     }
 
     private static String getComboBox(String[] elements, String selected) {
@@ -784,23 +758,6 @@ public class WebHandler {
         }
         server.saveProperties(null);
         return "index.do";
-    }
-
-    /**
-     * Get the current mime type.
-     *
-     * @return the mime type
-     */
-    String getMimeType() {
-        return mimeType;
-    }
-
-    boolean getCache() {
-        return cache;
-    }
-
-    WebSession getSession() {
-        return session;
     }
 
     void trace(String s) {

@@ -36,6 +36,11 @@ public class WebQueryHandler extends WebAdminHandler {
 
     private Profiler profiler;
 
+    /**
+     * Whether to close the connection.
+     */
+    private boolean stop;
+
     WebQueryHandler(WebServer server) {
         super(server);
     }

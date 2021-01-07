@@ -155,7 +155,7 @@ class WebOpsHandler extends WebQueryHandler {
         }
 
         routingContext.response().setStatusCode(200);
-        routingContext.response().putHeader("Content-Type", mimeType);
+        routingContext.response().putHeader("Content-Type", "text/html");
         routingContext.response().putHeader("Cache-Control", "no-cache");
         if (session != null && file.endsWith(".jsp")) {
             if (key != null) {
@@ -208,8 +208,6 @@ class WebOpsHandler extends WebQueryHandler {
             suffix = "";
         }
         if ("html".equals(suffix) || "do".equals(suffix) || "jsp".equals(suffix)) {
-            cache = false;
-            mimeType = "text/html";
             if (session == null) {
                 session = server.createNewSession(
                         NetUtils.ipToShortForm(null, networkConnectionInfo.getClientAddr(), false).toString());
@@ -218,7 +216,6 @@ class WebOpsHandler extends WebQueryHandler {
                 }
             }
         }
-        trace("mimeType=" + mimeType);
         trace(file);
         if (file.endsWith(".do")) {
             file = process(file, networkConnectionInfo);
