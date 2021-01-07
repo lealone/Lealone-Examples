@@ -40,7 +40,8 @@ import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.SessionStore;
 
 public class OpsCenterRouterFactory extends HttpRouterFactory {
-    WebServer webServer = new WebServer();
+
+    private final WebServer webServer = new WebServer();
 
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
@@ -65,12 +66,11 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         for (Map.Entry<String, String> e : routingContext.request().params().entries()) {
             addMethodArgs(methodArgs, e.getKey(), e.getValue());
         }
-
         return methodArgs;
     }
 
     @SuppressWarnings("unchecked")
-    static void addMethodArgs(CaseInsensitiveMap<Object> methodArgs, String key, String value) {
+    private static void addMethodArgs(CaseInsensitiveMap<Object> methodArgs, String key, String value) {
         Object oldValue = methodArgs.get(key);
         if (oldValue != null) {
             List<String> list;
@@ -96,7 +96,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         // 用正则表达式判断路径是否以“.do”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)do").handler(routingContext -> {
             try {
-                new WebThread(null, webServer).process(routingContext, getMethodArgs(routingContext));
+                new WebHandler(webServer).process(routingContext, getMethodArgs(routingContext));
             } catch (IOException e) {
                 routingContext.failed();
             }
@@ -104,7 +104,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
 
         router.routeWithRegex(".*\\.(?i)jsp").handler(routingContext -> {
             try {
-                new WebThread(null, webServer).process(routingContext, getMethodArgs(routingContext));
+                new WebHandler(webServer).process(routingContext, getMethodArgs(routingContext));
             } catch (IOException e) {
                 routingContext.failed();
             }
@@ -120,20 +120,6 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
             else
                 routingContext.redirect("/ops/img" + file);
         });
-        // router.get().handler(routingContext -> {
-        // try {
-        // new WebThread(null, webServer).process(routingContext, getMethodArgs(routingContext));
-        // } catch (IOException e) {
-        // routingContext.failed();
-        // }
-        // });
-        // router.post().handler(routingContext -> {
-        // try {
-        // new WebThread(null, webServer).process(routingContext, getMethodArgs(routingContext));
-        // } catch (IOException e) {
-        // routingContext.failed();
-        // }
-        // });
 
         // 只拦截logout，login直接转到UserServiceImpl.login处理了
         // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做

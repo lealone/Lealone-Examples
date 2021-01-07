@@ -8,8 +8,6 @@ package org.lealone.opscenter.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,18 +26,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import org.h2.engine.Constants;
 import org.h2.engine.SysProperties;
 import org.h2.message.DbException;
 import org.h2.security.SHA256;
-import org.h2.server.Service;
 import org.h2.server.ShutdownHandler;
 import org.h2.store.fs.FileUtils;
 import org.h2.util.JdbcUtils;
 import org.h2.util.MathUtils;
-import org.h2.util.NetUtils;
 import org.h2.util.NetworkConnectionInfo;
 import org.h2.util.SortedProperties;
 import org.h2.util.StringUtils;
@@ -50,7 +45,7 @@ import org.h2.util.Utils;
  * The web server is a simple standalone HTTP server that implements the H2
  * Console application. It is not optimized for performance.
  */
-public class WebServer implements Service {
+public class WebServer {
 
     static final String[][] LANGUAGES = { { "cs", "\u010ce\u0161tina" }, { "de", "Deutsch" }, { "en", "English" },
             { "es", "Espa\u00f1ol" }, { "fr", "Fran\u00e7ais" }, { "hi", "Hindi \u0939\u093f\u0902\u0926\u0940" },
@@ -127,8 +122,6 @@ public class WebServer implements Service {
     // private URLClassLoader urlClassLoader;
     private int port;
     private boolean allowOthers;
-    private boolean isDaemon;
-    private final Set<WebThread> running = Collections.synchronizedSet(new HashSet<WebThread>());
     private boolean ssl;
     private byte[] adminPassword;
     private final HashMap<String, ConnectionInfo> connInfoMap = new HashMap<>();
@@ -137,10 +130,7 @@ public class WebServer implements Service {
     private final HashMap<String, WebSession> sessions = new HashMap<>();
     private final HashSet<String> languages = new HashSet<>();
     private String startDateTime;
-    private ServerSocket serverSocket;
-    private String url;
     private ShutdownHandler shutdownHandler;
-    private Thread listenerThread;
     private boolean ifExists = true;
     private String key;
     private boolean allowSecureCreation;
@@ -166,15 +156,6 @@ public class WebServer implements Service {
             trace(" size=" + data.length);
         }
         return data;
-    }
-
-    /**
-     * Remove this web thread from the set of running threads.
-     *
-     * @param t the thread to remove
-     */
-    synchronized void remove(WebThread t) {
-        running.remove(t);
     }
 
     private static String generateSessionId() {
@@ -270,7 +251,6 @@ public class WebServer implements Service {
         }
     }
 
-    @Override
     public void init(String... args) {
         // set the serverPropertiesDir, because it's used in loadProperties()
         for (int i = 0; args != null && i < args.length; i++) {
@@ -292,8 +272,6 @@ public class WebServer implements Service {
                 ssl = true;
             } else if (Tool.isOption(a, "-webAllowOthers")) {
                 allowOthers = true;
-            } else if (Tool.isOption(a, "-webDaemon")) {
-                isDaemon = true;
             } else if (Tool.isOption(a, "-baseDir")) {
                 String baseDir = args[++i];
                 SysProperties.setBaseDir(baseDir);
@@ -328,100 +306,6 @@ public class WebServer implements Service {
         }
         if (allowOthers) {
             key = null;
-        }
-        updateURL();
-    }
-
-    @Override
-    public String getURL() {
-        updateURL();
-        return url;
-    }
-
-    private void updateURL() {
-        try {
-            StringBuilder builder = new StringBuilder(ssl ? "https" : "http").append("://")
-                    .append(NetUtils.getLocalAddress()).append(':').append(port);
-            if (key != null && serverSocket != null) {
-                builder.append("?key=").append(key);
-            }
-            url = builder.toString();
-        } catch (NoClassDefFoundError e) {
-            // Google App Engine does not allow java.net.InetAddress
-        }
-    }
-
-    @Override
-    public void start() {
-        serverSocket = NetUtils.createServerSocket(port, ssl);
-        port = serverSocket.getLocalPort();
-        updateURL();
-    }
-
-    @Override
-    public void listen() {
-        this.listenerThread = Thread.currentThread();
-        try {
-            while (serverSocket != null) {
-                Socket s = serverSocket.accept();
-                WebThread c = new WebThread(s, this);
-                running.add(c);
-                c.start();
-            }
-        } catch (Exception e) {
-            trace(e.toString());
-        }
-    }
-
-    @Override
-    public boolean isRunning(boolean traceError) {
-        if (serverSocket == null) {
-            return false;
-        }
-        try {
-            Socket s = NetUtils.createLoopbackSocket(port, ssl);
-            s.close();
-            return true;
-        } catch (Exception e) {
-            if (traceError) {
-                traceError(e);
-            }
-            return false;
-        }
-    }
-
-    public boolean isStopped() {
-        return serverSocket == null;
-    }
-
-    @Override
-    public void stop() {
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                traceError(e);
-            }
-            serverSocket = null;
-        }
-        if (listenerThread != null) {
-            try {
-                listenerThread.join(1000);
-            } catch (InterruptedException e) {
-                DbException.traceThrowable(e);
-            }
-        }
-        // TODO server: using a boolean 'now' argument? a timeout?
-        for (WebSession session : new ArrayList<>(sessions.values())) {
-            session.close();
-        }
-        for (WebThread c : new ArrayList<>(running)) {
-            try {
-                c.stopNow();
-                c.join(100);
-            } catch (Exception e) {
-                traceError(e);
-            }
         }
     }
 
@@ -492,16 +376,6 @@ public class WebServer implements Service {
         return list;
     }
 
-    @Override
-    public String getType() {
-        return "Web Console";
-    }
-
-    @Override
-    public String getName() {
-        return "H2 Console Server";
-    }
-
     void setAllowOthers(boolean b) {
         if (b) {
             key = null;
@@ -509,7 +383,6 @@ public class WebServer implements Service {
         allowOthers = b;
     }
 
-    @Override
     public boolean getAllowOthers() {
         return allowOthers;
     }
@@ -526,7 +399,6 @@ public class WebServer implements Service {
         return ssl;
     }
 
-    @Override
     public int getPort() {
         return port;
     }
@@ -758,21 +630,6 @@ public class WebServer implements Service {
     }
 
     /**
-     * Create a session with a given connection.
-     *
-     * @param conn the connection
-     * @return the URL of the web site to access this connection
-     */
-    public String addSession(Connection conn) throws SQLException {
-        WebSession session = createNewSession("local");
-        session.setShutdownServerOnDisconnect();
-        session.setConnection(conn);
-        session.put("url", conn.getMetaData().getURL());
-        String s = (String) session.get("sessionId");
-        return url + "/frame.jsp?jsessionid=" + s;
-    }
-
-    /**
      * The translate thread reads and writes the file translation.properties
      * once a second.
      */
@@ -836,11 +693,6 @@ public class WebServer implements Service {
         translateThread.setDaemon(true);
         translateThread.start();
         return translateThread.getFileName();
-    }
-
-    @Override
-    public boolean isDaemon() {
-        return isDaemon;
     }
 
     void setAllowChunked(boolean allowChunked) {

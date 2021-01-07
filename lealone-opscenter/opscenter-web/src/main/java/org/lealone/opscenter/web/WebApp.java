@@ -134,56 +134,6 @@ public class WebApp {
      * @param networkConnectionInfo the network connection information
      * @return the name of the file to return to the client
      */
-    String processRequestOld(String file, NetworkConnectionInfo networkConnectionInfo) {
-        int index = file.lastIndexOf('.');
-        String suffix;
-        if (index >= 0) {
-            suffix = file.substring(index + 1);
-        } else {
-            suffix = "";
-        }
-        if ("ico".equals(suffix)) {
-            mimeType = "image/x-icon";
-            cache = true;
-        } else if ("gif".equals(suffix)) {
-            mimeType = "image/gif";
-            cache = true;
-        } else if ("css".equals(suffix)) {
-            cache = true;
-            mimeType = "text/css";
-        } else if ("html".equals(suffix) || "do".equals(suffix) || "jsp".equals(suffix)) {
-            cache = false;
-            mimeType = "text/html";
-            if (session == null) {
-                session = server.createNewSession(
-                        NetUtils.ipToShortForm(null, networkConnectionInfo.getClientAddr(), false).toString());
-                if (!"notAllowed.jsp".equals(file)) {
-                    file = "index.do";
-                }
-            }
-        } else if ("js".equals(suffix)) {
-            cache = true;
-            mimeType = "text/javascript";
-        } else {
-            cache = true;
-            mimeType = "application/octet-stream";
-        }
-        trace("mimeType=" + mimeType);
-        trace(file);
-        if (file.endsWith(".do")) {
-            file = process(file, networkConnectionInfo);
-        } else if (file.endsWith(".jsp")) {
-            switch (file) {
-            case "admin.jsp":
-            case "tools.jsp":
-                if (!checkAdmin(file)) {
-                    file = process("adminLogin.do", networkConnectionInfo);
-                }
-            }
-        }
-        return file;
-    }
-
     String processRequest(String file, NetworkConnectionInfo networkConnectionInfo) {
         int index = file.lastIndexOf('.');
         String suffix;

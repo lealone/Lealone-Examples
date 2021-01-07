@@ -258,7 +258,6 @@ class WebSession {
                 // ignore
             }
         }
-
     }
 
 }
