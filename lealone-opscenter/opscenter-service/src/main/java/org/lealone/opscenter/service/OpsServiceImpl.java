@@ -17,15 +17,25 @@
  */
 package org.lealone.opscenter.service;
 
+import static org.lealone.opscenter.service.WebServer.server;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
+import org.h2.message.DbException;
+import org.h2.util.SortedProperties;
 import org.lealone.opscenter.service.generated.OpsService;
 import org.lealone.orm.json.JsonArray;
+import org.lealone.orm.json.JsonObject;
 
 public class OpsServiceImpl implements OpsService {
     static final String[][] LANGUAGES = { //
@@ -72,5 +82,34 @@ public class OpsServiceImpl implements OpsService {
             return "failed";
         }
         return "ok";
+    }
+
+    @Override
+    public String readTranslations(String language) {
+        JsonObject json = new JsonObject();
+        if (language == null)
+            language = "en";
+        Map<String, Object> map = new HashMap<>();
+        Properties text = new Properties();
+        try {
+            server.trace("translation: " + language);
+            byte[] trans = server.getFile("_text_" + language + ".prop");
+            server.trace("  " + new String(trans));
+            text = SortedProperties.fromLines(new String(trans, StandardCharsets.UTF_8));
+            // remove starting # (if not translated yet)
+            for (Entry<Object, Object> entry : text.entrySet()) {
+                String value = (String) entry.getValue();
+                if (value.startsWith("#")) {
+                    entry.setValue(value.substring(1));
+                }
+                String key = entry.getKey().toString();
+                key = key.replace('.', '_');
+                map.put(key, entry.getValue());
+            }
+        } catch (IOException e) {
+            DbException.traceThrowable(e);
+        }
+        json.put("text", new JsonObject(map));
+        return json.encode();
     }
 }

@@ -17,7 +17,7 @@ public interface AdminService {
             return new ServiceProxy(url);
     }
 
-    String login(String username, String password);
+    String login(String password);
 
     String save();
 
@@ -27,15 +27,14 @@ public interface AdminService {
         private final PreparedStatement ps2;
 
         private ServiceProxy(String url) {
-            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE LOGIN(?, ?)");
+            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE LOGIN(?)");
             ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE SAVE()");
         }
 
         @Override
-        public String login(String username, String password) {
+        public String login(String password) {
             try {
-                ps1.setString(1, username);
-                ps1.setString(2, password);
+                ps1.setString(1, password);
                 ResultSet rs = ps1.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);

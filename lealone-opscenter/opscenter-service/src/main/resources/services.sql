@@ -6,7 +6,7 @@ drop service if exists admin_service;
 
 -- 创建服务: admin_service，会生成一个对应的AdminService接口
 create service if not exists admin_service (
-  login(username varchar, password varchar) varchar,
+  login(password varchar) varchar,
   save() varchar
 )
 package @packageName
@@ -20,6 +20,7 @@ drop service if exists ops_service;
 -- 创建服务: web_service，会生成一个对应的WOpsService接口
 create service if not exists ops_service (
   get_language_combo() varchar,
+  read_translations(language varchar) varchar,
   login(url varchar, user varchar, password varchar) varchar
 )
 package @packageName

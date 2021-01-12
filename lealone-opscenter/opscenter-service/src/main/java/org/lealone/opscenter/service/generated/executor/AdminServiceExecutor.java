@@ -19,9 +19,8 @@ public class AdminServiceExecutor implements ServiceExecutor {
     public Value executeService(String methodName, Value[] methodArgs) {
         switch (methodName) {
         case "LOGIN":
-            String p_username_1 = methodArgs[0].getString();
-            String p_password_1 = methodArgs[1].getString();
-            String result1 = this.s.login(p_username_1, p_password_1);
+            String p_password_1 = methodArgs[0].getString();
+            String result1 = this.s.login(p_password_1);
             if (result1 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result1);
@@ -39,9 +38,8 @@ public class AdminServiceExecutor implements ServiceExecutor {
     public String executeService(String methodName, Map<String, Object> methodArgs) {
         switch (methodName) {
         case "LOGIN":
-            String p_username_1 = ServiceExecutor.toString("USERNAME", methodArgs);
             String p_password_1 = ServiceExecutor.toString("PASSWORD", methodArgs);
-            String result1 = this.s.login(p_username_1, p_password_1);
+            String result1 = this.s.login(p_password_1);
             if (result1 == null)
                 return null;
             return result1;
@@ -61,9 +59,8 @@ public class AdminServiceExecutor implements ServiceExecutor {
         switch (methodName) {
         case "LOGIN":
             ja = new JsonArray(json);
-            String p_username_1 = ja.getString(0);
-            String p_password_1 = ja.getString(1);
-            String result1 = this.s.login(p_username_1, p_password_1);
+            String p_password_1 = ja.getString(0);
+            String result1 = this.s.login(p_password_1);
             if (result1 == null)
                 return null;
             return result1;
