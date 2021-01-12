@@ -3,7 +3,7 @@
  * and the EPL 1.0 (https://h2database.com/html/license.html).
  * Initial Developer: H2 Group
  */
-package org.lealone.opscenter.web;
+package org.lealone.opscenter.web.deprecated;
 
 import org.h2.util.StringUtils;
 

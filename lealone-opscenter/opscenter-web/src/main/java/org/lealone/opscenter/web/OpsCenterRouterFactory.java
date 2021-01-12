@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.lealone.common.util.CaseInsensitiveMap;
+import org.lealone.opscenter.web.deprecated.WebOpsHandler;
+import org.lealone.opscenter.web.deprecated.WebServer;
 import org.lealone.opscenter.web.thymeleaf.ThymeleafTemplateEngineImpl;
 import org.lealone.server.http.HttpRouterFactory;
 

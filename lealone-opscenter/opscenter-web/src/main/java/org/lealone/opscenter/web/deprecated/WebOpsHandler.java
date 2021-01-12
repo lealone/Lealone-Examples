@@ -3,7 +3,7 @@
  * and the EPL 1.0 (https://h2database.com/html/license.html).
  * Initial Developer: H2 Group
  */
-package org.lealone.opscenter.web;
+package org.lealone.opscenter.web.deprecated;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -29,9 +29,9 @@ import io.vertx.ext.web.RoutingContext;
  * For each connection to a session, an object of this class is created.
  * This class is used by the H2 Console.
  */
-class WebOpsHandler extends WebQueryHandler {
+public class WebOpsHandler extends WebQueryHandler {
 
-    WebOpsHandler(WebServer server) {
+    public WebOpsHandler(WebServer server) {
         super(server);
     }
 
@@ -120,7 +120,7 @@ class WebOpsHandler extends WebQueryHandler {
     }
 
     @SuppressWarnings("unchecked")
-    void process(RoutingContext routingContext, CaseInsensitiveMap<Object> params) throws IOException {
+    public void process(RoutingContext routingContext, CaseInsensitiveMap<Object> params) throws IOException {
         parseHeader(routingContext);
         InetAddress localAddress = ((SocketAddressImpl) routingContext.request().localAddress()).ipAddress();
         InetAddress remoteAddress = ((SocketAddressImpl) routingContext.request().remoteAddress()).ipAddress();
