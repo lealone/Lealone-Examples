@@ -8,6 +8,7 @@ Initial Developer: H2 Group
 <head>
   <meta charset="utf-8">
 </head>
+<body>
 
 <div th:fragment="header">
     <form name="header" method="post" action="header.jsp?jsessionid=220f55b36da2098b8b89f75a6963c7c1">
@@ -32,8 +33,7 @@ Initial Developer: H2 Group
                     <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
                 </td>
                 <td class="toolbar">
-                    <input type="checkbox" name="autoCommit" value="autoCommit" onclick=
-                        "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.';"/>
+                    <input type="checkbox" v-model="autoCommit" @change="setAutoCommit"/>
                 </td>
                 <td class="toolbar">
                     Auto commit&nbsp;
@@ -142,7 +142,7 @@ Initial Developer: H2 Group
                     </select>
                 </td>
                 <td class="toolbar">
-                    <a href="help.jsp?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="h2result">
+                    <a href="/" @click.prevent="router.setPage('ops', 'help')">
                         <img src="/ops/img/icon_help.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"

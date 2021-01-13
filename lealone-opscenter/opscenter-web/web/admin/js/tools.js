@@ -1,4 +1,4 @@
-﻿ var current = '';
+﻿var current = '';
 function go(name) {
     if (name == current) {
         return;

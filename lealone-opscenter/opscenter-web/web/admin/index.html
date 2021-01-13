@@ -11,20 +11,20 @@
 </head>
 
 <body style="margin: 20px">
-<div id="adminApp">
-  <keep-alive>
-    <component :is="currentComponent" :router="router"/>
-  </keep-alive>
-</div>
-
-<template id="login" th:insert="/fragment/admin/login.html :: login"/>
-<template id="admin" th:insert="/fragment/admin/admin.html :: admin"/>
-<template id="tools" th:insert="/fragment/admin/tools.html :: tools"/>
-
-<script src="/admin/js/login.js"></script>
-<script src="/admin/js/admin.js"></script>
-<script src="/admin/js/tools.js"></script>
-<script>
+  <div id="adminApp">
+    <keep-alive>
+      <component :is="currentComponent" :router="router"/>
+    </keep-alive>
+  </div>
+  
+  <template id="login" th:insert="/fragment/admin/login.html :: login"/>
+  <template id="admin" th:insert="/fragment/admin/admin.html :: admin"/>
+  <template id="tools" th:insert="/fragment/admin/tools.html :: tools"/>
+  
+  <script src="/admin/js/login.js"></script>
+  <script src="/admin/js/admin.js"></script>
+  <script src="/admin/js/tools.js"></script>
+  <script>
     const app = createVueApp("admin", "login"); 
 
     injectComponent(app, 'login', i18n, adminLogin);
@@ -32,7 +32,6 @@
 	injectComponent(app, 'tools', i18n, adminTools);
 
     app.mount('#adminApp')
-</script>
-
+  </script>
 </body>
 </html>

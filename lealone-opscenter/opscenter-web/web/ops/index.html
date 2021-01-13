@@ -11,20 +11,20 @@
 </head>
 
 <body style="margin: 20px">
-<div id="opsApp">
-  <keep-alive>
-    <component :is="currentComponent" :router="router"/>
-  </keep-alive>
-</div>
+  <div id="opsApp">
+    <keep-alive>
+      <component :is="currentComponent" :router="router" />
+    </keep-alive>
+  </div>
 
-<template id="login" th:insert="/fragment/ops/login.html :: login"/>
-<template id="header" th:insert="/fragment/ops/header.html :: header"/>
-<template id="tables" th:insert="/fragment/ops/tables.html :: tables"/>
-<template id="help" th:insert="/fragment/ops/help.html :: help"/>
+  <template id="login" th:insert="/fragment/ops/login.html :: login" />
+  <template id="header" th:insert="/fragment/ops/header.html :: header" />
+  <template id="tables" th:insert="/fragment/ops/tables.html :: tables" />
+  <template id="help" th:insert="/fragment/ops/help.html :: help" />
 
-<script src="/ops/js/login.js"></script>
-<script src="/ops/js/tables.js"></script>
-<script>
+  <script src="/ops/js/login.js"></script>
+  <script src="/ops/js/tables.js"></script>
+  <script>
     const app = createVueApp("ops", "login"); 
 
     injectComponent(app, 'help', i18n);
@@ -33,7 +33,6 @@
 	injectComponent(app, 'tables', i18n, opsTables);
 
     app.mount('#opsApp')
-</script>
-
+  </script>
 </body>
 </html>

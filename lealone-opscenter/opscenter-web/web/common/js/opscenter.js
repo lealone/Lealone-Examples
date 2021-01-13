@@ -1,6 +1,7 @@
 ﻿var OpsCenter = {
     Host: '',
-};
+}
+
 OpsCenter.OpsService = OpsCenter.Host + '/service/ops_service';
 OpsCenter.AdminService = OpsCenter.Host + '/service/admin_service';
 
@@ -25,6 +26,7 @@ const Router = {
     screen: "user" ,
     page: "login", 
     params: [],
+    components: [],
 
     setPage(screen, page) {
         var state = JSON.stringify(this);
@@ -32,7 +34,11 @@ const Router = {
         for(var i = 2; i < len; i++){
             this.params.push(arguments[i]);
         }
-
+        // 当前page没有变化，但是参数可能变了，所以手工调用
+        if(this.screen == screen && this.page == page) {
+            this.components[page].$options.mounted.call(this.components[page]);
+            return;
+        }
         if(this.screen != screen) {
             this.screen = screen;
             this.page = page;
@@ -41,11 +47,13 @@ const Router = {
             location.href = "/" + screen + "/index.html";
             return;
         }
-        //加两次，不然popstate有可能返回null，原因不明
-        window.history.pushState(state, page, "/" + this.screen + "/index.html");
+        // 加两次，不然popstate有可能返回null，原因不明
+        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
+        window.history.pushState(state, page, null);
         this.page = page;
         state = JSON.stringify(this);
-        window.history.pushState(state, page, "/" + this.screen + "/index.html");
+        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
+        window.history.pushState(state, page, null);
     }
 }
 

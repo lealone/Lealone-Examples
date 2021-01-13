@@ -1,9 +1,7 @@
 /*
- * Copyright 2004-2021 H2 Group. Multiple-Licensed under the MPL 2.0,
- * and the EPL 1.0 (https://h2database.com/html/license.html).
- *  * Initial Developer: H2 Group
+ * Copyright 2004-2021 H2 Group. Multiple-Licensed under the MPL 2.0, and the EPL 1.0
+ * (https://h2database.com/html/license.html). * Initial Developer: H2 Group
  */
-
 var nodeList = new Array();
 var icons = new Array();
 var tables = new Array();
@@ -66,10 +64,10 @@ function setNode(id, level, type, icon, text, link) {
 }
 
 function writeDiv(i, level, dist) {
-    if (dist>0) {
-        document.write("<div id=\"div"+(i-1)+"\" style=\"display: none;\">");
+    if (dist > 0) {
+        document.write("<div id=\"div" + (i - 1) + "\" style=\"display: none;\">");
     } else {
-        while (dist++<0) {
+        while (dist++ < 0) {
             document.write("</div>");
         }
     }
@@ -77,27 +75,27 @@ function writeDiv(i, level, dist) {
 
 function writeTree() {
     loadIcons();
-    var last=nodeList[0];
-    for (var i=0; i<nodeList.length; i++) {
-        var node=nodeList[i];
-        writeDiv(i, node.level, node.level-last.level);
-        last=node;
-        var j=node.level;
-        while (j-->0) {
+    var last = nodeList[0];
+    for (var i = 0; i < nodeList.length; i++) {
+        var node = nodeList[i];
+        writeDiv(i, node.level, node.level - last.level);
+        last = node;
+        var j = node.level;
+        while (j-- > 0) {
             document.write("<img src=\"tree_empty.gif\"/>");
         }
-        if (node.type==1) {
-            if (i < nodeList.length-1 && nodeList[i+1].level > node.level) {
-                document.write("<img onclick=\"hit("+i+");\" id=\"join"+i+"\" src=\"tree_plus.gif\"/>");
+        if (node.type == 1) {
+            if (i < nodeList.length - 1 && nodeList[i + 1].level > node.level) {
+                document.write("<img onclick=\"hit(" + i + ");\" id=\"join" + i + "\" src=\"tree_plus.gif\"/>");
             } else {
                 document.write("<img src=\"tree_empty.gif\"/>");
             }
         }
-        document.write("<img src=\"tree_"+node.icon+".gif\"/>&nbsp;");
-        if (node.link==null) {
+        document.write("<img src=\"tree_" + node.icon + ".gif\"/>&nbsp;");
+        if (node.link == null) {
             document.write(node.text);
         } else {
-            document.write("<a id='"+node.text+"' href=\""+node.link+"\" >"+node.text+"</a>");
+            document.write("<a id='" + node.text + "' href=\"" + node.link + "\" >" + node.text + "</a>");
         }
         document.write("<br />");
     }
@@ -105,8 +103,8 @@ function writeTree() {
 }
 
 function hit(i) {
-    var theDiv = document.getElementById("div"+i);
-    var theJoin    = document.getElementById("join"+i);
+    var theDiv = document.getElementById("div" + i);
+    var theJoin = document.getElementById("join" + i);
     if (theDiv.style.display == 'none') {
         theJoin.src = icons[0].src;
         theDiv.style.display = '';
@@ -117,8 +115,8 @@ function hit(i) {
 }
 
 function hitOpen(i) {
-    var theDiv = document.getElementById("div"+i);
-    var theJoin    = document.getElementById("join"+i);
+    var theDiv = document.getElementById("div" + i);
+    var theJoin = document.getElementById("join" + i);
     theJoin.src = icons[0].src;
     theDiv.style.display = '';
 }

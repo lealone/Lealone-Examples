@@ -1,4 +1,4 @@
-﻿const opsTables = { 
+﻿const opsQuery = { 
     data() {
         return {
 			url: "jdbc:lealone:tcp://localhost:9210/lealone",
@@ -13,7 +13,8 @@
             axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
             .then(function (response) {
                 console.log(response.data);
-				that.router.setPage("ops", "header");
+				// that.router.setPage("ops", "header");
+				that.router.setPage("ops", "tables");
                 // location.href = "/";
             })
             .catch(function (error) {
