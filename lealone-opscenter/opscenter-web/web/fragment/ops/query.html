@@ -13,11 +13,11 @@ Initial Developer: H2 Group
 <div th:fragment="query" style="padding-right: 10px; padding-bottom:0px">
   <form name="h2query" action="javascript:alert('should not be submitting this form');">
     <span style="white-space:nowrap;">
-      <input type="button" class="button" :value="text.toolbar_run" @click.prevent="run"/>
-      <input type="button" class="button" :value="text.toolbar_runSelected" @click.prevent="runSelected"/>
-      <input type="button" class="button" :value="text.toolbar_autoComplete" @click.prevent="manualAutoComplete"/>
-      <input type="button" class="button" :value="text.toolbar_clear" @click.prevent="sql=''"/>
-      {{ text.toolbar_sqlStatement }}:
+      <input type="button" class="button" :value="text.toolbar.run" @click.prevent="run"/>
+      <input type="button" class="button" :value="text.toolbar.runSelected" @click.prevent="runSelected"/>
+      <input type="button" class="button" :value="text.toolbar.autoComplete" @click.prevent="manualAutoComplete"/>
+      <input type="button" class="button" :value="text.toolbar.clear" @click.prevent="sql=''"/>
+      {{ text.toolbar.sqlStatement }}:
     </span><!--
     <div style="display:none">
       <iframe id="h2iframeTransport" src="" onload="showList(this.contentWindow.document.body.innerHTML);"></iframe>

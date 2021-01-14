@@ -28,11 +28,11 @@
   <script>
     const app = Lealone.createVueApp("admin", "login"); 
 
-    Lealone.component(app, 'login', i18n, adminLogin);
-    Lealone.component(app, 'admin', i18n, adminAdmin);
-    Lealone.component(app, 'tools', i18n, adminTools);
+    Lealone.component(app, 'login', adminLogin);
+    Lealone.component(app, 'admin', adminAdmin);
+    Lealone.component(app, 'tools', adminTools);
 
-    app.mount('#adminApp')
+    mount(app, '#adminApp')
   </script>
 </body>
 </html>

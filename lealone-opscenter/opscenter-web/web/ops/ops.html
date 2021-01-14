@@ -66,7 +66,9 @@
         <query/>
       </div>
       <div id="footer">
-        <component :is="currentComponent"/>
+        <keep-alive>
+          <component :is="currentComponent"/>
+        </keep-alive>
       </div>
     </div>
   </div>
@@ -87,14 +89,14 @@
   <script>
     const app = Lealone.createVueApp("ops", "help");
 
-    Lealone.component(app, 'help', i18n);
-    Lealone.component(app, 'login', i18n, opsLogin);
-    Lealone.component(app, 'ops-header', i18n, opsHeader);
-    Lealone.component(app, 'tables', i18n, opsTables);
-    Lealone.component(app, 'query', i18n, opsQuery);
-    Lealone.component(app, 'result', i18n, opsResult);
+    Lealone.component(app, 'help');
+    Lealone.component(app, 'login', opsLogin);
+    Lealone.component(app, 'ops-header', opsHeader);
+    Lealone.component(app, 'tables', opsTables);
+    Lealone.component(app, 'query', opsQuery);
+    Lealone.component(app, 'result', opsResult);
 
-    app.mount('#opsApp')
+    mount(app, '#opsApp')
   </script>
 </body>
 </html>

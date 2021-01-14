@@ -88,7 +88,7 @@ public class OpsServiceImpl implements OpsService {
     public String readTranslations(String language) {
         JsonObject json = new JsonObject();
         if (language == null)
-            language = "en";
+            language = "zh_cn";
         Map<String, Object> map = new HashMap<>();
         Properties text = new Properties();
         try {
@@ -103,7 +103,6 @@ public class OpsServiceImpl implements OpsService {
                     entry.setValue(value.substring(1));
                 }
                 String key = entry.getKey().toString();
-                key = key.replace('.', '_');
                 map.put(key, entry.getValue());
             }
         } catch (IOException e) {

@@ -36,7 +36,7 @@ Initial Developer: H2 Group
                     <input type="checkbox" v-model="autoCommit" @change="setAutoCommit"/>
                 </td>
                 <td class="toolbar">
-                    Auto commit&nbsp;
+                    {{ text.toolbar.autoCommit }}&nbsp;
                 </td>
                 <td class="toolbar">
                     <a href="/" @click.prevent="rollback">
@@ -56,13 +56,13 @@ Initial Developer: H2 Group
                     <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
                 </td>
                 <td class="toolbar">
-                    &nbsp;Max rows:&nbsp;
+                    &nbsp;{{ text.toolbar.maxRows }}&nbsp;
                 </td>
                 <td class="toolbar">
                     <select name="rowcount" size="1" onchange=
                     "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@maxrows+'+header.rowcount.value+'.';">
                     <option value="0">
-                            All
+                            {{ text.toolbar.all }}
                         </option>
                         <option value="10000">
                             10000
@@ -115,29 +115,29 @@ Initial Developer: H2 Group
                     <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
                 </td>
                 <td class="toolbar">
-                    Auto complete&nbsp;
+                    {{ text.toolbar.autoComplete }}&nbsp;
                     <select name="autoComplete" size="1"
                         onchange="javascript:parent.h2query.setAutoComplete(this.value)">
                         <option selected="selected" value="0">
-                            Off
+                            {{ txt['toolbar.autoComplete.off'] }}
                         </option>
                         <option value="1">
-                            Normal
+                            {{ txt['toolbar.autoComplete.normal'] }}
                         </option>
                         <option value="2">
-                            Full
+                            {{ txt['toolbar.autoComplete.full'] }}
                         </option>
                     </select>&nbsp;
                 </td>
                 <td class="toolbar">
-                    Auto select&nbsp;
+                    {{ text.toolbar.autoSelect }}&nbsp;
                     <select name="autoSelect" size="1"
                         onchange="javascript:parent.h2query.setAutoSelect(this.value)">
                         <option value="0">
-                            Off
+                            {{ txt['toolbar.autoSelect.off'] }}
                         </option>
                         <option selected="selected" value="1">
-                            On
+                            {{ txt['toolbar.autoSelect.on'] }}
                         </option>
                     </select>
                 </td>
