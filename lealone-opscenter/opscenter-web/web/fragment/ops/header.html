@@ -79,7 +79,7 @@ Initial Developer: H2 Group
                     </select>&nbsp;
                 </td>
                 <td class="toolbar">
-                    <a href="javascript:parent.h2query.submitAll();">
+                    <a href="/" @click.prevent="run">
                         <img src="/ops/img/icon_run.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -88,7 +88,7 @@ Initial Developer: H2 Group
                     </a>
                 </td>
                 <td class="toolbar">
-                    <a href="javascript:parent.h2query.submitSelected();">
+                    <a href="/" @click.prevent="runSelected">
                         <img src="/ops/img/icon_run_selected.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -97,7 +97,7 @@ Initial Developer: H2 Group
                     </a>
                 </td>
                 <td class="toolbar">
-                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@cancel." target="h2result">
+                    <a href="/" @click.prevent="cancel">
                         <img src="/ops/img/icon_stop.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -105,7 +105,7 @@ Initial Developer: H2 Group
                             title="Cancel the current statement" border="1"/>
                     </a>
                     <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
-                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@history." target="h2result">
+                    <a href="/" @click.prevent="history">
                         <img src="/ops/img/icon_history.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"

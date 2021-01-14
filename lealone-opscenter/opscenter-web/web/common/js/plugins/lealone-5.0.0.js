@@ -8,9 +8,11 @@
     set(key, value) {
         this.components[key] = value;
     },
+
     get(key) {
         return this.components[key];
     },
+
     route(screen, page, params) {
         var state = JSON.stringify(this);
         if(params){
@@ -38,6 +40,7 @@
         // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
     },
+
     createVueApp(screen, defaultPage) {
         this.screen = screen;
         this.page = sessionStorage.page ? sessionStorage.page : defaultPage;
@@ -72,6 +75,7 @@
         app.use(this);
         return app;
     },
+
     component(app, name) {
         var mixins = [];
         var len = arguments.length;
@@ -81,11 +85,13 @@
         app.component(name, {
             mixins: mixins, 
             props: {
+                // 组件实例的全局唯一ID，默认是组件名
                 gid: { type: String, default: name }
             }, 
             template: document.getElementById(name).innerHTML
         })
     },
+
     install(app, options) {
         var that = this;
         app.mixin({

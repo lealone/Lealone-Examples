@@ -1,32 +1,21 @@
 ﻿const opsQuery = { 
     data() {
         return {
-			url: "jdbc:lealone:tcp://localhost:9210/lealone",
-		    user: "root",
-			password: "",
-            languages: []
+			sql: "",
         }
     },
     methods: {
-        login() {
-            var that = this;
-            axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
-            .then(function (response) {
-                console.log(response.data);
-				// that.lealone.route("ops", "header");
-				that.lealone.route("ops", "tables");
-                // location.href = "/";
-            })
-            .catch(function (error) {
-                console.log(error);
-                that.errorMessage = "用户名或密码不正确,请重新输入";
-            });
-        }
+        run() {
+            this.lealone.route('ops', 'result', {result: "run sql=" + this.sql});
+        },
+        runSelected() {
+            this.lealone.route('ops', 'result', {result: "runSelected sql=" + this.sql});
+        },
+        manualAutoComplete() {
+            this.lealone.route('ops', 'result', {result: "manualAutoComplete sql=" + this.sql});
+        },
     },
     mounted() {
-        axios.get(OpsCenter.OpsService + '/get_language_combo')
-        .then(response => {
-			this.languages = response.data;
-		});
+        this.lealone.set(this.gid, this);
     }
 }
