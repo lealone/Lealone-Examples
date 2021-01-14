@@ -19,19 +19,14 @@
   </div>
 
   <template id="login" th:insert="/fragment/ops/login.html :: login" />
-  <template id="header" th:insert="/fragment/ops/header.html :: header" />
-  <template id="tables" th:insert="/fragment/ops/tables.html :: tables" />
   <template id="help" th:insert="/fragment/ops/help.html :: help" />
 
   <script src="/ops/js/login.js"></script>
-  <script src="/ops/js/tables.js"></script>
   <script>
     const app = Lealone.createVueApp("ops", "login"); 
 
     Lealone.component(app, 'help');
     Lealone.component(app, 'login', opsLogin);
-	Lealone.component(app, 'header', opsLogin);
-	Lealone.component(app, 'tables', opsTables);
 
 	mount(app, '#opsApp')
   </script>

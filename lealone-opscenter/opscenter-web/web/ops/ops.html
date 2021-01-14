@@ -73,24 +73,21 @@
     </div>
   </div>
 
-  <template id="login" th:insert="/fragment/ops/login.html :: login" />
+  <template id="help" th:insert="/fragment/ops/help.html :: help" />
   <template id="ops-header" th:insert="/fragment/ops/header.html :: header" />
   <template id="tables" th:insert="/fragment/ops/tables.html :: tables" />
-  <template id="help" th:insert="/fragment/ops/help.html :: help" />
   <template id="query" th:insert="/fragment/ops/query.html :: query" />
   <template id="result" th:insert="/fragment/ops/result.html :: result" />
 
-  <script src="/ops/js/login.js"></script>
-  <script src="/ops/js/tables.js"></script>
   <script src="/ops/js/header.js"></script>
-  <script src="/ops/js/result.js"></script>
+  <script src="/ops/js/tables.js"></script>
   <script src="/ops/js/query.js"></script>
+  <script src="/ops/js/result.js"></script>
   
   <script>
     const app = Lealone.createVueApp("ops", "help");
 
     Lealone.component(app, 'help');
-    Lealone.component(app, 'login', opsLogin);
     Lealone.component(app, 'ops-header', opsHeader);
     Lealone.component(app, 'tables', opsTables);
     Lealone.component(app, 'query', opsQuery);

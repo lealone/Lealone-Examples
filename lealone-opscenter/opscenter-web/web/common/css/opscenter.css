@@ -137,6 +137,7 @@ td.nav {
 table.login {
     background-color: #ece9d8;
     border:1px solid #aca899;
+    border-collapse: collapse;
 }
 
 tr.login {

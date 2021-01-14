@@ -11,20 +11,18 @@ Initial Developer: H2 Group
 <body>
 
 <div th:fragment="login">
-    <form name="login" method="post" action="login.do?jsessionid=${sessionId}" id="login">
-    <p>
-      <select name="language" size="1"
-        onchange="javascript:document.location='index.do?jsessionid=b6f2674b58117b55b5f16935826c6a5d&amp;language='+login.language.value;"
-      >
-	    <template v-for="language in languages">
-		  <option :value="language[0]" :selected="language[0] == 'en'">{{ language[1] }}</option>
-        </template>
-      </select>
-    &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'admin')">{{ text.login.goAdmin }}</a>
-    &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'tools')"/>{{ text.a.tools }}</a>
-    &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('ops', 'help')">{{ text.a.help }}</a>
-    </p>
-        <table class="login" cellspacing="0" cellpadding="0">
+    <form id="login" name="login" method="post" action="/">
+        <p>
+          <select v-model="language" size="1" @change="changeLanguage">
+    	    <template v-for="language in languages">
+    		  <option :value="language[0]" :selected="language[0] == language">{{ language[1] }}</option>
+            </template>
+          </select>
+          &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'admin')">{{ text.login.goAdmin }}</a>
+          &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'tools')">{{ text.a.tools }}</a>
+          &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('ops', 'help')">{{ text.a.help }}</a>
+        </p>
+        <table class="login">
             <tr class="login">
                 <th class="login">{{ text.login.login }}</th>
                 <th class="login"></th>
@@ -33,20 +31,19 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">{{ text.login.savedSetting }}:</td>
                 <td class="login">
-                    <select name="setting" size="1"
-                        style="width:300px"
-                        onchange="javascript:document.location='index.do?jsessionid=${sessionId}&amp;setting='+login.setting.value;"
-                    >
-                    ${settingsList}
-                    </select>
+                    <select v-model="setting" size="1" style="width:300px">
+                      <template v-for="s in settings">
+                        <option :value="s" :selected="s == setting">{{ s }}</option>
+                      </template>
+	               </select>
                 </td>
             </tr>
             <tr class="login">
                 <td class="login">{{ text.login.settingName }}:</td>
-                <td class="login">
-                    <input type="text" name="name" :value="name" style="width:200px;" />
-                    <input type="button" class="button" :value="text.login.save" onclick="javascript:document.login.action='settingSave.do?jsessionid=${sessionId}';submit()" />
-                    <input type="button" class="button" :value="text.login.remove" onclick="javascript:document.login.action='settingRemove.do?jsessionid=${sessionId}';submit()" />
+                <td class="login" style="width:200px;">
+                    <input type="text" name="name" :value="name" style="width:200px;"/>&nbsp;
+                    <input type="button" class="button" :value="text.login.save" @click.prevent="settingSave"/>&nbsp;
+                    <input type="button" class="button" :value="text.login.remove" @click.prevent="settingRemove"/>
                 </td>
             </tr>
             <tr class="login">
@@ -61,7 +58,8 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">
                     <a href="#" onclick="var x=document.getElementById('url').style;x.display=x.display==''?'none':'';">
-                        {{ text.login.jdbcUrl }}</a>:</td>
+                        {{ text.login.jdbcUrl }}</a>:
+                </td>
                 <td class="login"><input type="text" v-model="url" style="width:300px;" /></td>
             </tr>
             <tr class="login">
@@ -77,7 +75,7 @@ Initial Developer: H2 Group
                 <td class="login">
                     <input type="submit" class="button" :value="text.login.connect" @click.prevent="login"/>
                     &nbsp;
-                    <input type="button" class="button" :value="text.login.testConnection" onclick="javascript:document.login.action='test.do?jsessionid=${sessionId}';submit()" />
+                    <input type="button" class="button" :value="text.login.testConnection" @click.prevent="testConnection"/>
                     <br />
                     <br />
                 </td>
@@ -122,7 +120,7 @@ Initial Developer: H2 Group
             For more information, see <a target="_blank" href="https://h2database.com/html/features.html#database_url">Database URL Overview</a>.
             </p>
         </div>
-        <p class="error">{{error}}</p>
+        <p class="error">{{ errorMessage }}</p>
     </form>
 </div>
 
