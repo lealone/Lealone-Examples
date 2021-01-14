@@ -11,11 +11,11 @@ Initial Developer: H2 Group
 <body>
 
 <div th:fragment="header">
-    <form name="header" method="post" action="header.jsp?jsessionid=220f55b36da2098b8b89f75a6963c7c1">
+    <form name="header" method="post" action="/">
         <table class="toolbar" cellspacing="0" cellpadding="0">
             <tr class="toolbar">
                 <td class="toolbar">
-                    <a href="logout.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="_parent">
+                    <a href="/" @click.prevent="logout">
                         <img src="/ops/img/icon_disconnect.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -23,7 +23,7 @@ Initial Developer: H2 Group
                             title="Disconnect" border="1"/>
                     </a>
                     <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
-                    <a href="tables.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1" target="h2menu">
+                    <a href="/" @click.prevent="refreshTables">
                         <img src="/ops/img/icon_refresh.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -39,14 +39,14 @@ Initial Developer: H2 Group
                     Auto commit&nbsp;
                 </td>
                 <td class="toolbar">
-                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=ROLLBACK" target="h2result">
+                    <a href="/" @click.prevent="rollback">
                         <img src="/ops/img/icon_rollback.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
                             class="icon" alt="Rollback"
                             title="Rollback" border="1"/>
                     </a>
-                    <a href="query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=COMMIT" target="h2result">
+                    <a href="/" @click.prevent="commit">
                         <img src="/ops/img/icon_commit.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -142,7 +142,7 @@ Initial Developer: H2 Group
                     </select>
                 </td>
                 <td class="toolbar">
-                    <a href="/" @click.prevent="router.setPage('ops', 'help')">
+                    <a href="/" @click.prevent="router.route('ops', 'help')">
                         <img src="/ops/img/icon_help.gif"
                             onmouseover="this.className ='icon_hover'"
                             onmouseout="this.className ='icon'"
@@ -153,11 +153,6 @@ Initial Developer: H2 Group
             </tr>
         </table>
     </form>
-<script type="text/javascript">
-<!--
-    document.header.autoCommit.checked = 'checked' != '';
-//-->
-</script>
 </div>
 
 </body>

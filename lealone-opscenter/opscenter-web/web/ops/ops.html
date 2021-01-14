@@ -6,6 +6,7 @@
   <title>Lealone OpsCenter</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/opscenter.js"></script>
   <link rel="stylesheet" href="/common/css/opscenter.css">
   
@@ -56,7 +57,7 @@
   <div id="opsApp">
     <div id="container">
       <div id="heading">
-        <ops-header :router="router" />
+        <ops-header :router="router"/>
       </div>
       <div id="content-menu">
         <tables :router="router" />
@@ -84,14 +85,14 @@
   <script src="/ops/js/query.js"></script>
   
   <script>
-    const app = createVueApp("ops", "help");
+    const app = lealone.createVueApp("ops", "help");
 
-    injectComponent(app, 'help', i18n);
-    injectComponent(app, 'login', i18n, opsLogin);
-    injectComponent(app, 'ops-header', i18n, opsHeader);
-    injectComponent(app, 'tables', i18n, opsTables);
-    injectComponent(app, 'query', i18n, opsQuery);
-    injectComponent(app, 'result', i18n, opsResult);
+    lealone.component(app, 'help', i18n);
+    lealone.component(app, 'login', i18n, opsLogin);
+    lealone.component(app, 'ops-header', i18n, opsHeader);
+    lealone.component(app, 'tables', i18n, opsTables);
+    lealone.component(app, 'query', i18n, opsQuery);
+    lealone.component(app, 'result', i18n, opsResult);
 
     app.mount('#opsApp')
   </script>

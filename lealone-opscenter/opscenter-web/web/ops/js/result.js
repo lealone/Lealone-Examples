@@ -5,9 +5,9 @@
         }
     },
     mounted() {
-        this.router.components["result"] = this;
+        this.router.set(this.gid, this);
         if(this.router.screen == "ops" && this.router.page == "result") {
-            this.result = this.router.params.pop();
+            this.result = this.router.params.result;
         }
     }
 }

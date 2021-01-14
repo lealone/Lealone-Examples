@@ -8,15 +8,15 @@
         setAutoCommit() {
             var result = "Auto commit is now " + (this.autoCommit ? "ON" : "OFF");
             // ql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.'
-            this.router.setPage('ops', 'result', result);
+            this.router.route('ops', 'result', {result: result});
         },
         login() {
             var that = this;
             axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
             .then(function (response) {
                 console.log(response.data);
-                // that.router.setPage("ops", "header");
-                that.router.setPage("ops", "tables");
+                // that.router.route("ops", "header");
+                that.router.route("ops", "tables");
                 // location.href = "/";
             })
             .catch(function (error) {
@@ -26,14 +26,23 @@
         },
         logout() {
             localStorage.removeItem("currentUser");
-            axios.get("/user/logout")
+            axios.get(OpsCenter.OpsService + '/logout')
             .then(function (response) {
-                location.href = "/";
+                location.href = "/ops/index.html";
             });
+        },
+        refreshTables() {
+            this.router.route('ops', 'result', "refreshTables: TODO");
+        },
+        commit() {
+            this.router.route('ops', 'result', "query sql=COMMIT: TODO");
+        },
+        rollback() {
+            this.router.route('ops', 'result', "query sql=ROLLBACK: TODO");
         }
     },
     mounted() {
-        this.router.components["ops-header"] = this;
+        this.router.set(this.gid, this);
         axios.get(OpsCenter.OpsService + '/get_language_combo')
         .then(response => {
 			this.languages = response.data;

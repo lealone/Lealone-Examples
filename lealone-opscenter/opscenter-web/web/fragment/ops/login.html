@@ -20,9 +20,9 @@ Initial Developer: H2 Group
 		  <option :value="language[0]" :selected="language[0] == 'en'">{{ language[1] }}</option>
         </template>
       </select>
-    &nbsp;&nbsp; <a href="/" @click.prevent="router.setPage('admin', 'admin')">{{ text.login_goAdmin }}</a>
-    &nbsp;&nbsp; <a href="/" @click.prevent="router.setPage('admin', 'tools')"/>{{ text.a_tools }}</a>
-    &nbsp;&nbsp; <a href="/" @click.prevent="router.setPage('ops', 'help')">{{ text.a_help }}</a>
+    &nbsp;&nbsp; <a href="/" @click.prevent="router.route('admin', 'admin')">{{ text.login_goAdmin }}</a>
+    &nbsp;&nbsp; <a href="/" @click.prevent="router.route('admin', 'tools')"/>{{ text.a_tools }}</a>
+    &nbsp;&nbsp; <a href="/" @click.prevent="router.route('ops', 'help')">{{ text.a_help }}</a>
     </p>
         <table class="login" cellspacing="0" cellpadding="0">
             <tr class="login">

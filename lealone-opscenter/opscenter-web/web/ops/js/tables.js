@@ -13,7 +13,7 @@
             axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
             .then(function (response) {
                 console.log(response.data);
-				that.router.setPage("ops", "header");
+				that.router.route("ops", "header");
                 // location.href = "/";
             })
             .catch(function (error) {

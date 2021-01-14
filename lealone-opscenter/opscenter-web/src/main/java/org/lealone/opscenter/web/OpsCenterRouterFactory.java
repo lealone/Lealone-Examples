@@ -96,10 +96,10 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         router.route().handler(BodyHandler.create(false));
         // 只拦截logout，login直接转到UserServiceImpl.login处理了
         // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做
-        router.route("/user/logout").handler(routingContext -> {
+        router.route("/service/ops_service/logout").handler(routingContext -> {
             // routingContext.session().remove("currentUser");
             // routingContext.session().remove("car_id");
-            routingContext.redirect("/home/index.html");
+            routingContext.redirect("/ops/index.html");
         });
     }
 

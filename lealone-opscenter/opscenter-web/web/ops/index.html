@@ -6,6 +6,7 @@
   <title>Lealone OpsCenter</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/opscenter.js"></script>
   <link rel="stylesheet" href="/common/css/opscenter.css">
 </head>
@@ -25,12 +26,12 @@
   <script src="/ops/js/login.js"></script>
   <script src="/ops/js/tables.js"></script>
   <script>
-    const app = createVueApp("ops", "login"); 
+    const app = lealone.createVueApp("ops", "login"); 
 
-    injectComponent(app, 'help', i18n);
-    injectComponent(app, 'login', i18n, opsLogin);
-	injectComponent(app, 'header', i18n, opsLogin);
-	injectComponent(app, 'tables', i18n, opsTables);
+    lealone.component(app, 'help', i18n);
+    lealone.component(app, 'login', i18n, opsLogin);
+	lealone.component(app, 'header', i18n, opsLogin);
+	lealone.component(app, 'tables', i18n, opsTables);
 
     app.mount('#opsApp')
   </script>
