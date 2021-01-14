@@ -11,8 +11,8 @@
             axios.post(OpsCenter.AdminService + '/login', { password: this.password })
             .then(function (response) {
                 console.log(response.data);
-				//that.router.route("ops", "header");
-				//that.router.route("ops", "tables");
+				//that.lealone.route("ops", "header");
+				//that.lealone.route("ops", "tables");
                 //location.href = "/";
             })
             .catch(function (error) {

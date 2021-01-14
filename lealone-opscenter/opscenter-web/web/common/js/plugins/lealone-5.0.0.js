@@ -1,4 +1,4 @@
-﻿const lealone = { 
+﻿const Lealone = { 
     currentUser: localStorage.currentUser,
     screen: "" ,
     page: "", 
@@ -18,7 +18,8 @@
         }
         // 当前page没有变化，但是参数可能变了，所以手工调用
         if(this.screen == screen && this.page == page) {
-            this.components[page].$options.mounted.call(this.components[page]);
+            if(this.components[page])
+                this.components[page].$options.mounted.call(this.components[page]);
             return;
         }
         if(this.screen != screen) {
@@ -43,12 +44,11 @@
         this.params = sessionStorage.params ? JSON.parse(sessionStorage.params) : {};
         sessionStorage.removeItem("page");
         sessionStorage.removeItem("params");
-        var that = this;
         var app = Vue.createApp({
-            data() { return { router: that } },
+            data() { return { } },
             computed: {
                 currentComponent() {
-                    return this.router.page;
+                    return this.lealone.page;
                 }
             },
             mounted() {
@@ -56,16 +56,16 @@
                 window.addEventListener('popstate', function(evt){
                     var state = JSON.parse(evt.state);
                     if(!state) return;
-                    if(that.router.screen != state.screen) {
+                    if(that.lealone.screen != state.screen) {
                         sessionStorage.page = state.page;
                         sessionStorage.params = JSON.stringify(state.params);
                         location.href = "/" + state.screen + "/index.html";
                         return;
                     }
-                    that.router.currentUser = state.currentUser;
-                    that.router.params = state.params;
-                    that.router.screen = state.screen;
-                    that.router.page = state.page;
+                    that.lealone.currentUser = state.currentUser;
+                    that.lealone.params = state.params;
+                    that.lealone.screen = state.screen;
+                    that.lealone.page = state.page;
                 }, false);
             }
         });
@@ -81,7 +81,6 @@
         app.component(name, {
             mixins: mixins, 
             props: {
-                router: null,
                 gid: { type: String, default: name }
             }, 
             template: document.getElementById(name).innerHTML

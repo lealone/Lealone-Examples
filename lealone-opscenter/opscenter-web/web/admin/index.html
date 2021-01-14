@@ -14,7 +14,7 @@
 <body style="margin: 20px">
   <div id="adminApp">
     <keep-alive>
-      <component :is="currentComponent" :router="router"/>
+      <component :is="currentComponent"/>
     </keep-alive>
   </div>
   
@@ -26,11 +26,11 @@
   <script src="/admin/js/admin.js"></script>
   <script src="/admin/js/tools.js"></script>
   <script>
-    const app = lealone.createVueApp("admin", "login"); 
+    const app = Lealone.createVueApp("admin", "login"); 
 
-    lealone.component(app, 'login', i18n, adminLogin);
-	lealone.component(app, 'admin', i18n, adminAdmin);
-	lealone.component(app, 'tools', i18n, adminTools);
+    Lealone.component(app, 'login', i18n, adminLogin);
+    Lealone.component(app, 'admin', i18n, adminAdmin);
+    Lealone.component(app, 'tools', i18n, adminTools);
 
     app.mount('#adminApp')
   </script>

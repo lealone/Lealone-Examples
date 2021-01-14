@@ -14,7 +14,7 @@
 <body style="margin: 20px">
   <div id="opsApp">
     <keep-alive>
-      <component :is="currentComponent" :router="router" />
+      <component :is="currentComponent"/>
     </keep-alive>
   </div>
 
@@ -26,12 +26,12 @@
   <script src="/ops/js/login.js"></script>
   <script src="/ops/js/tables.js"></script>
   <script>
-    const app = lealone.createVueApp("ops", "login"); 
+    const app = Lealone.createVueApp("ops", "login"); 
 
-    lealone.component(app, 'help', i18n);
-    lealone.component(app, 'login', i18n, opsLogin);
-	lealone.component(app, 'header', i18n, opsLogin);
-	lealone.component(app, 'tables', i18n, opsTables);
+    Lealone.component(app, 'help', i18n);
+    Lealone.component(app, 'login', i18n, opsLogin);
+	Lealone.component(app, 'header', i18n, opsLogin);
+	Lealone.component(app, 'tables', i18n, opsTables);
 
     app.mount('#opsApp')
   </script>

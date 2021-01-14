@@ -57,16 +57,16 @@
   <div id="opsApp">
     <div id="container">
       <div id="heading">
-        <ops-header :router="router"/>
+        <ops-header/>
       </div>
       <div id="content-menu">
-        <tables :router="router" />
+        <tables/>
       </div>
       <div id="content-body">
-        <query :router="router" />
+        <query />
       </div>
       <div id="footer">
-        <component :is="currentComponent" :router="router" />
+        <component :is="currentComponent"/>
       </div>
     </div>
   </div>
@@ -85,14 +85,14 @@
   <script src="/ops/js/query.js"></script>
   
   <script>
-    const app = lealone.createVueApp("ops", "help");
+    const app = Lealone.createVueApp("ops", "help");
 
-    lealone.component(app, 'help', i18n);
-    lealone.component(app, 'login', i18n, opsLogin);
-    lealone.component(app, 'ops-header', i18n, opsHeader);
-    lealone.component(app, 'tables', i18n, opsTables);
-    lealone.component(app, 'query', i18n, opsQuery);
-    lealone.component(app, 'result', i18n, opsResult);
+    Lealone.component(app, 'help', i18n);
+    Lealone.component(app, 'login', i18n, opsLogin);
+    Lealone.component(app, 'ops-header', i18n, opsHeader);
+    Lealone.component(app, 'tables', i18n, opsTables);
+    Lealone.component(app, 'query', i18n, opsQuery);
+    Lealone.component(app, 'result', i18n, opsResult);
 
     app.mount('#opsApp')
   </script>

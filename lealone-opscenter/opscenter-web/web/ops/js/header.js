@@ -8,15 +8,15 @@
         setAutoCommit() {
             var result = "Auto commit is now " + (this.autoCommit ? "ON" : "OFF");
             // ql=@autocommit_' + (document.header.autoCommit.checked ? 'true' : 'false') + '.'
-            this.router.route('ops', 'result', {result: result});
+            this.lealone.route('ops', 'result', {result: result});
         },
         login() {
             var that = this;
             axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
             .then(function (response) {
                 console.log(response.data);
-                // that.router.route("ops", "header");
-                that.router.route("ops", "tables");
+                // that.lealone.route("ops", "header");
+                that.lealone.route("ops", "tables");
                 // location.href = "/";
             })
             .catch(function (error) {
@@ -32,17 +32,17 @@
             });
         },
         refreshTables() {
-            this.router.route('ops', 'result', "refreshTables: TODO");
+            this.lealone.route('ops', 'result', "refreshTables: TODO");
         },
         commit() {
-            this.router.route('ops', 'result', "query sql=COMMIT: TODO");
+            this.lealone.route('ops', 'result', "query sql=COMMIT: TODO");
         },
         rollback() {
-            this.router.route('ops', 'result', "query sql=ROLLBACK: TODO");
+            this.lealone.route('ops', 'result', "query sql=ROLLBACK: TODO");
         }
     },
     mounted() {
-        this.router.set(this.gid, this);
+        this.lealone.set(this.gid, this);
         axios.get(OpsCenter.OpsService + '/get_language_combo')
         .then(response => {
 			this.languages = response.data;
