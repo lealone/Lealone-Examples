@@ -41,8 +41,8 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">{{ text.login.settingName }}:</td>
                 <td class="login" style="width:200px;">
-                    <input type="text" name="name" :value="name" style="width:200px;"/>&nbsp;
-                    <input type="button" class="button" :value="text.login.save" @click.prevent="settingSave"/>&nbsp;
+                    <input type="text" name="name" :value="name" style="width:200px;margin-right: 2px"/>
+                    <input type="button" class="button" :value="text.login.save" @click.prevent="settingSave" style="margin-right: 2px"/>
                     <input type="button" class="button" :value="text.login.remove" @click.prevent="settingRemove"/>
                 </td>
             </tr>

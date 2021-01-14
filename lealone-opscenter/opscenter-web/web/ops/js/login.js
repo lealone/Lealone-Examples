@@ -6,7 +6,7 @@
 			url: "jdbc:lealone:tcp://localhost:9210/lealone",
 		    user: "root",
 			password: "",
-			language: "en",
+			language: "zh_CN",
             languages: [],
             setting: "",
             settings: [],
@@ -28,9 +28,10 @@
         },
         changeLanguage() {
             var that = this;
-            axios.get(OpsCenter.OpsService + '/get_language_combo')
+            axios.get(OpsCenter.OpsService + '/read_translations?language=' + this.language)
             .then(response => {
-                that.languages = response.data;
+                that.txt = response.data.text;
+                that.text = OpsCenter.i18n.parse(that.txt);
             });
         },
         testConnection() {
@@ -41,6 +42,10 @@
         }
     },
     mounted() {
-        this.changeLanguage();
+        var that = this;
+        axios.get(OpsCenter.OpsService + '/get_language_combo')
+        .then(response => {
+            that.languages = response.data;
+        });
     }
 }

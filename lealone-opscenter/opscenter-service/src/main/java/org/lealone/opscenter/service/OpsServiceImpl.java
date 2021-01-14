@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -89,6 +90,8 @@ public class OpsServiceImpl implements OpsService {
         JsonObject json = new JsonObject();
         if (language == null)
             language = "zh_cn";
+        Locale locale = new Locale(language, "");
+        language = locale.getLanguage();
         Map<String, Object> map = new HashMap<>();
         Properties text = new Properties();
         try {
