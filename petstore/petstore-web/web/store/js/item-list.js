@@ -28,8 +28,8 @@
         }
     },
     mounted() {
-        if(this.router.page == "item-list" || this.router.page == "edit-item-list") {
-            var productId = this.router.params.pop();
+        if(this.lealone.page == "item-list" || this.lealone.page == "edit-item-list") {
+            var productId = this.lealone.params.productId;
             if(productId)
                 this.getItemList(productId);
         }

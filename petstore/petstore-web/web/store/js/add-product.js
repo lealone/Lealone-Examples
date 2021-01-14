@@ -1,4 +1,4 @@
-﻿ const storeAddProduct = { 
+﻿const storeAddProduct = { 
     data() {
         return {
             product: {categoryid: "", productid: "", name: "", descn: ""},
@@ -26,7 +26,7 @@
             var that = this;
             axios.post(PetStore.StoreService + '/add_product', formData, config)
             .then(function (response) {
-                that.router.setPage("store", "edit-category-list");
+                that.lealone.route("store", "edit-category-list");
             })
             .catch(function (error) {
                 console.log(error);
@@ -35,7 +35,7 @@
         }
     },
     mounted() {
-        var categoryid = this.router.params.pop();
+        var categoryid = this.lealone.params.categoryid;
         if(categoryid)
             this.product.categoryid = categoryid;
     }

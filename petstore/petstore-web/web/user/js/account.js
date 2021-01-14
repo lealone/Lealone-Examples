@@ -1,4 +1,4 @@
-﻿ const userAccount = { 
+﻿const userAccount = { 
     data() {
         return {
             account: {},
@@ -8,12 +8,12 @@
     },
     methods: {
         getAccountInfo() {
-            if(!this.router.currentUser) {
-                this.router.setPage('user', 'login');
+            if(!this.lealone.currentUser) {
+                this.lealone.route('user', 'login');
                 return;
             }
             var that = this;
-            axios.get(PetStore.UserService + '/get_user?user_id=' + this.router.currentUser)
+            axios.get(PetStore.UserService + '/get_user?user_id=' + this.lealone.currentUser)
             .then(function (response) {
                 if(response.data) {
                     if(response.data.account)

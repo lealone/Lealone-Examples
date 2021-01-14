@@ -9,34 +9,34 @@
 <table cellpadding="0" cellspacing="0" width="100%" border="0">
 <tr valign="bottom">
   <td class="shortcut">
-    <a href="/" @click.prevent="router.setPage('user', 'register')">注册</a>
+    <a href="/" @click.prevent="lealone.route('user', 'register')">注册</a>
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <div v-if="router.currentUser">
-      <a href="/" @click.prevent="logout"><span>退出 {{ router.currentUser }}</span></a>
+    <div v-if="lealone.currentUser">
+      <a href="/" @click.prevent="logout"><span>退出 {{ lealone.currentUser }}</span></a>
     </div>
     <div v-else>
-      <a href="/" @click.prevent="router.setPage('user', 'login')">登录</a>
+      <a href="/" @click.prevent="lealone.route('user', 'login')">登录</a>
     </div>
     <!--
     <div th:if="${currentUser}"><a href="/" @click.prevent="logout">退出 <span th:text="${currentUser}"></span></a></div> 
-    <div th:unless="${currentUser}"><a href="/" @click.prevent="router.setPage('user', 'login')">登录</a></div>
+    <div th:unless="${currentUser}"><a href="/" @click.prevent="lealone.route('user', 'login')">登录</a></div>
     -->
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/" @click.prevent="router.setPage('user', 'account')">用户信息</a>
+    <a href="/" @click.prevent="lealone.route('user', 'account')">用户信息</a>
   </td>
   <td class="shortcut">
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/" @click.prevent="router.setPage('store', 'view-cart')">
+    <a href="/" @click.prevent="lealone.route('store', 'view-cart')">
       <img src="/home/img/cart.png"/>我的购物车
     </a>
   </td>
@@ -44,7 +44,7 @@
     &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   </td>
   <td class="shortcut">
-    <a href="/" @click.prevent="router.setPage('store', 'edit-category-list')">库存管理</a>
+    <a href="/" @click.prevent="lealone.route('store', 'edit-category-list')">库存管理</a>
   </td>
 </tr>
 </table>

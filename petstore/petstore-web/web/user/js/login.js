@@ -1,4 +1,4 @@
-﻿ const userLogin = { 
+﻿const userLogin = { 
     data() {
         return {
             user_id: "",
@@ -11,7 +11,7 @@
             var that = this;
             axios.post(PetStore.UserService + '/login', this.$data)
             .then(function (response) {
-                that.router.currentUser = response.data.USER_ID;
+                that.lealone.currentUser = response.data.USER_ID;
                 localStorage.currentUser = response.data.USER_ID;
                 location.href = "/";
             })

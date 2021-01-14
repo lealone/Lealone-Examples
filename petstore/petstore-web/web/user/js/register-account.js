@@ -1,4 +1,4 @@
-﻿ const userRegisterAccount = { 
+﻿const userRegisterAccount = { 
     data() {
         return {
             account: {},
@@ -8,10 +8,10 @@
     methods: {
         update() {
             var that = this;
-            this.account.user_id = this.router.currentUser;
+            this.account.user_id = this.lealone.currentUser;
             axios.post(PetStore.UserService + '/update', {account: JSON.stringify(this.account)})
             .then(function (response) {
-                that.router.setPage('user', 'account');
+                that.lealone.route('user', 'account');
             })
             .catch(function (error) {
                 console.log(error);

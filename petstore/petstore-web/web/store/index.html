@@ -4,6 +4,7 @@
   <title>Petstore Sample</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/petstore.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
   <link rel="stylesheet" href="/home/css/petstore-homepage.css">
@@ -22,7 +23,7 @@
          <tr>
           <td>
             <keep-alive>
-              <component :is="currentComponent" :router="router"/>
+              <component :is="currentComponent"/>
             </keep-alive>
           </td>
         </tr>
@@ -49,15 +50,15 @@
 <script src="/store/js/view-cart.js"></script>
 <script src="/user/js/login.js"></script>
 <script>
-    const app = createVueApp("store", "edit-category-list"); //打开store子应用时，默认显示edit-category-list页
+    const app = Lealone.createVueApp("store", "edit-category-list"); //打开store子应用时，默认显示edit-category-list页
 
-    injectComponent(app, 'category-list', storeCategoryList);
-    injectComponent(app, 'item-list', storeItemlist, storeViewCart);
-    injectComponent(app, 'view-cart', storeViewCart);
-    injectComponent(app, 'edit-category-list', storeCategoryList);
-    injectComponent(app, 'edit-item-list', storeItemlist);
-    injectComponent(app, 'add-product', storeAddProduct);
-    injectComponent(app, 'petstore-nav', userLogin);
+    Lealone.component(app, 'category-list', storeCategoryList);
+    Lealone.component(app, 'item-list', storeItemlist, storeViewCart);
+    Lealone.component(app, 'view-cart', storeViewCart);
+    Lealone.component(app, 'edit-category-list', storeCategoryList);
+    Lealone.component(app, 'edit-item-list', storeItemlist);
+    Lealone.component(app, 'add-product', storeAddProduct);
+    Lealone.component(app, 'petstore-nav', userLogin);
 
     app.mount('#storeApp')
 </script>
