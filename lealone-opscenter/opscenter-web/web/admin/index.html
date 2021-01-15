@@ -18,19 +18,24 @@
     </keep-alive>
   </div>
   
-  <template id="login" th:insert="/fragment/admin/login.html :: login"/>
+  <template id="login-admin" th:insert="/fragment/admin/login-admin.html :: login"/>
+  <template id="login-ops" th:insert="/fragment/admin/login-ops.html :: login" />
   <template id="admin" th:insert="/fragment/admin/admin.html :: admin"/>
   <template id="tools" th:insert="/fragment/admin/tools.html :: tools"/>
+  <template id="help" th:insert="/fragment/ops/help.html :: help" />
   
-  <script src="/admin/js/login.js"></script>
+  <script src="/admin/js/login-admin.js"></script>
+  <script src="/admin/js/login-ops.js"></script>
   <script src="/admin/js/admin.js"></script>
   <script src="/admin/js/tools.js"></script>
   <script>
-    const app = Lealone.createVueApp("admin", "login"); 
+    const app = Lealone.createVueApp("admin", "login-ops"); 
 
-    Lealone.component(app, 'login', adminLogin);
-    Lealone.component(app, 'admin', adminAdmin);
-    Lealone.component(app, 'tools', adminTools);
+    Lealone.component(app, 'login-admin', loginAdmin);
+    Lealone.component(app, 'login-ops', loginOps);
+    Lealone.component(app, 'admin', admin);
+    Lealone.component(app, 'tools', tools);    
+    Lealone.component(app, 'help');
 
     mount(app, '#adminApp')
   </script>

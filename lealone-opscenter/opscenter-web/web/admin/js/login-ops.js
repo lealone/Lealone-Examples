@@ -1,4 +1,4 @@
-﻿const opsLogin = { 
+﻿const loginOps = { 
     data() {
         return {
             name: "",
@@ -19,7 +19,7 @@
             axios.post(OpsCenter.OpsService + '/login', { url: this.url, user: this.user, password: this.password })
             .then(function (response) {
                 console.log(response.data);
-                location.href = "/ops/ops.html";
+                location.href = "/ops/index.html";
             })
             .catch(function (error) {
                 console.log(error);

@@ -51,7 +51,7 @@ function update() {
     document.getElementById('args').value = args;
 }
 
-const adminTools = { 
+const tools = { 
     data() {
         return {
 			tool: "",

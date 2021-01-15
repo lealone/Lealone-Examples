@@ -1,4 +1,4 @@
-﻿const adminLogin = { 
+﻿const loginAdmin = { 
     data() {
         return {
 			password: "",
@@ -11,9 +11,9 @@
             axios.post(OpsCenter.AdminService + '/login', { password: this.password })
             .then(function (response) {
                 console.log(response.data);
-				//that.lealone.route("ops", "header");
-				//that.lealone.route("ops", "tables");
-                //location.href = "/";
+				// that.lealone.route("ops", "header");
+				// that.lealone.route("ops", "tables");
+                // location.href = "/";
             })
             .catch(function (error) {
                 console.log(error);

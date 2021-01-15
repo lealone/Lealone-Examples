@@ -13,7 +13,7 @@
             localStorage.removeItem("currentUser");
             axios.get(OpsCenter.OpsService + '/logout')
             .then(function (response) {
-                location.href = "/ops/index.html";
+                location.href = "/admin/index.html";
             });
         },
         refreshTables() {

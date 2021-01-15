@@ -1,4 +1,4 @@
-﻿const adminAdmin = { 
+﻿const admin = { 
     data() {
         return {
         }
