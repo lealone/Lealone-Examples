@@ -24,7 +24,7 @@ import org.h2.message.DbException;
  * The web session keeps all data of a user session.
  * This class is used by the H2 Console.
  */
-class WebSession {
+class ServiceSession {
 
     private static final int MAX_HISTORY = 1000;
 
@@ -53,7 +53,7 @@ class WebSession {
      */
     ResultSet result;
 
-    private final WebServer server;
+    private final ServiceConfig server;
 
     private final ArrayList<String> commandHistory;
 
@@ -63,7 +63,7 @@ class WebSession {
     private Bnf bnf;
     private boolean shutdownServerOnDisconnect;
 
-    WebSession(WebServer server) {
+    ServiceSession(ServiceConfig server) {
         this.server = server;
         // This must be stored in the session rather than in the server.
         // Otherwise, one client could allow

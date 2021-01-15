@@ -17,14 +17,16 @@
  */
 package org.lealone.opscenter.web;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.UUID;
 
 import org.lealone.common.util.CaseInsensitiveMap;
+import org.lealone.opscenter.service.ServiceConfig;
 import org.lealone.opscenter.web.deprecated.WebOpsHandler;
 import org.lealone.opscenter.web.deprecated.WebServer;
 import org.lealone.opscenter.web.thymeleaf.ThymeleafTemplateEngineImpl;
@@ -32,8 +34,8 @@ import org.lealone.server.http.HttpRouterFactory;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.common.template.TemplateEngine;
@@ -56,7 +58,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         }
         args[index] = "-ifNotExists";
         webServer.init(args);
-        org.lealone.opscenter.service.WebServer.server.init(args);
+        ServiceConfig.instance.init(args);
 
         // route的顺序很重要，所以下面三个调用不能乱
         setSessionHandler(vertx, router);
@@ -184,40 +186,46 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
 
     @Override
     protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
-        setFileUploadHandler(config, vertx, router);
-
-        // 提取购物车ID用于调用后续的购物车服务
-        router.route("/service/car_service/*").handler(routingContext -> {
-            String car = routingContext.session().get("car_id");
-            if (car == null) {
-                car = "car-" + UUID.randomUUID();
-                routingContext.session().put("car_id", car);
+        router.route("/service/ops_service/read_translations").handler(routingContext -> {
+            HttpServerRequest request = routingContext.request();
+            String language = request.getParam("language");
+            if (language == null) {
+                language = parseAcceptLanguageHeader(request);
+                if (language != null) {
+                    request.params().set("language", language);
+                }
             }
-            routingContext.request().params().set("car_id", car);
+            routingContext.next();
+        });
+
+        router.route("/service/*").handler(routingContext -> {
+            String jsessionid = routingContext.session().get("jsessionid");
+            if (jsessionid == null) {
+                jsessionid = UUID.randomUUID().toString();
+                routingContext.session().put("jsessionid", jsessionid);
+            }
+            routingContext.request().params().set("jsessionid", jsessionid);
             routingContext.next();
         });
 
         super.setHttpServiceHandler(config, vertx, router);
     }
 
-    private void setFileUploadHandler(Map<String, String> config, Vertx vertx, Router router) {
-        String uploadDirectory = config.get("upload_directory");
-        if (uploadDirectory == null)
-            uploadDirectory = config.get("web_root") + "/store/img/file_uploads";
-        BodyHandler bodyHandler = BodyHandler.create(uploadDirectory);
-        // 先不合并，留给父类setHttpServiceHandler中定义的BodyHandler合并，否则表单属性会重复
-        bodyHandler.setMergeFormAttributes(false);
-        router.post("/service/store_service/add_product").handler(bodyHandler);
-        router.post("/service/store_service/add_product").handler(routingContext -> {
-            for (FileUpload f : routingContext.fileUploads()) {
-                routingContext.request().params().set("logo", f.fileName());
-                File logoFile = new File(config.get("web_root") + "/store/img/", f.fileName());
-                File uploadedFile = new File(f.uploadedFileName());
-                uploadedFile.renameTo(logoFile);
-                break;
+    private static String parseAcceptLanguageHeader(HttpServerRequest request) {
+        String header = request.getHeader("accept-language");
+        if (header == null)
+            return null;
+        StringTokenizer tokenizer = new StringTokenizer(header, ",;");
+        while (tokenizer.hasMoreTokens()) {
+            String token = tokenizer.nextToken();
+            token = token.trim().replace('-', '_');
+            if (!token.startsWith("q=")) {
+                Locale locale = ServiceConfig.instance.getLocale(token);
+                if (locale != null)
+                    return locale.toString();
             }
-            routingContext.next();
-        });
+        }
+        return null;
     }
 
     private static void render(TemplateEngine templateEngine, RoutingContext routingContext, JsonObject context,

@@ -45,18 +45,31 @@ import org.h2.util.Utils;
  * The web server is a simple standalone HTTP server that implements the H2
  * Console application. It is not optimized for performance.
  */
-public class WebServer {
+public class ServiceConfig {
 
-    public static WebServer server = new WebServer();
+    public static ServiceConfig instance = new ServiceConfig();
 
-    static final String[][] LANGUAGES = { { "cs", "\u010ce\u0161tina" }, { "de", "Deutsch" }, { "en", "English" },
-            { "es", "Espa\u00f1ol" }, { "fr", "Fran\u00e7ais" }, { "hi", "Hindi \u0939\u093f\u0902\u0926\u0940" },
-            { "hu", "Magyar" }, { "ko", "\ud55c\uad6d\uc5b4" }, { "in", "Indonesia" }, { "it", "Italiano" },
-            { "ja", "\u65e5\u672c\u8a9e" }, { "nl", "Nederlands" }, { "pl", "Polski" },
-            { "pt_BR", "Portugu\u00eas (Brasil)" }, { "pt_PT", "Portugu\u00eas (Europeu)" },
-            { "ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439" }, { "sk", "Slovensky" }, { "tr", "T\u00fcrk\u00e7e" },
+    static final String[][] LANGUAGES = {
+            { "cs", "\u010ce\u0161tina" },
+            { "de", "Deutsch" },
+            { "en", "English" },
+            { "es", "Espa\u00f1ol" },
+            { "fr", "Fran\u00e7ais" },
+            { "hu", "Magyar" },
+            { "ko", "\ud55c\uad6d\uc5b4" },
+            { "in", "Indonesia" },
+            { "it", "Italiano" },
+            { "ja", "\u65e5\u672c\u8a9e" },
+            { "nl", "Nederlands" },
+            { "pl", "Polski" },
+            { "pt_BR", "Portugu\u00eas (Brasil)" },
+            { "pt_PT", "Portugu\u00eas (Europeu)" },
+            { "ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439" },
+            { "sk", "Slovensky" },
+            { "tr", "T\u00fcrk\u00e7e" },
             { "uk", "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430" },
-            { "zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)" }, { "zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)" }, };
+            { "zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)" },
+            { "zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)" }, };
 
     private static final String COMMAND_HISTORY = "commandHistory";
 
@@ -129,7 +142,7 @@ public class WebServer {
     private final HashMap<String, ConnectionInfo> connInfoMap = new HashMap<>();
 
     private long lastTimeoutCheck;
-    private final HashMap<String, WebSession> sessions = new HashMap<>();
+    private final HashMap<String, ServiceSession> sessions = new HashMap<>();
     private final HashSet<String> languages = new HashSet<>();
     private String startDateTime;
     private ShutdownHandler shutdownHandler;
@@ -171,11 +184,11 @@ public class WebServer {
      * @param sessionId the session id
      * @return the web session or null
      */
-    WebSession getSession(String sessionId) {
+    ServiceSession getSession(String sessionId) {
         long now = System.currentTimeMillis();
         if (lastTimeoutCheck + SESSION_TIMEOUT < now) {
             for (String id : new ArrayList<>(sessions.keySet())) {
-                WebSession session = sessions.get(id);
+                ServiceSession session = sessions.get(id);
                 if (session.lastAccess + SESSION_TIMEOUT < now) {
                     trace("timeout for " + id);
                     sessions.remove(id);
@@ -183,7 +196,7 @@ public class WebServer {
             }
             lastTimeoutCheck = now;
         }
-        WebSession session = sessions.get(sessionId);
+        ServiceSession session = sessions.get(sessionId);
         if (session != null) {
             session.lastAccess = System.currentTimeMillis();
         }
@@ -196,12 +209,12 @@ public class WebServer {
      * @param hostAddr the host address
      * @return the web session object
      */
-    WebSession createNewSession(String hostAddr) {
+    ServiceSession createNewSession(String hostAddr) {
         String newId;
         do {
             newId = generateSessionId();
         } while (sessions.get(newId) != null);
-        WebSession session = new WebSession(this);
+        ServiceSession session = new ServiceSession(this);
         session.lastAccess = System.currentTimeMillis();
         session.put("sessionId", newId);
         session.put("ip", hostAddr);
@@ -339,8 +352,24 @@ public class WebServer {
      * @param language the language
      * @return true if a translation is available
      */
-    boolean supportsLanguage(String language) {
+    public boolean supportsLanguage(String language) {
         return languages.contains(language);
+    }
+
+    public Locale getLocale(String token) {
+        if (ServiceConfig.instance.supportsLanguage(token)) {
+            Locale locale;
+            int dash = token.indexOf('_');
+            if (dash >= 0) {
+                String language = token.substring(0, dash);
+                String country = token.substring(dash + 1);
+                locale = new Locale(language, country);
+            } else {
+                locale = new Locale(token, "");
+            }
+            return locale;
+        }
+        return null;
     }
 
     /**
@@ -350,7 +379,7 @@ public class WebServer {
      * @param session the session
      * @param language the language
      */
-    void readTranslations(WebSession session, String language) {
+    void readTranslations(ServiceSession session, String language) {
         Properties text = new Properties();
         try {
             trace("translation: " + language);
@@ -372,7 +401,7 @@ public class WebServer {
 
     ArrayList<HashMap<String, Object>> getSessions() {
         ArrayList<HashMap<String, Object>> list = new ArrayList<>(sessions.size());
-        for (WebSession s : sessions.values()) {
+        for (ServiceSession s : sessions.values()) {
             list.add(s.getInfo());
         }
         return list;

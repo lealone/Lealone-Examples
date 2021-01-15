@@ -17,8 +17,6 @@
  */
 package org.lealone.opscenter.service;
 
-import static org.lealone.opscenter.service.WebServer.server;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.DriverManager;
@@ -64,12 +62,32 @@ public class OpsServiceImpl implements OpsService {
     };
 
     @Override
-    public String getLanguageCombo() {
+    public String getLanguages() {
         ArrayList<List<String>> list = new ArrayList<>(LANGUAGES.length);
         for (int i = 0; i < LANGUAGES.length; i++) {
             list.add(Arrays.asList(LANGUAGES[i]));
         }
         return new JsonArray(list).encode();
+    }
+
+    @Override
+    public String getSettings(String setting) {
+        JsonObject json = new JsonObject();
+        String[] settingNames = ServiceConfig.instance.getSettingNames();
+        if (setting == null && settingNames.length > 0) {
+            setting = settingNames[0];
+        }
+        ConnectionInfo info = ServiceConfig.instance.getSetting(setting);
+        if (info == null) {
+            info = new ConnectionInfo();
+        }
+        json.put("settings", new JsonArray(Arrays.asList(settingNames)));
+        json.put("setting", setting);
+        json.put("name", setting);
+        json.put("driver", info.driver);
+        json.put("url", info.url);
+        json.put("user", info.user);
+        return json.encode();
     }
 
     @Override
@@ -89,15 +107,16 @@ public class OpsServiceImpl implements OpsService {
     public String readTranslations(String language) {
         JsonObject json = new JsonObject();
         if (language == null)
-            language = "zh_cn";
-        Locale locale = new Locale(language, "");
-        language = locale.getLanguage();
+            language = "zh_CN";
+        ServiceConfig instance = ServiceConfig.instance;
+        Locale locale = instance.getLocale(language);
+        language = locale.toString();
         Map<String, Object> map = new HashMap<>();
         Properties text = new Properties();
         try {
-            server.trace("translation: " + language);
-            byte[] trans = server.getFile("_text_" + language + ".prop");
-            server.trace("  " + new String(trans));
+            instance.trace("translation: " + language);
+            byte[] trans = instance.getFile("_text_" + language.toLowerCase() + ".prop");
+            instance.trace("  " + new String(trans));
             text = SortedProperties.fromLines(new String(trans, StandardCharsets.UTF_8));
             // remove starting # (if not translated yet)
             for (Entry<Object, Object> entry : text.entrySet()) {
@@ -111,6 +130,7 @@ public class OpsServiceImpl implements OpsService {
         } catch (IOException e) {
             DbException.traceThrowable(e);
         }
+        map.put("language", language);
         json.put("text", new JsonObject(map));
         return json.encode();
     }

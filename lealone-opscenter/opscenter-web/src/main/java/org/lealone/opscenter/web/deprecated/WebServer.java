@@ -47,14 +47,28 @@ import org.h2.util.Utils;
  */
 public class WebServer {
 
-    static final String[][] LANGUAGES = { { "cs", "\u010ce\u0161tina" }, { "de", "Deutsch" }, { "en", "English" },
-            { "es", "Espa\u00f1ol" }, { "fr", "Fran\u00e7ais" }, { "hi", "Hindi \u0939\u093f\u0902\u0926\u0940" },
-            { "hu", "Magyar" }, { "ko", "\ud55c\uad6d\uc5b4" }, { "in", "Indonesia" }, { "it", "Italiano" },
-            { "ja", "\u65e5\u672c\u8a9e" }, { "nl", "Nederlands" }, { "pl", "Polski" },
-            { "pt_BR", "Portugu\u00eas (Brasil)" }, { "pt_PT", "Portugu\u00eas (Europeu)" },
-            { "ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439" }, { "sk", "Slovensky" }, { "tr", "T\u00fcrk\u00e7e" },
+    static final String[][] LANGUAGES = {
+            { "cs", "\u010ce\u0161tina" },
+            { "de", "Deutsch" },
+            { "en", "English" },
+            { "es", "Espa\u00f1ol" },
+            { "fr", "Fran\u00e7ais" },
+            { "hi", "Hindi \u0939\u093f\u0902\u0926\u0940" },
+            { "hu", "Magyar" },
+            { "ko", "\ud55c\uad6d\uc5b4" },
+            { "in", "Indonesia" },
+            { "it", "Italiano" },
+            { "ja", "\u65e5\u672c\u8a9e" },
+            { "nl", "Nederlands" },
+            { "pl", "Polski" },
+            { "pt_BR", "Portugu\u00eas (Brasil)" },
+            { "pt_PT", "Portugu\u00eas (Europeu)" },
+            { "ru", "\u0440\u0443\u0441\u0441\u043a\u0438\u0439" },
+            { "sk", "Slovensky" },
+            { "tr", "T\u00fcrk\u00e7e" },
             { "uk", "\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\u0430" },
-            { "zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)" }, { "zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)" }, };
+            { "zh_CN", "\u4e2d\u6587 (\u7b80\u4f53)" },
+            { "zh_TW", "\u4e2d\u6587 (\u7e41\u9ad4)" }, };
 
     private static final String COMMAND_HISTORY = "commandHistory";
 

@@ -3,8 +3,8 @@
         return {
             name: "",
             driver: "",
-			url: "jdbc:lealone:tcp://localhost:9210/lealone",
-		    user: "root",
+			url: "",
+		    user: "",
 			password: "",
 			language: "zh_CN",
             languages: [],
@@ -42,10 +42,20 @@
         }
     },
     mounted() {
+    	this.language = this.text.language;
         var that = this;
-        axios.get(OpsCenter.OpsService + '/get_language_combo')
+        axios.get(OpsCenter.OpsService + '/get_languages')
         .then(response => {
             that.languages = response.data;
+        });
+        axios.get(OpsCenter.OpsService + '/get_settings')
+        .then(response => {
+            that.settings = response.data.settings;
+            that.setting = response.data.setting;
+            that.name = response.data.name;
+            that.driver = response.data.driver;
+            that.url = response.data.url;
+            that.user = response.data.user;
         });
     }
 }

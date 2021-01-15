@@ -19,7 +19,8 @@ drop service if exists ops_service;
 
 -- 创建服务: web_service，会生成一个对应的WOpsService接口
 create service if not exists ops_service (
-  get_language_combo() varchar,
+  get_languages() varchar,
+  get_settings(setting varchar) varchar,
   read_translations(language varchar) varchar,
   login(url varchar, user varchar, password varchar) varchar
 )

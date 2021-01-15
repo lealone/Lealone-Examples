@@ -17,7 +17,9 @@ public interface OpsService {
             return new ServiceProxy(url);
     }
 
-    String getLanguageCombo();
+    String getLanguages();
+
+    String getSettings(String setting);
 
     String readTranslations(String language);
 
@@ -28,15 +30,17 @@ public interface OpsService {
         private final PreparedStatement ps1;
         private final PreparedStatement ps2;
         private final PreparedStatement ps3;
+        private final PreparedStatement ps4;
 
         private ServiceProxy(String url) {
-            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGE_COMBO()");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
-            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
+            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGES()");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_SETTINGS(?)");
+            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
+            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
         }
 
         @Override
-        public String getLanguageCombo() {
+        public String getLanguages() {
             try {
                 ResultSet rs = ps1.executeQuery();
                 rs.next();
@@ -44,15 +48,29 @@ public interface OpsService {
                 rs.close();
                 return ret;
             } catch (Throwable e) {
-                throw ClientServiceProxy.failed("OPS_SERVICE.GET_LANGUAGE_COMBO", e);
+                throw ClientServiceProxy.failed("OPS_SERVICE.GET_LANGUAGES", e);
+            }
+        }
+
+        @Override
+        public String getSettings(String setting) {
+            try {
+                ps2.setString(1, setting);
+                ResultSet rs = ps2.executeQuery();
+                rs.next();
+                String ret =  rs.getString(1);
+                rs.close();
+                return ret;
+            } catch (Throwable e) {
+                throw ClientServiceProxy.failed("OPS_SERVICE.GET_SETTINGS", e);
             }
         }
 
         @Override
         public String readTranslations(String language) {
             try {
-                ps2.setString(1, language);
-                ResultSet rs = ps2.executeQuery();
+                ps3.setString(1, language);
+                ResultSet rs = ps3.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -65,10 +83,10 @@ public interface OpsService {
         @Override
         public String login(String url, String user, String password) {
             try {
-                ps3.setString(1, url);
-                ps3.setString(2, user);
-                ps3.setString(3, password);
-                ResultSet rs = ps3.executeQuery();
+                ps4.setString(1, url);
+                ps4.setString(2, user);
+                ps4.setString(3, password);
+                ResultSet rs = ps4.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();

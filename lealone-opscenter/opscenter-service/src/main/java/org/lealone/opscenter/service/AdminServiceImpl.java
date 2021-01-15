@@ -17,7 +17,7 @@
  */
 package org.lealone.opscenter.service;
 
-import static org.lealone.opscenter.service.WebServer.server;
+import static org.lealone.opscenter.service.ServiceConfig.instance;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -44,7 +44,7 @@ import org.h2.util.Utils10;
 import org.lealone.opscenter.service.generated.AdminService;
 
 public class AdminServiceImpl implements AdminService {
-    WebSession session;
+    ServiceSession session;
 
     @Override
     public String save() {
@@ -60,7 +60,7 @@ public class AdminServiceImpl implements AdminService {
         // session.put("admin", true);
         // return back != null ? back : "admin.do";
 
-        if (password == null || password.isEmpty() || !server.checkAdminPassword(password)) {
+        if (password == null || password.isEmpty() || !instance.checkAdminPassword(password)) {
             return "failed";
         }
 
@@ -68,10 +68,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public String admin() {
-        session.put("port", Integer.toString(server.getPort()));
-        session.put("allowOthers", Boolean.toString(server.getAllowOthers()));
-        session.put("ssl", String.valueOf(server.getSSL()));
-        session.put("sessions", server.getSessions());
+        session.put("port", Integer.toString(instance.getPort()));
+        session.put("allowOthers", Boolean.toString(instance.getAllowOthers()));
+        session.put("ssl", String.valueOf(instance.getSSL()));
+        session.put("sessions", instance.getSessions());
         return "admin.jsp";
     }
 
@@ -80,20 +80,20 @@ public class AdminServiceImpl implements AdminService {
             Properties prop = new SortedProperties();
             int port = Integer.decode(port0);
             prop.setProperty("webPort", Integer.toString(port));
-            server.setPort(port);
+            instance.setPort(port);
             boolean allowOthers = Utils.parseBoolean(allowOthers0, false, false);
             prop.setProperty("webAllowOthers", String.valueOf(allowOthers));
-            server.setAllowOthers(allowOthers);
+            instance.setAllowOthers(allowOthers);
             boolean ssl = Utils.parseBoolean(ssl0, false, false);
             prop.setProperty("webSSL", String.valueOf(ssl));
-            server.setSSL(ssl);
-            byte[] adminPassword = server.getAdminPassword();
+            instance.setSSL(ssl);
+            byte[] adminPassword = instance.getAdminPassword();
             if (adminPassword != null) {
                 prop.setProperty("webAdminPassword", StringUtils.convertBytesToHex(adminPassword));
             }
-            server.saveProperties(prop);
+            instance.saveProperties(prop);
         } catch (Exception e) {
-            server.trace(e.toString());
+            instance.trace(e.toString());
         }
         return admin();
     }
@@ -138,7 +138,7 @@ public class AdminServiceImpl implements AdminService {
                 // session.put("toolResult", getStackTrace(0, e, true));
             }
         } catch (Exception e) {
-            server.traceError(e);
+            instance.traceError(e);
         }
         return "tools.jsp";
     }
@@ -147,7 +147,7 @@ public class AdminServiceImpl implements AdminService {
         Map<?, ?> p = Map.class.cast(session.map.get("text"));
         @SuppressWarnings("unchecked")
         Map<Object, Object> p2 = (Map<Object, Object>) p;
-        String file = server.startTranslate(p2);
+        String file = instance.startTranslate(p2);
         session.put("translationFile", file);
         return "helpTranslate.jsp";
     }
@@ -158,7 +158,7 @@ public class AdminServiceImpl implements AdminService {
      * @return the page to display
      */
     public String shutdown() {
-        server.shutdown();
+        instance.shutdown();
         return "admin.jsp";
     }
 }

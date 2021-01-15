@@ -74,11 +74,9 @@ Initial Developer: H2 Group
     </p>
     </form>
     <hr />
-    <p>
-        <form name="translate" method="post" action="adminStartTranslate.do?jsessionid={{ sessionId }}">
-            <input type="submit" class="button" :value="text.adminTranslateStart" />
-        </form>
-    </p>
+    <form name="translate" method="post" action="adminStartTranslate.do?jsessionid={{ sessionId }}">
+      <input type="submit" class="button" :value="text.adminTranslateStart" />
+    </form>
     <p>
         {{ text.adminTranslateHelp }}
     </p>
