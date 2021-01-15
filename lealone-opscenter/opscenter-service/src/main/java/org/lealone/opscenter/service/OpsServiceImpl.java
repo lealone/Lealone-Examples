@@ -74,7 +74,7 @@ public class OpsServiceImpl implements OpsService {
     public String getSettings(String setting) {
         JsonObject json = new JsonObject();
         String[] settingNames = ServiceConfig.instance.getSettingNames();
-        if (setting == null && settingNames.length > 0) {
+        if ((setting == null || setting.isEmpty()) && settingNames.length > 0) {
             setting = settingNames[0];
         }
         ConnectionInfo info = ServiceConfig.instance.getSetting(setting);
@@ -88,6 +88,30 @@ public class OpsServiceImpl implements OpsService {
         json.put("url", info.url);
         json.put("user", info.user);
         return json.encode();
+    }
+
+    @Override
+    public String settingSave(String name, String driver, String url, String user) {
+        ConnectionInfo info = new ConnectionInfo();
+        info.name = name;
+        info.driver = driver;
+        info.url = url;
+        info.user = user;
+        ServiceConfig.instance.updateSetting(info);
+        ServiceConfig.instance.saveProperties(null);
+        return name;
+    }
+
+    @Override
+    public String settingRemove(String name) {
+        String setting = "";
+        ServiceConfig.instance.removeSetting(name);
+        ArrayList<ConnectionInfo> settings = ServiceConfig.instance.getSettings();
+        if (!settings.isEmpty()) {
+            setting = settings.get(0).name;
+        }
+        ServiceConfig.instance.saveProperties(null);
+        return setting;
     }
 
     @Override

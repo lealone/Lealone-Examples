@@ -21,6 +21,10 @@ public interface OpsService {
 
     String getSettings(String setting);
 
+    String settingSave(String name, String driver, String url, String user);
+
+    String settingRemove(String name);
+
     String readTranslations(String language);
 
     String login(String url, String user, String password);
@@ -31,12 +35,16 @@ public interface OpsService {
         private final PreparedStatement ps2;
         private final PreparedStatement ps3;
         private final PreparedStatement ps4;
+        private final PreparedStatement ps5;
+        private final PreparedStatement ps6;
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGES()");
             ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_SETTINGS(?)");
-            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
-            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
+            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE SETTING_SAVE(?, ?, ?, ?)");
+            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE SETTING_REMOVE(?)");
+            ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
+            ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
         }
 
         @Override
@@ -67,10 +75,41 @@ public interface OpsService {
         }
 
         @Override
+        public String settingSave(String name, String driver, String url, String user) {
+            try {
+                ps3.setString(1, name);
+                ps3.setString(2, driver);
+                ps3.setString(3, url);
+                ps3.setString(4, user);
+                ResultSet rs = ps3.executeQuery();
+                rs.next();
+                String ret =  rs.getString(1);
+                rs.close();
+                return ret;
+            } catch (Throwable e) {
+                throw ClientServiceProxy.failed("OPS_SERVICE.SETTING_SAVE", e);
+            }
+        }
+
+        @Override
+        public String settingRemove(String name) {
+            try {
+                ps4.setString(1, name);
+                ResultSet rs = ps4.executeQuery();
+                rs.next();
+                String ret =  rs.getString(1);
+                rs.close();
+                return ret;
+            } catch (Throwable e) {
+                throw ClientServiceProxy.failed("OPS_SERVICE.SETTING_REMOVE", e);
+            }
+        }
+
+        @Override
         public String readTranslations(String language) {
             try {
-                ps3.setString(1, language);
-                ResultSet rs = ps3.executeQuery();
+                ps5.setString(1, language);
+                ResultSet rs = ps5.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -83,10 +122,10 @@ public interface OpsService {
         @Override
         public String login(String url, String user, String password) {
             try {
-                ps4.setString(1, url);
-                ps4.setString(2, user);
-                ps4.setString(3, password);
-                ResultSet rs = ps4.executeQuery();
+                ps6.setString(1, url);
+                ps6.setString(2, user);
+                ps6.setString(3, password);
+                ResultSet rs = ps6.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();

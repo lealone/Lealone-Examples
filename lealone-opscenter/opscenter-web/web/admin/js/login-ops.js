@@ -37,8 +37,39 @@
         testConnection() {
         },
         settingSave() {
+            var that = this;
+            axios.post(OpsCenter.OpsService + '/setting_save', 
+            		  { name: this.name, driver: this.driver, url: this.url, user: this.user })
+            .then(function (response) { 
+                location.href = "/admin/index.html";
+            })
+            .catch(function (error) {
+                console.log(error);
+                that.errorMessage = "配置保存失败";
+            });
         },
         settingRemove() {
+            var that = this;
+            axios.post(OpsCenter.OpsService + '/setting_remove', { name: this.name })
+            .then(function (response) { 
+                location.href = "/admin/index.html";
+            })
+            .catch(function (error) {
+                console.log(error);
+                that.errorMessage = "配置删除失败";
+            });
+        },
+        getSettings() {
+            var that = this;
+            axios.get(OpsCenter.OpsService + '/get_settings?setting=' + this.setting)
+            .then(response => {
+                that.settings = response.data.settings;
+                that.setting = response.data.setting;
+                that.name = response.data.name;
+                that.driver = response.data.driver;
+                that.url = response.data.url;
+                that.user = response.data.user;
+            });
         }
     },
     mounted() {
@@ -48,14 +79,6 @@
         .then(response => {
             that.languages = response.data;
         });
-        axios.get(OpsCenter.OpsService + '/get_settings')
-        .then(response => {
-            that.settings = response.data.settings;
-            that.setting = response.data.setting;
-            that.name = response.data.name;
-            that.driver = response.data.driver;
-            that.url = response.data.url;
-            that.user = response.data.user;
-        });
+        this.getSettings(); 
     }
 }

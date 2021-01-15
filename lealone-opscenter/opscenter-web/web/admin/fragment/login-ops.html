@@ -27,11 +27,11 @@ Initial Developer: H2 Group
                 <th class="login">{{ text.login.login }}</th>
                 <th class="login"></th>
             </tr>
-            <tr><td  class="login" colspan="2"></td></tr>
+            <tr><td class="login" colspan="2"></td></tr>
             <tr class="login">
                 <td class="login">{{ text.login.savedSetting }}:</td>
                 <td class="login">
-                    <select v-model="setting" size="1" style="width:300px">
+                    <select v-model="setting" size="1" style="width:300px" @change="getSettings">
                       <template v-for="s in settings">
                         <option :value="s" :selected="s == setting">{{ s }}</option>
                       </template>
@@ -41,7 +41,7 @@ Initial Developer: H2 Group
             <tr class="login">
                 <td class="login">{{ text.login.settingName }}:</td>
                 <td class="login" style="width:200px;">
-                    <input type="text" name="name" :value="name" style="width:200px;margin-right: 2px"/>
+                    <input type="text" v-model="name" style="width:200px;margin-right: 2px"/>
                     <input type="button" class="button" :value="text.login.save" @click.prevent="settingSave" style="margin-right: 2px"/>
                     <input type="button" class="button" :value="text.login.remove" @click.prevent="settingRemove"/>
                 </td>
@@ -53,7 +53,7 @@ Initial Developer: H2 Group
             </tr>
             <tr class="login">
                 <td class="login">{{ text.login.driverClass }}:</td>
-                <td class="login"><input type="text" name="driver" :value="driver" style="width:300px;" /></td>
+                <td class="login"><input type="text" v-model="driver" style="width:300px;" /></td>
             </tr>
             <tr class="login">
                 <td class="login">

@@ -21,6 +21,8 @@ drop service if exists ops_service;
 create service if not exists ops_service (
   get_languages() varchar,
   get_settings(setting varchar) varchar,
+  setting_save(name varchar, driver varchar, url varchar, user varchar) varchar,
+  setting_remove(name varchar) varchar,
   read_translations(language varchar) varchar,
   login(url varchar, user varchar, password varchar) varchar
 )
