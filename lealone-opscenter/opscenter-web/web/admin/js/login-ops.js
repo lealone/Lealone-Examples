@@ -26,6 +26,8 @@
                 that.errorMessage = "用户名或密码不正确,请重新输入";
             });
         },
+        testConnection() {
+        },
         changeLanguage() {
             var that = this;
             axios.get(OpsCenter.OpsService + '/read_translations?language=' + this.language)
@@ -33,8 +35,6 @@
                 that.txt = response.data.text;
                 that.text = OpsCenter.i18n.parse(that.txt);
             });
-        },
-        testConnection() {
         },
         settingSave() {
             var that = this;

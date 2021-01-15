@@ -49,14 +49,17 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
 
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
-        int size = config.size() * 2 + 1;
+        int size = config.size() * 2 + 3;
         String[] args = new String[size];
         int index = 0;
         for (Map.Entry<String, String> e : config.entrySet()) {
             args[index++] = e.getKey();
             args[index++] = e.getValue();
         }
-        args[index] = "-ifNotExists";
+        // 临时测试用
+        args[index++] = "-ifNotExists";
+        args[index++] = "-webAdminPassword";
+        args[index++] = "root";
         webServer.init(args);
         ServiceConfig.instance.init(args);
 

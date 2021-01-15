@@ -42,14 +42,11 @@ import org.h2.util.Tool;
 import org.h2.util.Utils;
 import org.h2.util.Utils10;
 import org.lealone.opscenter.service.generated.AdminService;
+import org.lealone.orm.json.JsonArray;
+import org.lealone.orm.json.JsonObject;
 
 public class AdminServiceImpl implements AdminService {
     ServiceSession session;
-
-    @Override
-    public String save() {
-        return null;
-    }
 
     @Override
     public String login(String password) {
@@ -67,14 +64,17 @@ public class AdminServiceImpl implements AdminService {
         return "ok";
     }
 
+    @Override
     public String admin() {
-        session.put("port", Integer.toString(instance.getPort()));
-        session.put("allowOthers", Boolean.toString(instance.getAllowOthers()));
-        session.put("ssl", String.valueOf(instance.getSSL()));
-        session.put("sessions", instance.getSessions());
-        return "admin.jsp";
+        JsonObject json = new JsonObject();
+        json.put("port", Integer.toString(instance.getPort()));
+        json.put("allowOthers", Boolean.toString(instance.getAllowOthers()));
+        json.put("ssl", String.valueOf(instance.getSSL()));
+        json.put("sessions", new JsonArray(instance.getSessions()));
+        return json.encode();
     }
 
+    @Override
     public String save(String port0, String allowOthers0, String ssl0) {
         try {
             Properties prop = new SortedProperties();
@@ -98,6 +98,7 @@ public class AdminServiceImpl implements AdminService {
         return admin();
     }
 
+    @Override
     public String tools(String tool0, String args) {
         try {
             String toolName = tool0;
@@ -140,16 +141,19 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             instance.traceError(e);
         }
-        return "tools.jsp";
+        return "ok";
     }
 
+    @Override
     public String startTranslate() {
         Map<?, ?> p = Map.class.cast(session.map.get("text"));
         @SuppressWarnings("unchecked")
         Map<Object, Object> p2 = (Map<Object, Object>) p;
         String file = instance.startTranslate(p2);
         session.put("translationFile", file);
-        return "helpTranslate.jsp";
+        JsonObject json = new JsonObject();
+        json.put("translationFile", file);
+        return json.encode(); // "helpTranslate.jsp";
     }
 
     /**
@@ -157,8 +161,9 @@ public class AdminServiceImpl implements AdminService {
      *
      * @return the page to display
      */
+    @Override
     public String shutdown() {
         instance.shutdown();
-        return "admin.jsp";
+        return "ok";
     }
 }

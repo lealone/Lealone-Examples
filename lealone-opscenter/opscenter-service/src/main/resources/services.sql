@@ -7,7 +7,11 @@ drop service if exists admin_service;
 -- 创建服务: admin_service，会生成一个对应的AdminService接口
 create service if not exists admin_service (
   login(password varchar) varchar,
-  save() varchar
+  save(port varchar, allow_others varchar, ssl varchar) varchar,
+  admin() varchar,
+  start_translate() varchar,
+  shutdown() varchar,
+  tools(tool varchar, args varchar) varchar
 )
 package @packageName
 implement by 'org.lealone.opscenter.service.AdminServiceImpl' -- AdminService接口的默认实现类
