@@ -86,7 +86,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
             return;
 
         System.setProperty("vertxweb.environment", "development");
-        router.route("/fragment/*").handler(routingContext -> {
+        router.routeWithRegex(".*/fragment/.*").handler(routingContext -> {
             routingContext.fail(404);// 不允许访问Thymeleaf的fragment文件
         });
 

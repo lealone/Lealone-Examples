@@ -15,7 +15,7 @@
 <div id="userApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><div th:replace="/fragment/home/top.html :: top"></div></td>
+    <td><div th:replace="/home/fragment/top.html :: top"></div></td>
   </tr>
   <tr>
     <td>
@@ -25,16 +25,16 @@
     </td>
   </tr>
   <tr>
-    <td><div th:replace="/fragment/home/footer.html :: footer"></div></td>
+    <td><div th:replace="/home/fragment/footer.html :: footer"></div></td>
   </tr>
 </table>
 </div>
 
-<template id="login" th:insert="/fragment/user/login.html :: login"/>
-<template id="account" th:insert="/fragment/user/account.html :: account"/>
-<template id="register" th:insert="/fragment/user/register.html :: register"/>
-<template id="register-account" th:insert="/fragment/user/register-account.html :: register-account"/>
-<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="login" th:insert="/user/fragment/login.html :: login"/>
+<template id="account" th:insert="/user/fragment/account.html :: account"/>
+<template id="register" th:insert="/user/fragment/register.html :: register"/>
+<template id="register-account" th:insert="/user/fragment/register-account.html :: register-account"/>
+<template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
 
 <script src="/user/js/login.js"></script>
 <script src="/user/js/account.js"></script>

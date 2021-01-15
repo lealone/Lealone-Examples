@@ -15,7 +15,7 @@
 <div id="storeApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><div th:replace="/fragment/home/top.html :: top"></div></td>
+    <td><div th:replace="/home/fragment/top.html :: top"></div></td>
   </tr>
   <tr>
     <td align="center">
@@ -31,18 +31,18 @@
     </td>
   </tr>
   <tr>
-    <td><div th:replace="/fragment/home/footer.html :: footer"></div></td>
+    <td><div th:replace="/home/fragment/footer.html :: footer"></div></td>
   </tr>
 </table>
 </div>
 
-<template id="category-list" th:insert="/fragment/store/category-list.html :: category-list"/>
-<template id="item-list" th:insert="/fragment/store/item-list.html :: item-list"/>
-<template id="view-cart" th:insert="/fragment/store/view-cart.html :: view-cart"/>
-<template id="edit-category-list" th:insert="/fragment/store/edit/category-list.html :: edit-category-list"/>
-<template id="edit-item-list" th:insert="/fragment/store/edit/item-list.html :: edit-item-list"/>
-<template id="add-product" th:insert="/fragment/store/edit/add-product.html :: add-product"/>
-<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="category-list" th:insert="/store/fragment/category-list.html :: category-list"/>
+<template id="item-list" th:insert="/store/fragment/item-list.html :: item-list"/>
+<template id="view-cart" th:insert="/store/fragment/view-cart.html :: view-cart"/>
+<template id="edit-category-list" th:insert="/store/fragment/edit/category-list.html :: edit-category-list"/>
+<template id="edit-item-list" th:insert="/store/fragment/edit/item-list.html :: edit-item-list"/>
+<template id="add-product" th:insert="/store/fragment/edit/add-product.html :: add-product"/>
+<template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
 
 <script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>

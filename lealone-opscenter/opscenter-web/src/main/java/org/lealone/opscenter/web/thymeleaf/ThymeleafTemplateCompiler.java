@@ -88,6 +88,9 @@ public class ThymeleafTemplateCompiler {
 
     private void compileRecursive(File targetDir, File file) throws IOException {
         String fileName = file.getName();
+        // 跳过eclipse生成的文件
+        if (fileName.startsWith("."))
+            return;
         if (file.isDirectory()) {
             if (fileName.equals(fragmentDirName))
                 return;

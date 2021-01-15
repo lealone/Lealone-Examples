@@ -32,10 +32,10 @@
     </td>
     <td><img src="/home/img/dot_transparent.png" width="30"/></td>
     <td width="100%" valign="top">
-      <div th:replace="/fragment/home/top-no-logo.html :: top-no-logo"></div>
+      <div th:replace="/home/fragment/top-no-logo.html :: top-no-logo"></div>
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr valign="bottom">
-          <td width="10" align="left"><div th:replace="/fragment/home/tabs.html :: tabs"></div></td>
+          <td width="10" align="left"><div th:replace="/home/fragment/tabs.html :: tabs"></div></td>
         </tr>
         <tr>
           <td>
@@ -53,15 +53,15 @@
   </tr>
   <tr>
     <td colspan="3" valign="top">
-      <div th:replace="/fragment/home/footer.html :: footer"></div>
+      <div th:replace="/home/fragment/footer.html :: footer"></div>
     </td>
   </tr>
 </table>
 </div>
 
-<template id="login" th:insert="/fragment/user/login.html :: login"/>
-<template id="category-list" th:insert="/fragment/store/category-list.html :: category-list"/>
-<template id="petstore-nav" th:insert="/fragment/home/nav.html :: nav"/>
+<template id="login" th:insert="/user/fragment/login.html :: login"/>
+<template id="category-list" th:insert="/store/fragment/category-list.html :: category-list"/>
+<template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
 
 <script src="/store/js/category-list.js"></script>
 <script src="/user/js/login.js"></script>
