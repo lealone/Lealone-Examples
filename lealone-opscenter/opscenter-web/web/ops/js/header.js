@@ -7,10 +7,15 @@
     methods: {
         setAutoCommit() {
             var result = "Auto commit is now " + (this.autoCommit ? "ON" : "OFF");
-            this.lealone.route('ops', 'result', {result: result});
+            var that = this;
+            var sql = "";
+            axios.post(OpsCenter.QueryService + '/query', { sql: sql })
+            .then(function (response) {
+            	lealone.route('ops', 'result', {result: result});
+            })
         },
         refreshTables() {
-            this.lealone.route('ops', 'result', {result: "refreshTables: TODO"});
+            lealone.route('ops', 'result', {result: "refreshTables: TODO"});
         },
         commit() {
             this.lealone.route('ops', 'result', {result: "sql=COMMIT: TODO"});

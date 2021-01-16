@@ -129,7 +129,7 @@ public class OpsCenterRouterFactory extends HttpRouterFactory {
         router.route().handler(routingContext -> {
             String file = routingContext.request().path();
             if (file.startsWith("/ops/") || file.startsWith("/common/") || file.startsWith("/admin/")
-                    || file.startsWith("/service/"))
+                    || file.startsWith("/service/") || file.startsWith("/_lealone_sockjs_/"))
                 routingContext.next();
             else if (file.endsWith(".css"))
                 routingContext.redirect("/common/css/opscenter.css");

@@ -3,10 +3,10 @@
         return {
             name: "",
             driver: "",
-			url: "",
-		    user: "",
-			password: "",
-			language: "zh_CN",
+    	    url: "",
+            user: "",
+    	    password: "",
+    	    language: "zh_CN",
             languages: [],
             setting: "",
             settings: [],
@@ -39,7 +39,7 @@
         settingSave() {
             var that = this;
             axios.post(OpsCenter.OpsService + '/setting_save', 
-            		  { name: this.name, driver: this.driver, url: this.url, user: this.user })
+                  { name: this.name, driver: this.driver, url: this.url, user: this.user })
             .then(function (response) { 
                 location.href = "/admin/index.html";
             })
