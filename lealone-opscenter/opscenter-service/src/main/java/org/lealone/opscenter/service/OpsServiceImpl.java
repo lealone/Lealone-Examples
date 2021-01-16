@@ -67,7 +67,9 @@ public class OpsServiceImpl implements OpsService {
         for (int i = 0; i < LANGUAGES.length; i++) {
             list.add(Arrays.asList(LANGUAGES[i]));
         }
-        return new JsonArray(list).encode();
+        JsonObject json = new JsonObject();
+        json.put("languages", new JsonArray(list));
+        return json.encode();
     }
 
     @Override
@@ -122,7 +124,7 @@ public class OpsServiceImpl implements OpsService {
         try {
             DriverManager.getConnection(url, prop);
         } catch (SQLException e) {
-            return "failed";
+            throw new RuntimeException("failed to login: " + e.getMessage(), e);
         }
         return "ok";
     }

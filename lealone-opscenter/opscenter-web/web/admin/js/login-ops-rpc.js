@@ -18,8 +18,7 @@
             this.errorMessage = errorMessage;
         },
         login() {
-            OpsService.login(this.url, this.user, this.password, data => {
-                console.log(data);
+            OpsService.login(this.url, this.user, this.password, this, data => {
                 location.href = "/ops/index.html";
             });
         },
@@ -32,31 +31,22 @@
             });
         },
         settingSave() {
-            OpsService.settingSave(this.name, this.driver, this.url, this.user, data => { 
+            OpsService.settingSave(this.name, this.driver, this.url, this.user, this, data => { 
                 location.href = "/admin/index.html";
             });
         },
         settingRemove() {
-            OpsService.settingRemove(this.name, data => { 
+            OpsService.settingRemove(this.name, this, data => { 
                 location.href = "/admin/index.html";
             });
         },
         getSettings() {
-            OpsService.getSettings(this.setting, data => { 
-                this.settings = data.settings;
-                this.setting = data.setting;
-                this.name = data.name;
-                this.driver = data.driver;
-                this.url = data.url;
-                this.user = data.user;
-            });
+            OpsService.getSettings(this.setting, this);
         }
     },
     mounted() {
         this.language = this.text.language;  
-        OpsService.getLanguages(this.setting, data => { 
-            this.languages = data;
-        });
+        OpsService.getLanguages(this);
         this.getSettings(); 
     }
 }

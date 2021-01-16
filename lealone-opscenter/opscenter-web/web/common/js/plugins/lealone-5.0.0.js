@@ -6,7 +6,7 @@ L.call = function(object, apiName) {
         initSockJS(object.sockjsUrl);
     }
     var serviceName = object.serviceName + "." + apiName;
-    //格式: type;serviceName;[arg1,arg2,...argn]
+    // 格式: type;serviceName;[arg1,arg2,...argn]
     var msg = "1;" + serviceName;
     var length = arguments.length;
     if(typeof arguments[length - 1] == 'function') {
@@ -17,6 +17,14 @@ L.call = function(object, apiName) {
     if(length > 2) {
         msg += ";[";
         for(var j = 2; j < length; j++) {
+            if(arguments[j].onServiceException) {
+                if(!L.services[serviceName]) {
+                    L.services[serviceName] = function() {};
+                }
+                L.services[serviceName]["onServiceException"] = arguments[j].onServiceException;
+                L.services[serviceName]["serviceObject"] = arguments[j];
+                continue;
+            }
             if(j != 2) {
                 msg += ",";
             }
@@ -60,7 +68,7 @@ L.getService = function(serviceName) {
 };
 
 function initSockJS(sockjsUrl) {
-    //var sockjs = new SockJS(sockjsUrl, {"transports":"xhr_streaming"});
+    // var sockjs = new SockJS(sockjsUrl, {"transports":"xhr_streaming"});
     var sockjs = new SockJS(sockjsUrl);
     L.sockjs = sockjs;
     sockjs.onopen = function() {
@@ -79,20 +87,48 @@ function initSockJS(sockjsUrl) {
         var result = a[2];
         switch(type) {
         case 2: // 正常返回
-            //如果有回调就执行它
+            // 如果有回调就执行它
             if(L.services[serviceName] && L.services[serviceName]["callback"]) {
                 try {
-                    result = JSON.parse(result); //尝试转换成json对象
+                    result = JSON.parse(result); // 尝试转换成json对象
                 } catch(e) {
                 }
                 L.services[serviceName]["callback"](result);
             }
+            else if(L.services[serviceName] && L.services[serviceName]["serviceObject"]) {
+                try {
+                    var serviceObject = L.services[serviceName]["serviceObject"];
+                    // var keys = Object.keys(serviceObject);
+                    try {
+                        result = JSON.parse(result); // 尝试转换成json对象
+                    } catch(e) {
+                        return; // 不是json对象就不管了
+                    }
+                    for(var key in result) {
+                        // 找不到hasOwnProperty方法
+                        // if(serviceObject.hasOwnProperty(key))
+                        // if(keys.indexOf(key) >= 0) //vue3有警告
+                        if(serviceObject[key] != undefined)
+                            serviceObject[key] = result[key];
+                    }
+                } catch(e) {
+                    console.log(e);
+                } 
+            }
             break;
-        case 3: // error info
-            console.log("failed to call service: " + serviceName + ", backend error: " + result)
+        case 3: // error
+            var msg = "failed to call service: " + serviceName + ", backend error: " + result;
+            if(L.services[serviceName] && L.services[serviceName]["onServiceException"]) 
+                L.services[serviceName]["onServiceException"](msg);
+            else
+                console.log(msg)
             break;
         default:
-            console.log("unknown response type: " + type + ", serviceName: " + serviceName + ", data: " + e.data)
+            var msg = "unknown response type: " + type + ", serviceName: " + serviceName + ", data: " + e.data;
+            if(L.services[serviceName] && L.services[serviceName]["onServiceException"]) 
+                 L.services[serviceName]["onServiceException"](msg);
+            else
+                 console.log(msg)
         }
     };
     sockjs.onclose = function() {
@@ -143,11 +179,13 @@ const Lealone = {
             return;
         }
         // 加两次，不然popstate有可能返回null，原因不明
-        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
+        // window.history.pushState(state, page, "/" + this.screen + "/" +
+        // page);
         window.history.pushState(state, page, null);
         this.page = page;
         state = JSON.stringify(this);
-        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
+        // window.history.pushState(state, page, "/" + this.screen + "/" +
+        // page);
         window.history.pushState(state, page, null);
     },
 
@@ -207,7 +245,7 @@ const Lealone = {
         app.mixin({
             data() { return { lealone: that } },
             mounted() {
-                window.lealone = this.lealone; //这样组件在内部使用this.lealone和lealone都是一样的
+                window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的
             }
         });
     }
