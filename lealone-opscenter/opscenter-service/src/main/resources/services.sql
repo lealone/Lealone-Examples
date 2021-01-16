@@ -22,7 +22,7 @@ generate code @srcPath;
 -- 删除服务: ops_service
 drop service if exists ops_service;
 
--- 创建服务: web_service，会生成一个对应的WOpsService接口
+-- 创建服务: ops_service，会生成一个对应的OpsService接口
 create service if not exists ops_service (
   get_languages() varchar,
   get_settings(setting varchar) varchar,
@@ -33,4 +33,17 @@ create service if not exists ops_service (
 )
 package @packageName
 implement by 'org.lealone.opscenter.service.OpsServiceImpl' -- OpsService接口的默认实现类
+generate code @srcPath;
+
+
+-- 删除服务: query_service
+drop service if exists query_service;
+
+-- 创建服务: query_service，会生成一个对应的QueryService接口
+create service if not exists query_service (
+  query(sql varchar) varchar,
+  edit_result(row int, op int, value varchar) varchar
+)
+package @packageName
+implement by 'org.lealone.opscenter.service.QueryServiceImpl' -- QueryService接口的默认实现类
 generate code @srcPath;
