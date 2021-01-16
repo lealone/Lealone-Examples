@@ -66,10 +66,10 @@ OpsCenter.i18n = {
     }
 }
 var mount = function(app, appName) {
-	//混入全局的logout方法
+    //混入全局的logout方法
     app.mixin({
         methods: {
-        	logout() {
+            logout() {
                 var that = this;
                 axios.post(OpsCenter.AdminService + '/logout')
                 .then(function (response) { 
