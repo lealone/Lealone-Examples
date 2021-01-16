@@ -7,6 +7,7 @@ drop service if exists admin_service;
 -- 创建服务: admin_service，会生成一个对应的AdminService接口
 create service if not exists admin_service (
   login(password varchar) varchar,
+  logout() varchar,
   save(port varchar, allow_others varchar, ssl varchar) varchar,
   admin() varchar,
   start_translate() varchar,

@@ -9,13 +9,6 @@
             var result = "Auto commit is now " + (this.autoCommit ? "ON" : "OFF");
             this.lealone.route('ops', 'result', {result: result});
         },
-        logout() {
-            localStorage.removeItem("currentUser");
-            axios.get(OpsCenter.OpsService + '/logout')
-            .then(function (response) {
-                location.href = "/admin/index.html";
-            });
-        },
         refreshTables() {
             this.lealone.route('ops', 'result', {result: "refreshTables: TODO"});
         },

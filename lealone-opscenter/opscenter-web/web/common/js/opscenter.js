@@ -61,6 +61,18 @@ OpsCenter.i18n = {
     }
 }
 var mount = function(app, appName) {
+	//混入全局的logout方法
+    app.mixin({
+        methods: {
+        	logout() {
+                var that = this;
+                axios.post(OpsCenter.AdminService + '/logout')
+                .then(function (response) { 
+                    location.href = "/admin/index.html";
+                });
+            }
+        }
+    });
     OpsCenter.i18n.loadAndMount(app, appName);
 }
 

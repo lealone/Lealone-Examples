@@ -15,7 +15,7 @@ Initial Developer: H2 Group
 
 <h1>{{ text.a.tools }}</h1>
 <p>
-<a href="logout.do?jsessionid={{ sessionId}">{{ text.adminLogout }}</a>
+<a href="/" @click.prevent="logout">{{ text.adminLogout }}</a>
 </p>
 <hr />
 <p>

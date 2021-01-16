@@ -65,6 +65,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public String logout() {
+        return "ok";
+    }
+
+    @Override
     public String admin() {
         JsonObject json = new JsonObject();
         json.put("port", Integer.toString(instance.getPort()));
