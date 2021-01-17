@@ -29,6 +29,8 @@ public interface OpsService {
 
     String login(String url, String user, String password);
 
+    String testConnection();
+
     static class ServiceProxy implements OpsService {
 
         private final PreparedStatement ps1;
@@ -37,6 +39,7 @@ public interface OpsService {
         private final PreparedStatement ps4;
         private final PreparedStatement ps5;
         private final PreparedStatement ps6;
+        private final PreparedStatement ps7;
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGES()");
@@ -45,6 +48,7 @@ public interface OpsService {
             ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE SETTING_REMOVE(?)");
             ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
             ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
+            ps7 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE TEST_CONNECTION()");
         }
 
         @Override
@@ -132,6 +136,19 @@ public interface OpsService {
                 return ret;
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("OPS_SERVICE.LOGIN", e);
+            }
+        }
+
+        @Override
+        public String testConnection() {
+            try {
+                ResultSet rs = ps7.executeQuery();
+                rs.next();
+                String ret =  rs.getString(1);
+                rs.close();
+                return ret;
+            } catch (Throwable e) {
+                throw ClientServiceProxy.failed("OPS_SERVICE.TEST_CONNECTION", e);
             }
         }
     }

@@ -42,6 +42,111 @@ L.call = function(object, apiName) {
     }
 };
 
+// TODO 是否要支持手工传递参数
+L.old_call4 = function(serviceContext, service, apiName, arguments) {
+    if(!L.sockjs) {
+        L.services = {};
+        initSockJS(service.sockjsUrl);
+    }
+    var serviceName = service.serviceName + "." + apiName;
+    // 格式: type;serviceName;[arg1,arg2,...argn]
+    var msg = "1;" + serviceName;
+    var length = arguments.length;
+    if(typeof arguments[length - 1] == 'function') {
+        L.services[serviceName] = function() {};
+        L.services[serviceName]["callback"] = arguments[length - 1];
+        length--;
+    }
+    
+    if(length == 1 && arguments[0].services) {
+        if(!L.services[serviceName]) {
+            L.services[serviceName] = function() {};
+        }
+        L.services[serviceName]["onServiceException"] = arguments[0].onServiceException;
+        L.services[serviceName]["serviceObject"] = arguments[0];
+        length--;
+    }
+
+    if(length > 0) {
+        msg += ";[";
+        for(var j = 0; j < length; j++) {
+            if(arguments[j].onServiceException || arguments[j].services) {
+                if(!L.services[serviceName]) {
+                    L.services[serviceName] = function() {};
+                }
+                L.services[serviceName]["onServiceException"] = arguments[j].onServiceException;
+                L.services[serviceName]["serviceObject"] = arguments[j];
+                continue;
+            }
+            if(j != 0) {
+                msg += ",";
+            }
+            msg += JSON.stringify(arguments[j]);
+        }
+        msg += "]";
+    } else {
+        var names = service.methodInfo[apiName];
+        length = names.length;
+        if(length > 0) {
+            msg += ";[";
+            for(var j = 0; j < length; j++) { 
+                if(j != 0) {
+                    msg += ",";
+                }
+                msg += JSON.stringify(serviceContext[names[j]]);
+            }
+            msg += "]";
+        }
+    }
+    if(L.sockjsReady)
+        L.sockjs.send(msg);
+    else {
+        if(!L.penddingMsgs) {
+            L.penddingMsgs = [];
+        } 
+        L.penddingMsgs.push(msg);
+    }
+};
+
+L.call4 = function(serviceContext, service, apiName, arguments) {
+    if(!L.sockjs) {
+        L.services = {};
+        initSockJS(service.sockjsUrl);
+    }
+    var serviceName = service.serviceName + "." + apiName;
+    L.services[serviceName] = function() {};
+    L.services[serviceName]["onServiceException"] = serviceContext.onServiceException;
+    L.services[serviceName]["serviceObject"] = serviceContext;
+    
+    // 格式: type;serviceName;[arg1,arg2,...argn]
+    var msg = "1;" + serviceName;
+    var length = arguments.length;
+    if(typeof arguments[length - 1] == 'function') {
+        L.services[serviceName]["callback"] = arguments[length - 1];
+        length--;
+    } 
+    var names = service.methodInfo[apiName];
+    length = names.length;
+    if(length > 0) {
+        msg += ";[";
+        for(var j = 0; j < length; j++) { 
+            if(j != 0) {
+                msg += ",";
+            }
+            msg += JSON.stringify(serviceContext[names[j]]);
+        }
+        msg += "]";
+    }
+    if(L.sockjsReady)
+        L.sockjs.send(msg);
+    else {
+        if(!L.penddingMsgs) {
+            L.penddingMsgs = [];
+        } 
+        L.penddingMsgs.push(msg);
+    }
+};
+
 var proxyObject = function (object, missingMethod) {
       const proxyObject = new Proxy(object, {
         get(object, property) {
@@ -59,12 +164,61 @@ var missingMethod  = function(object, method, ...args) {
     L.call(object, method, ...args);
 };
 
+var services = [];
+var serviceNames = [];
+
 L.getService = function(serviceName) {
+    if(services[serviceName] != undefined)
+        return services[serviceName];
     var object = {
         sockjsUrl: L.sockjsUrl,
         serviceName: serviceName
     }
-    return proxyObject(object, missingMethod);
+    serviceNames.push(serviceName);
+    services[serviceName] = proxyObject(object, missingMethod);
+    return services[serviceName];
+};
+
+L.callService = function(serviceContext, serviceName, methodName, methodArgs) {
+    var service = services[serviceName];
+    L.call4(serviceContext, service, methodName, methodArgs);
+};
+
+L.loadServices = function(callback) {
+    var object = {
+        sockjsUrl: L.sockjsUrl,
+        serviceName: "system_service"
+    }
+    var systemService = proxyObject(object, missingMethod);
+    systemService.loadServices(serviceNames.join(","), services => {
+        for(var i = 0; i < services.length; i++) {
+            var serviceInfo = services[i];
+            var service = L.getService(serviceInfo.serviceName);
+            var parameterNames = [];
+            service.methodInfo = {};
+            var funBody = "return {"
+            for(var m = 0; m < serviceInfo.serviceMethods.length; m++) {
+                var serviceMethodInfo = serviceInfo.serviceMethods[m];
+                funBody += serviceMethodInfo.methodName + "(){ Lealone.callService(this, '" 
+                         + serviceInfo.serviceName + "', '"+ serviceMethodInfo.methodName + "', arguments)},";
+                
+                service.methodInfo[serviceMethodInfo.methodName] = serviceMethodInfo.parameterNames;
+                for(var p = 0; p < serviceMethodInfo.parameterNames.length; p++) {
+                    parameterNames.push(serviceMethodInfo.parameterNames[p]);
+                }
+            }
+            funBody += " }";
+            var fun = new Function(funBody);
+            service.parameterNames = parameterNames;
+            service.methods = fun();
+            for(var m in service.methods) {
+                service[m] = service.methods[m];
+            }
+            // console.log(parameterNames);
+        }
+        if(callback != undefined)
+            callback(services);
+    });
 };
 
 function initSockJS(sockjsUrl) {
@@ -98,11 +252,20 @@ function initSockJS(sockjsUrl) {
             else if(L.services[serviceName] && L.services[serviceName]["serviceObject"]) {
                 try {
                     var serviceObject = L.services[serviceName]["serviceObject"];
+                    var m = serviceName.split(".")[1];
+                    var route = serviceObject.routes[m];
                     // var keys = Object.keys(serviceObject);
                     try {
                         result = JSON.parse(result); // 尝试转换成json对象
                     } catch(e) {
+                        if(route != undefined && route.redirect != undefined) {
+                            location.href = route.redirect;
+                        }
                         return; // 不是json对象就不管了
+                    }
+                    if(route != undefined && route.handler != undefined) {
+                        route.handler(result);
+                        return;
                     }
                     for(var key in result) {
                         // 找不到hasOwnProperty方法
@@ -110,6 +273,9 @@ function initSockJS(sockjsUrl) {
                         // if(keys.indexOf(key) >= 0) //vue3有警告
                         if(serviceObject[key] != undefined)
                             serviceObject[key] = result[key];
+                    }
+                    if(route != undefined && route.redirect != undefined) {
+                        location.href = route.redirect;
                     }
                 } catch(e) {
                     console.log(e);
@@ -139,7 +305,9 @@ function initSockJS(sockjsUrl) {
 L.sockjsUrl = "/_lealone_sockjs_";
 return {
     setSockjsUrl: function(url) { L.sockjsUrl = url },
-    getService: L.getService
+    getService: L.getService,
+    loadServices: L.loadServices,
+    callService: L.callService,
 };
 })();
 
@@ -179,13 +347,11 @@ const Lealone = {
             return;
         }
         // 加两次，不然popstate有可能返回null，原因不明
-        // window.history.pushState(state, page, "/" + this.screen + "/" +
-        // page);
+        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
         this.page = page;
         state = JSON.stringify(this);
-        // window.history.pushState(state, page, "/" + this.screen + "/" +
-        // page);
+        // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
     },
 
@@ -226,17 +392,38 @@ const Lealone = {
 
     component(app, name) {
         var mixins = [];
+        var services = [];
         var len = arguments.length;
         for(var i = 2; i < len; i++){
-            mixins.push(arguments[i]);
+            if(arguments[i].serviceName == undefined)
+                mixins.push(arguments[i]);
+            else
+                services.push(arguments[i]);
         }
         app.component(name, {
+            data() { return { services: services } },
             mixins: mixins, 
             props: {
                 // 组件实例的全局唯一ID，默认是组件名
                 gid: { type: String, default: name }
-            }, 
-            template: document.getElementById(name).innerHTML
+            },
+            template: document.getElementById(name).innerHTML,
+            beforeMount() {
+                var len = this.services.length;
+                for(var i = 0; i < len; i++){
+                    var service = this.services[i];
+                    for(var m in service.methods) {
+                        if(typeof service[m] == 'function') {
+                            let method = service[m];
+                            let that = this;
+                            var fun = function() {
+                                method.apply(that, arguments);
+                            }
+                            this[m] = fun;
+                        }
+                    }
+                }
+            }
         })
     },
 
@@ -253,3 +440,5 @@ const Lealone = {
 
 Lealone.setSockjsUrl = LealoneRpcClient.setSockjsUrl;
 Lealone.getService = LealoneRpcClient.getService;
+Lealone.loadServices = LealoneRpcClient.loadServices;
+Lealone.callService = LealoneRpcClient.callService;

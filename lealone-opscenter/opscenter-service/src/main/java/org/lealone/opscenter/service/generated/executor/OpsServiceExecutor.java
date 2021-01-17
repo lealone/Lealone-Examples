@@ -58,6 +58,11 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result6);
+        case "TEST_CONNECTION":
+            String result7 = this.s.testConnection();
+            if (result7 == null)
+                return ValueNull.INSTANCE;
+            return ValueString.get(result7);
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -106,6 +111,11 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return null;
             return result6;
+        case "TEST_CONNECTION":
+            String result7 = this.s.testConnection();
+            if (result7 == null)
+                return null;
+            return result7;
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -160,6 +170,11 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return null;
             return result6;
+        case "TEST_CONNECTION":
+            String result7 = this.s.testConnection();
+            if (result7 == null)
+                return null;
+            return result7;
         default:
             throw new RuntimeException("no method: " + methodName);
         }

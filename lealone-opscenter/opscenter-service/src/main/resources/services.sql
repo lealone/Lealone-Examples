@@ -29,7 +29,8 @@ create service if not exists ops_service (
   setting_save(name varchar, driver varchar, url varchar, user varchar) varchar,
   setting_remove(name varchar) varchar,
   read_translations(language varchar) varchar,
-  login(url varchar, user varchar, password varchar) varchar
+  login(url varchar, user varchar, password varchar) varchar,
+  test_connection() varchar
 )
 package @packageName
 implement by 'org.lealone.opscenter.service.OpsServiceImpl' -- OpsService接口的默认实现类
@@ -46,4 +47,14 @@ create service if not exists query_service (
 )
 package @packageName
 implement by 'org.lealone.opscenter.service.QueryServiceImpl' -- QueryService接口的默认实现类
+generate code @srcPath;
+
+
+drop service if exists system_service;
+
+create service if not exists system_service (
+  load_services(service_names varchar) varchar
+)
+package @packageName
+implement by 'org.lealone.opscenter.service.SystemServiceImpl'
 generate code @srcPath;

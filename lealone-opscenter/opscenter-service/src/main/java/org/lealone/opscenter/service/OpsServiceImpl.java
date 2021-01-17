@@ -160,4 +160,9 @@ public class OpsServiceImpl implements OpsService {
         json.put("text", new JsonObject(map));
         return json.encode();
     }
+
+    @Override
+    public String testConnection() {
+        return null;
+    }
 }

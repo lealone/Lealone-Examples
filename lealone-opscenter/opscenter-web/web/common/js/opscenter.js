@@ -10,6 +10,7 @@ OpsService = Lealone.getService("ops_service");
 AdminService = Lealone.getService("admin_service");
 QueryService = Lealone.getService("query_service");
 
+
 OpsCenter.i18n = { 
     data() { return { text: {} } },
     
@@ -29,7 +30,10 @@ OpsCenter.i18n = {
             app.mixin({
                 data() { return { txt: text,  text: newText } },
             });
-            app.mount(appName)
+            Lealone.loadServices(services => {
+                // console.log(services);
+                app.mount(appName)
+            });
         });
     },
     parse(text) {
@@ -66,7 +70,7 @@ OpsCenter.i18n = {
     }
 }
 var mount = function(app, appName) {
-    //混入全局的logout方法
+    // 混入全局的logout方法
     app.mixin({
         methods: {
             logout() {

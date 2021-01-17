@@ -13,7 +13,7 @@ Initial Developer: H2 Group
 <div th:fragment="login">
     <form id="login" name="login" method="post" action="/">
         <p>
-          <select v-model="language" size="1" @change="changeLanguage">
+          <select v-model="language" size="1" @change="readTranslations">
     	    <template v-for="language in languages">
     		  <option :value="language[0]" :selected="language[0] == language">{{ language[1] }}</option>
             </template>
