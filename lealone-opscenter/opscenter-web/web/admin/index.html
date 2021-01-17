@@ -27,14 +27,14 @@
   
   <script src="/admin/js/login-admin.js"></script>
   <script src="/admin/js/login-ops-dynamic.js"></script>
-  <script src="/admin/js/admin.js"></script>
+  <script src="/admin/js/admin-dynamic.js"></script>
   <script src="/admin/js/tools.js"></script>
   <script>
     const app = Lealone.createVueApp("admin", "login-ops"); 
 
     Lealone.component(app, 'login-admin', loginAdmin);
     Lealone.component(app, 'login-ops', loginOps, OpsService);
-    Lealone.component(app, 'admin', admin);
+    Lealone.component(app, 'admin', admin, AdminService);
     Lealone.component(app, 'tools', tools);    
     Lealone.component(app, 'help');
 

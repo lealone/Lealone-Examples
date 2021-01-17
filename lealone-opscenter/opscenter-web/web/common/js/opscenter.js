@@ -74,11 +74,7 @@ var mount = function(app, appName) {
     app.mixin({
         methods: {
             logout() {
-                var that = this;
-                axios.post(OpsCenter.AdminService + '/logout')
-                .then(function (response) { 
-                    location.href = "/admin/index.html";
-                });
+                AdminService.logout(_=>(location.href = "/admin/index.html"));
             }
         }
     });

@@ -253,7 +253,7 @@ function initSockJS(sockjsUrl) {
                 try {
                     var serviceObject = L.services[serviceName]["serviceObject"];
                     var m = serviceName.split(".")[1];
-                    var route = serviceObject.routes[m];
+                    var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
                     // var keys = Object.keys(serviceObject);
                     try {
                         result = JSON.parse(result); // 尝试转换成json对象
