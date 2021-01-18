@@ -41,19 +41,19 @@ java -jar ./target/lealone-create-app-all-1.0.0.jar [选项]
                 指定生成的文件采用的编码 (默认是 UTF-8)
 
 
-### 例如创建一个 hello 应用:
+### 例如创建一个 hello 应用
 
 java -jar ./target/lealone-create-app-all-1.0.0.jar -groupId my.lealone.app.hello -artifactId hello
 
 
-### 构建 hello 应用:
+### 构建 hello 应用
 
 cd hello
 
 build -p
 
 
-### 运行 hello 应用:
+### 运行 hello 应用
 
 cd target\hello-1.0.0\bin
 
