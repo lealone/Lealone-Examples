@@ -17,12 +17,12 @@
  */
 package ${packageName}.test;
 
-import ${packageName}.main.${appNameCamel};
+import ${packageName}.main.${appClassName};
 
-public class ${appNameCamel}Test {
+public class ${appClassName}Test {
 
     public static void main(String[] args) {
-        ${appNameCamel}.main(args);
+        ${appClassName}.main(args);
     }
 
 }

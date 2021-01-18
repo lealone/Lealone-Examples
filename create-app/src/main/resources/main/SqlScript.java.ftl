@@ -21,10 +21,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-public class Run${appNameCamel}SqlScript {
+public class ${appClassName}SqlScript {
 
     public static void main(String[] args) throws Exception {
-        new Run${appNameCamel}SqlScript().run(args);
+        new ${appClassName}SqlScript().run(args);
     }
  
     private String tableDir = "../${appName}-dal/src/main/resources";
@@ -33,7 +33,7 @@ public class Run${appNameCamel}SqlScript {
     private void run(String[] args) throws Exception {
         parseArgs(args);
 
-        // 创建${appNameCamel}数据库
+        // 创建${appClassName}数据库
         String jdbcUrl = "jdbc:lealone:tcp://localhost/lealone?user=root&password=";
         // runSql(jdbcUrl, "drop database if exists ${appName}");
         runSql(jdbcUrl, "create database if not exists ${appName}");

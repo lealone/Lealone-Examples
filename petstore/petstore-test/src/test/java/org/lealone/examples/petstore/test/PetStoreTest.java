@@ -17,12 +17,12 @@
  */
 package org.lealone.examples.petstore.test;
 
-import org.lealone.examples.petstore.main.PetStoreDemo;
+import org.lealone.examples.petstore.main.PetStore;
 
-public class PetStoreDemoTest {
+public class PetStoreTest {
 
     public static void main(String[] args) {
-        PetStoreDemo.main(args);
+        PetStore.main(args);
     }
 
 }

@@ -1,6 +1,6 @@
-# ${appNameCamel}
+# ${appClassName}
 
-基于 Vue + Lealone 开发的 ${appNameCamel}
+基于 Vue + Lealone 开发的 ${appClassName}
 
 
 
@@ -37,8 +37,8 @@ http://localhost:9000/
 
 把代码导入到 IDE 后，
 
-先运行 ${appNameCamel}Test 启动应用，
+先运行 ${appClassName}Test 启动应用，
 
-然后运行 ${appNameCamel}SqlScriptTest 初始化数据，
+然后运行 ${appClassName}SqlScriptTest 初始化数据，
 
 最后就能打开页面查看了。

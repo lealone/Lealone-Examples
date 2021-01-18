@@ -57,7 +57,7 @@ protocol_server_engines:
         port: 9000,
         environment: dev,
         web_root: ../${appName}-web/web,
-        router_factory: "${packageName}.web.${appNameCamel}RouterFactory",
+        router_factory: "${packageName}.web.${appClassName}RouterFactory",
         jdbc_url: "jdbc:lealone:embed:${appName}"
     }
   - name: P2P

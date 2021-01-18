@@ -43,7 +43,7 @@ public class CreateLealoneApp {
 
     private String appBaseDir = ".";
     private String appName;
-    private String appNameCamel;
+    private String appClassName;
 
     private String pomName;
     private String groupId;
@@ -63,8 +63,8 @@ public class CreateLealoneApp {
         return appName;
     }
 
-    public String getAppNameCamel() {
-        return appNameCamel;
+    public String getAppClassName() {
+        return appClassName;
     }
 
     public String getPomName() {
@@ -118,6 +118,9 @@ public class CreateLealoneApp {
                 case "-appName":
                     appName = args[++i];
                     break;
+                case "-appClassName":
+                    appClassName = args[++i];
+                    break;
                 case "-groupId":
                     groupId = args[++i];
                     break;
@@ -148,8 +151,6 @@ public class CreateLealoneApp {
         if (appName == null && artifactId == null)
             error("必须指定 appName 和 artifactId 其中之一");
 
-        appNameCamel = toClassName(appName);
-
         if (groupId == null)
             error("必须指定 groupId");
 
@@ -165,6 +166,8 @@ public class CreateLealoneApp {
         if (pomName == null)
             pomName = appName + " project";
 
+        if (appClassName == null)
+            appClassName = toClassName(appName);
         parentDir = new File(appBaseDir, appName);
 
         initFreeMarker();
@@ -316,8 +319,8 @@ public class CreateLealoneApp {
         File toDir = new File(moduleDir, srcMainJava);
         toDir = new File(toDir, packageName.replace('.', '/') + "/main");
         toDir.mkdirs();
-        writeFile("/main/App.java.ftl", toDir, appNameCamel + ".java");
-        writeFile("/main/RunSqlScript.java.ftl", toDir, "Run" + appNameCamel + "SqlScript.java");
+        writeFile("/main/App.java.ftl", toDir, appClassName + ".java");
+        writeFile("/main/SqlScript.java.ftl", toDir, appClassName + "SqlScript.java");
         writeFile("/main/pom.xml", moduleDir);
     }
 
@@ -344,9 +347,9 @@ public class CreateLealoneApp {
         toDir = new File(moduleDir, srcTestJava);
         toDir = new File(toDir, packageName.replace('.', '/') + "/test");
         toDir.mkdirs();
-        writeFile("/test/AppTest.java.ftl", toDir, appNameCamel + "Test.java");
-        writeFile("/test/SqlScriptTest.java.ftl", toDir, appNameCamel + "SqlScriptTest.java");
-        writeFile("/test/TemplateCompilerTest.java.ftl", toDir, appNameCamel + "TemplateCompilerTest.java");
+        writeFile("/test/AppTest.java.ftl", toDir, appClassName + "Test.java");
+        writeFile("/test/SqlScriptTest.java.ftl", toDir, appClassName + "SqlScriptTest.java");
+        writeFile("/test/TemplateCompilerTest.java.ftl", toDir, appClassName + "TemplateCompilerTest.java");
     }
 
     private void writeWebFiles() throws Exception {
@@ -358,7 +361,7 @@ public class CreateLealoneApp {
 
         File webDir = new File(toDir, "web");
         webDir.mkdir();
-        writeFile("/web/RouterFactory.java.ftl", webDir, appNameCamel + "RouterFactory.java");
+        writeFile("/web/RouterFactory.java.ftl", webDir, appClassName + "RouterFactory.java");
 
         File toThymeleafDir = new File(webDir, "thymeleaf");
         toThymeleafDir.mkdir();

@@ -21,7 +21,7 @@ import java.io.IOException;
 
 import ${packageName}.web.thymeleaf.ThymeleafTemplateCompiler;
 
-public class ${appNameCamel}TemplateCompilerTest {
+public class ${appClassName}TemplateCompilerTest {
 
     public static void main(String[] args) throws IOException {
         args = new String[] { "-webRoot", "../${appName}-web/web" };

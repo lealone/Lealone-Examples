@@ -24,7 +24,7 @@ import org.lealone.server.http.HttpRouterFactory;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.Router;
 
-public class ${appNameCamel}RouterFactory extends HttpRouterFactory {
+public class ${appClassName}RouterFactory extends HttpRouterFactory {
 
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {

@@ -17,12 +17,12 @@
  */
 package ${packageName}.test;
 
-import ${packageName}.main.Run${appNameCamel}SqlScript;
+import ${packageName}.main.${appClassName}SqlScript;
 
-public class ${appNameCamel}SqlScriptTest {
+public class ${appClassName}SqlScriptTest {
 
     public static void main(String[] args) throws Exception {
-        Run${appNameCamel}SqlScript.main(args);
+        ${appClassName}SqlScript.main(args);
     }
 
 }

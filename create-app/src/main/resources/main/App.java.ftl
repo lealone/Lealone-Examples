@@ -19,7 +19,7 @@ package ${packageName}.main;
 
 import org.lealone.main.Lealone;
 
-public class ${appNameCamel} {
+public class ${appClassName} {
 
     public static void main(String[] args) {
         // 请在浏览器中打开下面这个URL进行测试:

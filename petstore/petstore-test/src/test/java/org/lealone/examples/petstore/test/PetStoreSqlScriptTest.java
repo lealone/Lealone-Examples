@@ -15,16 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lealone.examples.petstore.main;
+package org.lealone.examples.petstore.test;
 
-import org.lealone.main.Lealone;
+import org.lealone.examples.petstore.main.RunSqlScript;
 
-public class PetStoreDemo {
+public class PetStoreSqlScriptTest {
 
-    public static void main(String[] args) {
-        // 请在浏览器中打开下面这个URL进行测试:
-        // http://localhost:9000/
-        Lealone.main(args);
+    public static void main(String[] args) throws Exception {
+        RunSqlScript.main(args);
     }
 
 }

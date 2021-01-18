@@ -17,12 +17,15 @@
  */
 package org.lealone.examples.petstore.test;
 
-import org.lealone.examples.petstore.main.RunSqlScript;
+import java.io.IOException;
 
-public class RunSqlScriptTest {
+import org.lealone.examples.petstore.web.thymeleaf.ThymeleafTemplateCompiler;
 
-    public static void main(String[] args) throws Exception {
-        RunSqlScript.main(args);
+public class PetStoreTemplateCompilerTest {
+
+    public static void main(String[] args) throws IOException {
+        args = new String[] { "-webRoot", "../petstore-web/web" };
+        ThymeleafTemplateCompiler.main(args);
     }
 
 }
