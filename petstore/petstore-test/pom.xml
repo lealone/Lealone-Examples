@@ -25,14 +25,14 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>lealone-petstore-test</artifactId>
+    <artifactId>petstore-test</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
             <groupId>org.lealone.examples.petstore</groupId>
-            <artifactId>lealone-petstore-main</artifactId>
+            <artifactId>petstore-main</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

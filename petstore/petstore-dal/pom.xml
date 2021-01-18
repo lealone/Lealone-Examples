@@ -25,7 +25,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>lealone-petstore-dal</artifactId>
+    <artifactId>petstore-dal</artifactId>
     <packaging>jar</packaging>
     <version>1.0.0</version>
 
