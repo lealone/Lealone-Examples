@@ -20,7 +20,7 @@ java -jar ./target/lealone-create-app-all-1.0.0.jar [选项]
                 打印帮助信息
 
         -appBaseDir <dir>
-                应用根目录 (默认是 ./target)
+                应用根目录 (默认是当前目录)
 
         -appName <name>
                 应用名称 (如果不指定，默认取 -artifactId 的值，-appName 和 -artifactId 必须至少设置一个)
@@ -39,3 +39,8 @@ java -jar ./target/lealone-create-app-all-1.0.0.jar [选项]
 
         -encoding <编码>
                 指定生成的文件采用的编码 (默认是 UTF-8)
+
+
+例如创建一个 hello 应用:
+
+java -jar ./target/lealone-create-app-all-1.0.0.jar -groupId my.lealone.app.hello -artifactId hello

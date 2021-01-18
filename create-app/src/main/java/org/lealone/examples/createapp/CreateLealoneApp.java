@@ -41,7 +41,7 @@ public class CreateLealoneApp {
     private boolean createWeb = true;
     private boolean createTest = true;
 
-    private String appBaseDir = "./target";
+    private String appBaseDir = ".";
     private String appName;
     private String appNameCamel;
 
@@ -150,9 +150,6 @@ public class CreateLealoneApp {
 
         appNameCamel = toClassName(appName);
 
-        if (pomName == null)
-            pomName = appName + " project";
-
         if (groupId == null)
             error("必须指定 groupId");
 
@@ -164,6 +161,9 @@ public class CreateLealoneApp {
 
         if (packageName == null)
             packageName = groupId;
+
+        if (pomName == null)
+            pomName = appName + " project";
 
         parentDir = new File(appBaseDir, appName);
 
@@ -178,7 +178,7 @@ public class CreateLealoneApp {
 
         println("-help", "打印帮助信息");
 
-        println("-appBaseDir <目录>", "应用根目录 (默认是 ./target)");
+        println("-appBaseDir <目录>", "应用根目录 (默认是当前目录)");
         println("-appName <名称>", "应用名称 (如果不指定，默认取 -artifactId 的值，-appName 和 -artifactId 必须至少设置一个)");
         println("-groupId <id>", "pom.xml 的 groupId (必须设置)");
         println("-artifactId <id>", //

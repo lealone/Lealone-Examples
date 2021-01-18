@@ -21,6 +21,7 @@ public class CreateLealoneAppTest {
 
     public static void main(String[] args) throws Exception {
         String str = "" //
+                + "-appBaseDir ./target " //
                 + "-appName hello " //
                 + "-groupId org.lealone.examples.hello " //
                 + "-artifactId hello " //
