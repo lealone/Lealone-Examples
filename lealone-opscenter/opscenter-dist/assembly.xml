@@ -58,6 +58,11 @@
             <source>opscenter-dist/target/lealone-opscenter-${project.version}.jar</source>
             <outputDirectory>lib</outputDirectory>
         </file>
+		
+		<file>
+            <source>opscenter-dal/h2/h2-2.0.201.jar</source>
+            <outputDirectory>lib</outputDirectory>
+        </file>
     </files>
 
     <moduleSets>
