@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+  <title>Lealone OpsCenter</title>
+  <script src="/common/js/plugins/vue-3.0.0.js"></script>
+  <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/lealone-5.0.0.js"></script>
+  <script src="/common/js/opscenter.js"></script>
+  <link rel="stylesheet" href="/common/css/opscenter.css">
+  
+  <style type="text/css">
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  #container {
+    width: 100%;
+    height: 655px;
+  }
+  
+  #heading {
+    width: 100%;
+    height: 5%;
+    background-color: #ece9d8;
+  }
+  
+  #content-menu {
+    width: 20%;
+    height: 90%;
+    float: left;
+  }
+  
+  #content-body {
+    width: 80%;
+    height: 25%;
+    float: left;
+  }
+  
+  #footer {
+    width: 80%;
+    height: 70%;
+    background-color: #f4f0e0;
+    overflow: auto;
+    float: right;
+  }
+  
+  input.button {
+    margin: 2px;
+  }
+  </style>
+</head>
+
+<body style="margin:0px;padding:0px;">
+  <div id="opsApp">
+    <div id="container">
+      <div id="heading">
+        <ops-header/>
+      </div>
+      <div id="content-menu">
+        <tables/>
+      </div>
+      <div id="content-body">
+        <query/>
+      </div>
+      <div id="footer">
+        <keep-alive>
+          <component :is="currentComponent"/>
+        </keep-alive>
+      </div>
+    </div>
+  </div>
+
+  <template id="help" th:insert="/ops/fragment/help.html :: help" />
+  <template id="ops-header" th:insert="/ops/fragment/header.html :: header" />
+  <template id="tables" th:insert="/ops/fragment/tables.html :: tables" />
+  <template id="query" th:insert="/ops/fragment/query.html :: query" />
+  <template id="result" th:insert="/ops/fragment/result.html :: result" />
+
+  <script src="/ops/js/header.js"></script>
+  <script src="/ops/js/tables.js"></script>
+  <script src="/ops/js/query.js"></script>
+  <script src="/ops/js/result.js"></script>
+  
+  <script>
+    const app = Lealone.createVueApp("ops", "help");
+
+    Lealone.component(app, 'help');
+    Lealone.component(app, 'ops-header', opsHeader);
+    Lealone.component(app, 'tables', opsTables);
+    Lealone.component(app, 'query', opsQuery);
+    Lealone.component(app, 'result', opsResult);
+
+    mount(app, '#opsApp')
+  </script>
+</body>
+</html>

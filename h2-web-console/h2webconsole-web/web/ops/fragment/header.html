@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--
+Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 (https://h2database.com/html/license.html).
+Initial Developer: H2 Group
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="header">
+    <form name="header" method="post" action="/">
+        <table class="toolbar">
+            <tr class="toolbar">
+                <td class="toolbar">
+                    <a href="/" @click.prevent="logout">
+                        <img src="/ops/img/icon_disconnect.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Disconnect"
+                            title="Disconnect" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                    <a href="/" @click.prevent="refreshTables">
+                        <img src="/ops/img/icon_refresh.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Refresh"
+                            title="Refresh" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    <input type="checkbox" v-model="autoCommit" @change="setAutoCommit"/>
+                </td>
+                <td class="toolbar">
+                    {{ text.toolbar.autoCommit }}&nbsp;
+                </td>
+                <td class="toolbar">
+                    <a href="/" @click.prevent="rollback">
+                        <img src="/ops/img/icon_rollback.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Rollback"
+                            title="Rollback" border="1"/>
+                    </a>
+                    <a href="/" @click.prevent="commit">
+                        <img src="/ops/img/icon_commit.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Commit"
+                            title="Commit" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    &nbsp;{{ text.toolbar.maxRows }}&nbsp;
+                </td>
+                <td class="toolbar">
+                    <select name="rowcount" size="1" onchange=
+                    "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@maxrows+'+header.rowcount.value+'.';">
+                    <option value="0">
+                            {{ text.toolbar.all }}
+                        </option>
+                        <option value="10000">
+                            10000
+                        </option>
+                        <option selected="selected" value="1000">
+                            1000
+                        </option>
+                        <option value="100">
+                            100
+                        </option>
+                        <option value="10">
+                            10
+                        </option>
+                    </select>&nbsp;
+                </td>
+                <td class="toolbar">
+                    <a href="/" @click.prevent="run">
+                        <img src="/ops/img/icon_run.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Run"
+                            title="Run" border="1"/>
+                    </a>
+                </td>
+                <td class="toolbar">
+                    <a href="/" @click.prevent="runSelected">
+                        <img src="/ops/img/icon_run_selected.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Run Selected"
+                            title="Run Selected" border="1"/>
+                    </a>
+                </td>
+                <td class="toolbar">
+                    <a href="/" @click.prevent="cancel">
+                        <img src="/ops/img/icon_stop.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Cancel the current statement"
+                            title="Cancel the current statement" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                    <a href="/" @click.prevent="history">
+                        <img src="/ops/img/icon_history.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Command history"
+                            title="Command history" border="1"/>
+                    </a>
+                    <img src="/ops/img/icon_line.gif" class="iconLine" alt=""/>
+                </td>
+                <td class="toolbar">
+                    {{ text.toolbar.autoComplete }}&nbsp;
+                    <select name="autoComplete" size="1"
+                        onchange="javascript:parent.h2query.setAutoComplete(this.value)">
+                        <option selected="selected" value="0">
+                            {{ txt['toolbar.autoComplete.off'] }}
+                        </option>
+                        <option value="1">
+                            {{ txt['toolbar.autoComplete.normal'] }}
+                        </option>
+                        <option value="2">
+                            {{ txt['toolbar.autoComplete.full'] }}
+                        </option>
+                    </select>&nbsp;
+                </td>
+                <td class="toolbar">
+                    {{ text.toolbar.autoSelect }}&nbsp;
+                    <select name="autoSelect" size="1"
+                        onchange="javascript:parent.h2query.setAutoSelect(this.value)">
+                        <option value="0">
+                            {{ txt['toolbar.autoSelect.off'] }}
+                        </option>
+                        <option selected="selected" value="1">
+                            {{ txt['toolbar.autoSelect.on'] }}
+                        </option>
+                    </select>
+                </td>
+                <td class="toolbar">
+                    <a href="/" @click.prevent="lealone.route('ops', 'help')">
+                        <img src="/ops/img/icon_help.gif"
+                            onmouseover="this.className ='icon_hover'"
+                            onmouseout="this.className ='icon'"
+                            class="icon" alt="Help"
+                            title="Help" border="1"/>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+</body>
+</html>

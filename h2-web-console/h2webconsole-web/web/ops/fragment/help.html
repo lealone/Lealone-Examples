@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--
+Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 (https://h2database.com/html/license.html).
+Initial Developer: H2 Group
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="help">
+<div class="result" id="output" style="margin:10px;padding-top:0px">
+
+<h3>{{ text.helpImportantCommands }}</h3>
+<table style="margin:0px;">
+<tr>
+    <td style="padding:0px"><img src="/ops/img/icon_help.gif" :alt="text.a_help"/></td>
+    <td style="vertical-align: middle;"></td>
+    <td style="vertical-align: middle;">{{ text.helpDisplayThis }}</td>
+</tr>
+<tr>
+    <td style="padding:0px"><img src="/ops/img/icon_history.gif" :alt="text.toolbar_history"/></td>
+    <td style="vertical-align: middle;"></td>
+    <td style="vertical-align: middle;">{{ text.helpCommandHistory }}</td>
+</tr>
+<tr>
+    <td style="padding:0px"><img src="/ops/img/icon_run.gif" :alt="text.toolbar_run"/></td>
+    <td style="vertical-align: middle;">{{ text.key.ctrl }}+{{ text.key.enter }}</td>
+    <td style="vertical-align: middle;">{{ text.helpExecuteCurrent }}</td>
+</tr>
+<tr>
+    <td style="padding:0px"><img src="/ops/img/icon_run_selected.gif" :alt="text.toolbar_runSelected"/></td>
+    <td style="vertical-align: middle;">{{ text.key.shift }}+{{ text.key.enter }}</td>
+    <td style="vertical-align: middle;">{{ text.helpExecuteSelected }}</td>
+</tr>
+<tr>
+    <td style="padding:0px"></td>
+    <td style="vertical-align: middle;">{{ text.key.ctrl }}+{{ text.key.space }}</td>
+    <td style="vertical-align: middle;">{{ text.toolbar.autoComplete }}</td>
+</tr>
+<tr>
+    <td style="padding:0px"><img src="/ops/img/icon_disconnect.gif" :alt="text.toolbar_disconnect"/></td>
+    <td style="vertical-align: middle;"></td>
+    <td style="vertical-align: middle;">{{ text.helpDisconnect }}</td>
+</tr>
+
+</table>
+
+<h3>{{ text.helpSampleSQL }}</h3>
+<table>
+<tr><td><a href="javascript:set('DROP TABLE IF EXISTS TEST;\rCREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255));\rINSERT INTO TEST VALUES(1, \'Hello\');\rINSERT INTO TEST VALUES(2, \'World\');\rSELECT * FROM TEST ORDER BY ID;\rUPDATE TEST SET NAME=\'Hi\' WHERE ID=1;\rDELETE FROM TEST WHERE ID=2;');">
+    {{ text.helpDropTable }}<br />
+    {{ text.helpCreateTable }}<br />
+    &nbsp;&nbsp;{{ text.helpWithColumnsIdName }}<br />
+    {{ text.helpAddRow }}<br />
+    {{ text.helpAddAnotherRow }}<br />
+    {{ text.helpQuery }}<br />
+    {{ text.helpUpdate }}<br />
+    {{ text.helpDeleteRow }}
+</a></td><td>
+    DROP TABLE IF EXISTS TEST;<br />
+    CREATE TABLE TEST(ID INT PRIMARY KEY,<br />
+    &nbsp;&nbsp; NAME VARCHAR(255));<br />
+    INSERT INTO TEST VALUES(1, 'Hello');<br />
+    INSERT INTO TEST VALUES(2, 'World');<br />
+    SELECT * FROM TEST ORDER BY ID;<br />
+    UPDATE TEST SET NAME='Hi' WHERE ID=1;<br />
+    DELETE FROM TEST WHERE ID=2;
+</td></tr>
+<tr><td><a href="javascript:set('HELP ');">
+    {{ text.a.help }}
+</a></td><td>
+    HELP ...
+</td></tr>
+</table>
+
+<h3>{{ text.helpAddDrivers }}</h3>
+<p>
+{{ text.helpAddDriversText }}
+</p>
+
+</div>
+
+<table id="h2auto" class="autoComp"><tbody></tbody></table>
+</div>
+
+</body>
+</html>

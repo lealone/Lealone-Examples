@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--
+Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 (https://h2database.com/html/license.html).
+Initial Developer: H2 Group
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="tables">
+<script type="text/javascript" src="/ops/js/tree.js"></script>
+<script type="text/javascript">
+<!--
+setNode(0, 0, 0, 'database', 'jdbc:h2:tcp://localhost:9092/mydb', null);
+setNode(1, 0, 1,  'table', 'CALLTEST', 'javascript:ins(\'CALLTEST\',true)');
+setNode(2, 1, 1, 'column', 'ID', 'javascript:ins(\'ID\')');
+setNode(3, 2, 2, 'type', 'INTEGER', null);
+setNode(4, 1, 1, 'column', 'NAME', 'javascript:ins(\'NAME\')');
+setNode(5, 2, 2, 'type', 'CHARACTER VARYING(500)', null);
+setNode(6, 1, 1, 'column', 'B', 'javascript:ins(\'B\')');
+setNode(7, 2, 2, 'type', 'BOOLEAN', null);
+addTable('CALLTEST', 'ID NAME B', 1);
+setNode(8, 0, 1,  'table', 'ROLE', 'javascript:ins(\'ROLE\',true)');
+setNode(9, 1, 1, 'column', 'ID', 'javascript:ins(\'ID\')');
+setNode(10, 2, 2, 'type', 'BIGINT', null);
+setNode(11, 1, 1, 'column', 'ROLE_NAME', 'javascript:ins(\'ROLE_NAME\')');
+setNode(12, 2, 2, 'type', 'CHARACTER VARYING(255)', null);
+setNode(13, 1, 1, 'column', 'NOTE', 'javascript:ins(\'NOTE\')');
+setNode(14, 2, 2, 'type', 'CHARACTER VARYING(255)', null);
+addTable('ROLE', 'ID ROLE_NAME NOTE', 8);
+setNode(15, 0, 1,  'table', 'USER', 'javascript:ins(\'%5C%22USER%5C%22\',true)');
+setNode(16, 1, 1, 'column', 'ID', 'javascript:ins(\'ID\')');
+setNode(17, 2, 2, 'type', 'BIGINT', null);
+setNode(18, 1, 1, 'column', 'NAME', 'javascript:ins(\'NAME\')');
+setNode(19, 2, 2, 'type', 'CHARACTER VARYING', null);
+setNode(20, 1, 1, 'column', 'AGE', 'javascript:ins(\'AGE\')');
+setNode(21, 2, 2, 'type', 'INTEGER', null);
+addTable('USER', 'ID NAME AGE', 15);
+setNode(22, 0, 1, 'folder', 'INFORMATION_SCHEMA', null);
+setNode(23, 1, 2,  'view', 'CHECK_CONSTRAINTS', 'javascript:ins(\'INFORMATION_SCHEMA.CHECK_CONSTRAINTS\',true)');
+setNode(24, 1, 2,  'view', 'COLLATIONS', 'javascript:ins(\'INFORMATION_SCHEMA.COLLATIONS\',true)');
+setNode(25, 1, 2,  'view', 'COLUMN_PRIVILEGES', 'javascript:ins(\'INFORMATION_SCHEMA.COLUMN_PRIVILEGES\',true)');
+setNode(26, 1, 2,  'view', 'COLUMNS', 'javascript:ins(\'INFORMATION_SCHEMA.COLUMNS\',true)');
+setNode(27, 1, 2,  'table', 'CONSTANTS', 'javascript:ins(\'INFORMATION_SCHEMA.CONSTANTS\',true)');
+setNode(28, 1, 2,  'view', 'CONSTRAINT_COLUMN_USAGE', 'javascript:ins(\'INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE\',true)');
+setNode(29, 1, 2,  'view', 'DOMAIN_CONSTRAINTS', 'javascript:ins(\'INFORMATION_SCHEMA.DOMAIN_CONSTRAINTS\',true)');
+setNode(30, 1, 2,  'view', 'DOMAINS', 'javascript:ins(\'INFORMATION_SCHEMA.DOMAINS\',true)');
+setNode(31, 1, 2,  'view', 'ELEMENT_TYPES', 'javascript:ins(\'INFORMATION_SCHEMA.ELEMENT_TYPES\',true)');
+setNode(32, 1, 2,  'table', 'ENUM_VALUES', 'javascript:ins(\'INFORMATION_SCHEMA.ENUM_VALUES\',true)');
+setNode(33, 1, 2,  'view', 'FIELDS', 'javascript:ins(\'INFORMATION_SCHEMA.FIELDS\',true)');
+setNode(34, 1, 2,  'table', 'IN_DOUBT', 'javascript:ins(\'INFORMATION_SCHEMA.IN_DOUBT\',true)');
+setNode(35, 1, 2,  'table', 'INDEX_COLUMNS', 'javascript:ins(\'INFORMATION_SCHEMA.INDEX_COLUMNS\',true)');
+setNode(36, 1, 2,  'table', 'INDEXES', 'javascript:ins(\'INFORMATION_SCHEMA.INDEXES\',true)');
+setNode(37, 1, 2,  'table', 'INFORMATION_SCHEMA_CATALOG_NAME', 'javascript:ins(\'INFORMATION_SCHEMA.INFORMATION_SCHEMA_CATALOG_NAME\',true)');
+setNode(38, 1, 2,  'view', 'KEY_COLUMN_USAGE', 'javascript:ins(\'INFORMATION_SCHEMA.KEY_COLUMN_USAGE\',true)');
+setNode(39, 1, 2,  'table', 'LOCKS', 'javascript:ins(\'INFORMATION_SCHEMA.LOCKS\',true)');
+setNode(40, 1, 2,  'view', 'PARAMETERS', 'javascript:ins(\'INFORMATION_SCHEMA.PARAMETERS\',true)');
+setNode(41, 1, 2,  'table', 'QUERY_STATISTICS', 'javascript:ins(\'INFORMATION_SCHEMA.QUERY_STATISTICS\',true)');
+setNode(42, 1, 2,  'view', 'REFERENTIAL_CONSTRAINTS', 'javascript:ins(\'INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS\',true)');
+setNode(43, 1, 2,  'table', 'RIGHTS', 'javascript:ins(\'INFORMATION_SCHEMA.RIGHTS\',true)');
+setNode(44, 1, 2,  'table', 'ROLES', 'javascript:ins(\'INFORMATION_SCHEMA.ROLES\',true)');
+setNode(45, 1, 2,  'view', 'ROUTINES', 'javascript:ins(\'INFORMATION_SCHEMA.ROUTINES\',true)');
+setNode(46, 1, 2,  'view', 'SCHEMATA', 'javascript:ins(\'INFORMATION_SCHEMA.SCHEMATA\',true)');
+setNode(47, 1, 2,  'view', 'SEQUENCES', 'javascript:ins(\'INFORMATION_SCHEMA.SEQUENCES\',true)');
+setNode(48, 1, 2,  'table', 'SESSION_STATE', 'javascript:ins(\'INFORMATION_SCHEMA.SESSION_STATE\',true)');
+setNode(49, 1, 2,  'table', 'SESSIONS', 'javascript:ins(\'INFORMATION_SCHEMA.SESSIONS\',true)');
+setNode(50, 1, 2,  'table', 'SETTINGS', 'javascript:ins(\'INFORMATION_SCHEMA.SETTINGS\',true)');
+setNode(51, 1, 2,  'table', 'SYNONYMS', 'javascript:ins(\'INFORMATION_SCHEMA.SYNONYMS\',true)');
+setNode(52, 1, 2,  'view', 'TABLE_CONSTRAINTS', 'javascript:ins(\'INFORMATION_SCHEMA.TABLE_CONSTRAINTS\',true)');
+setNode(53, 1, 2,  'view', 'TABLE_PRIVILEGES', 'javascript:ins(\'INFORMATION_SCHEMA.TABLE_PRIVILEGES\',true)');
+setNode(54, 1, 2,  'view', 'TABLES', 'javascript:ins(\'INFORMATION_SCHEMA.TABLES\',true)');
+setNode(55, 1, 2,  'view', 'TRIGGERS', 'javascript:ins(\'INFORMATION_SCHEMA.TRIGGERS\',true)');
+setNode(56, 1, 2,  'table', 'USERS', 'javascript:ins(\'INFORMATION_SCHEMA.USERS\',true)');
+setNode(57, 1, 2,  'view', 'VIEWS', 'javascript:ins(\'INFORMATION_SCHEMA.VIEWS\',true)');
+setNode(58, 0, 1, 'users', 'Users', null);
+setNode(59, 1, 1, 'user', 'SA', null);
+setNode(60, 2, 2, 'type', 'Admin', null);
+setNode(61, 0, 0, 'info', 'H2 2.0.201 (2019-10-14)', null);
+refreshQueryTables();
+//-->
+</script>
+
+<div class="tree">
+<script type="text/javascript">
+<!--
+writeTree();
+//-->
+</script>
+</div>
+
+<p class="error">
+    
+</p>
+
+</div>
+
+</body>
+</html>

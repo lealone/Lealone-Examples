@@ -32,11 +32,11 @@
 基于 Vue + Lealone 开发的 [PetStore 应用](https://github.com/lealone/Lealone-Examples/blob/main/petstore/README.md)
 
 
-### lealone-opscenter
+### h2-web-console
 
-基于 Vue + Lealone 开发的 [Lealone Ops Center](https://github.com/lealone/Lealone-Examples/tree/main/lealone-opscenter)
+基于 Vue + Lealone 开发的 [h2-web-console](https://github.com/lealone/Lealone-Examples/tree/main/h2-web-console)
 
-Ops Center 是一个 web 应用，通过 Ops Center 可以操作数据库。
+h2 web console 是一个 web 应用，通过 h2 web console 可以操作数据库。
 
 
 ### create-app

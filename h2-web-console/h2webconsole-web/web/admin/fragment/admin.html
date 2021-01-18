@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
+and the EPL 1.0 (https://h2database.com/html/license.html).
+Initial Developer: H2 Group
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div th:fragment="admin">
+    <h1>
+        {{ text.adminTitle }}
+    </h1>
+    <p>
+        <a href="/" @click.prevent="logout">{{ text.adminLogout }}</a>
+    </p>
+    <hr />
+    <form name="admin" method="post" action="adminSave.do?jsessionid={{ sessionId }}">
+    <h3>
+        {{ text.adminAllow }}
+    </h3>
+    <p>
+        <template v-if="allowOthers=='false'">
+            <input type="radio" v-model="allowOthers" value="false" checked="checked" />
+        </template>
+        <template v-if="allowOthers=='true'">
+            <input type="radio" v-model="allowOthers" value="false" />
+        </template>
+        {{ text.adminLocal }}<br />
+
+        <template v-if="allowOthers=='true'">
+            <input type="radio" v-model="allowOthers" value="true" checked="checked" />
+        </template>
+        <template v-if="allowOthers=='false'">
+            <input type="radio" v-model="allowOthers" value="true" />
+        </template>
+        {{ text.adminOthers }}<br />
+    </p>
+    <h3>
+        {{ text.adminConnection }}
+    </h3>
+    <p>
+        <template v-if="ssl=='false'">
+            <input type="radio" v-model="ssl" value="false" checked="checked" />
+        </template>
+        <template v-if="ssl=='true'">
+            <input type="radio" v-model="ssl" value="false" />
+        </template>
+        {{ text.adminHttp }}<br />
+
+        <template v-if="ssl=='true'">
+            <input type="radio" v-model="ssl" value="true" checked="checked" />
+        </template>
+        <template v-if="ssl=='false'">
+            <input type="radio" v-model="ssl" value="true" />
+        </template>
+        {{ text.adminHttps }}<br />
+    </p>
+    <h3>
+        {{ text.adminPort }}
+    </h3>
+    <p>
+        {{ text.adminPortWeb }}: <input type="text" v-model="port" />
+    </p>
+    <hr />
+    <p>
+        <input type="submit" class="button" :value="text.adminSave" @click.prevent="save" />
+    </p>
+    <p>
+        {{ text.adminRestart }}
+    </p>
+    </form>
+    <hr />
+    <form name="translate" method="post" action="/">
+    <p>
+      <input type="submit" class="button" :value="text.adminTranslateStart" @click.prevent="startTranslate" />
+    </p>
+    </form>
+    <p>
+        {{ text.adminTranslateHelp }}
+    </p>
+    <hr />
+    <h3>
+        {{ text.adminSessions }}
+    </h3>
+    <table>
+        <tr>
+            <th>{{ text.admin.ip }}</th>
+            <th>{{ text.admin.url }}</th>
+            <th>{{ text.a.user }}</th>
+            <th>{{ text.admin.executing }}</th>
+            <th>{{ text.admin.lastAccess }}</th>
+            <th>{{ text.admin.lastQuery }}</th>
+        </tr>
+        <template v-for="item in sessions">
+            <tr>
+                <td>
+                    {{ item.ip }}
+                </td>
+                <td>
+                    {{ item.url }}
+                </td>
+                <td>
+                    {{ item.user }}
+                </td>
+                <td>
+                    {{ item.executing }}
+                </td>
+                <td>
+                    {{ item.lastAccess }}
+                </td>
+                <td>
+                    {{ item.lastQuery }}
+                </td>
+            </tr>
+        </template>
+    </table>
+    <br />
+    <form name="shutdown" method="post" action="/">
+        <input type="submit" class="button" :value="text.adminShutdown" @click.prevent="shutdown" />
+    </form>
+</div>
+
+</body>
+</html>
