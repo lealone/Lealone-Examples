@@ -368,7 +368,9 @@ public class CreateLealoneApp {
                 "ThymeleafTemplateEngineImpl.java");
         writeFile("/web/pom.xml", moduleDir);
 
-        new File(moduleDir, "web").mkdir();
+        webDir = new File(moduleDir, "web");
+        webDir.mkdir();
+        writeFile("/web/index.html", webDir);
     }
 
     private Configuration freeMarkerConfiguration;
