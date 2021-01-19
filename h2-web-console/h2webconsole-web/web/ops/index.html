@@ -79,6 +79,7 @@
   <template id="tables" th:insert="/ops/fragment/tables.html :: tables" />
   <template id="query" th:insert="/ops/fragment/query.html :: query" />
   <template id="result" th:insert="/ops/fragment/result.html :: result" />
+  <template id="result-table" th:insert="/ops/fragment/result-table.html :: result-table" />
 
   <script src="/ops/js/header.js"></script>
   <script src="/ops/js/tables.js"></script>
@@ -93,6 +94,7 @@
     Lealone.component(app, 'tables', opsTables);
     Lealone.component(app, 'query', opsQuery);
     Lealone.component(app, 'result', opsResult);
+    Lealone.component(app, 'result-table', opsResult);
 
     mount(app, '#opsApp')
   </script>

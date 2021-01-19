@@ -47,6 +47,7 @@ import org.h2.util.ScriptReader;
 import org.h2.util.StringUtils;
 import org.h2.value.DataType;
 import org.lealone.examples.h2webconsole.service.generated.QueryService;
+import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
 public class QueryServiceImpl implements QueryService {
@@ -79,7 +80,8 @@ public class QueryServiceImpl implements QueryService {
             buff.append(PageParser.escapeHtml(s + ";")).append("<br />");
         }
         boolean forceEdit = s.startsWith("@edit");
-        buff.append(getResult(conn, i + 1, s, size == 1, forceEdit)).append("<br />");
+        // buff.append(getResult(conn, i + 1, s, size == 1, forceEdit)).append("<br />");
+        buff.append(getResult(conn, i + 1, s, size == 1, forceEdit));
     }
 
     @Override
@@ -135,7 +137,20 @@ public class QueryServiceImpl implements QueryService {
         } catch (Throwable e) {
             session.put("result", getStackTrace(0, e, session.getContents().isH2()));
         }
-        return "result.jsp";
+        if (!session.columnNames.isEmpty()) {
+            JsonObject json = new JsonObject();
+            json.put("columnNames", new JsonArray(session.columnNames));
+            json.put("rows", new JsonArray(session.rows));
+            json.put("sql", sql);
+            json.put("type", "result-table");
+            json.put("queryInfo", session.queryInfo);
+            String str = json.encode();
+            session.columnNames.clear();
+            session.rows.clear();
+            session.queryInfo = null;
+            return str;
+        }
+        return session.get("result").toString();
     }
 
     private String getResult(Connection conn, int id, String sql, boolean allowEdit, boolean forceEdit) {
@@ -167,10 +182,10 @@ public class QueryServiceImpl implements QueryService {
             boolean list = false;
             if (JdbcUtils.isBuiltIn(sql, "@autocommit_true")) {
                 conn.setAutoCommit(true);
-                return "${text.result.autoCommitOn}";
+                return session.i18n("text.result.autoCommitOn");
             } else if (JdbcUtils.isBuiltIn(sql, "@autocommit_false")) {
                 conn.setAutoCommit(false);
-                return "${text.result.autoCommitOff}";
+                return session.i18n("text.result.autoCommitOff");
             } else if (JdbcUtils.isBuiltIn(sql, "@cancel")) {
                 stat = session.executingStatement;
                 if (stat != null) {
@@ -222,7 +237,7 @@ public class QueryServiceImpl implements QueryService {
             } else if (JdbcUtils.isBuiltIn(sql, "@maxrows")) {
                 int maxrows = (int) Double.parseDouble(StringUtils.trimSubstring(sql, "@maxrows".length()));
                 session.put("maxrows", Integer.toString(maxrows));
-                return "${text.result.maxrowsSet}";
+                return session.i18n("text.result.maxrowsSet") + " " + maxrows;
             } else if (JdbcUtils.isBuiltIn(sql, "@parameter_meta")) {
                 sql = StringUtils.trimSubstring(sql, "@parameter_meta".length());
                 PreparedStatement prep = conn.prepareStatement(sql);
@@ -400,6 +415,7 @@ public class QueryServiceImpl implements QueryService {
                 buff.append("<th>${text.resultEdit.action}</th>");
             }
             for (int i = 0; i < columns; i++) {
+                session.columnNames.add(meta.getColumnLabel(i + 1));
                 buff.append("<th>").append(PageParser.escapeHtml(meta.getColumnLabel(i + 1))).append("</th>");
             }
             buff.append("</tr>");
@@ -426,9 +442,12 @@ public class QueryServiceImpl implements QueryService {
                                     + "title=\"${text.resultEdit.delete}\" border=\"1\" /></a>")
                             .append("</td>");
                 }
+                ArrayList<String> row = new ArrayList<String>();
                 for (int i = 0; i < columns; i++) {
+                    row.add(escapeData(rs, i + 1));
                     buff.append("<td>").append(escapeData(rs, i + 1)).append("</td>");
                 }
+                session.rows.add(row);
                 buff.append("</tr>");
             }
         }
@@ -470,11 +489,16 @@ public class QueryServiceImpl implements QueryService {
         if (edit) {
             buff.append("</form>");
         }
+
+        String queryInfo;
         if (rows == 0) {
+            queryInfo = session.i18n("text.result.noRows");
             buff.append("(${text.result.noRows}");
         } else if (rows == 1) {
+            queryInfo = session.i18n("text.result.1row");
             buff.append("(${text.result.1row}");
         } else {
+            queryInfo = rows + " " + session.i18n("text.result.rows");
             buff.append('(').append(rows).append(" ${text.result.rows}");
         }
         buff.append(", ");
@@ -486,6 +510,7 @@ public class QueryServiceImpl implements QueryService {
                     + "<input type=\"submit\" class=\"button\" " + "value=\"${text.resultEdit.editResult}\" />"
                     + "<input type=\"hidden\" name=\"sql\" value=\"@edit ").append(sql).append("\" /></form>");
         }
+        session.queryInfo = "(" + queryInfo + ", " + time + " ms)";
         return buff.toString();
     }
 

@@ -57,6 +57,10 @@ class ServiceSession {
 
     private final ArrayList<String> commandHistory;
 
+    final ArrayList<String> columnNames = new ArrayList<String>();
+    final ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();
+    String queryInfo;
+
     private Connection conn;
     private DatabaseMetaData meta;
     private DbContents contents = new DbContents();
@@ -92,6 +96,14 @@ class ServiceSession {
             return server.getSessions();
         }
         return map.get(key);
+    }
+
+    String i18n(String key) {
+        if (key.startsWith("text."))
+            key = key.substring(5);
+        @SuppressWarnings("unchecked")
+        HashMap<String, Object> m = (HashMap<String, Object>) map.get("text");
+        return m.get(key).toString();
     }
 
     /**

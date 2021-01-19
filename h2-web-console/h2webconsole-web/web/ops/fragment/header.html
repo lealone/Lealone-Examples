@@ -59,8 +59,7 @@ Initial Developer: H2 Group
                     &nbsp;{{ text.toolbar.maxRows }}&nbsp;
                 </td>
                 <td class="toolbar">
-                    <select name="rowcount" size="1" onchange=
-                    "javascript:parent.h2result.document.location='query.do?jsessionid=220f55b36da2098b8b89f75a6963c7c1&amp;sql=@maxrows+'+header.rowcount.value+'.';">
+                    <select v-model="rowcount" size="1" @change="setMaxRows">
                     <option value="0">
                             {{ text.toolbar.all }}
                         </option>
