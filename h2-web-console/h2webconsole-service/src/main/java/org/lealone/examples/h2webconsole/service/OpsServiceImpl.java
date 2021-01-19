@@ -19,6 +19,7 @@ package org.lealone.examples.h2webconsole.service;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -122,11 +123,13 @@ public class OpsServiceImpl implements OpsService {
         prop.setProperty("user", user);
         prop.setProperty("password", password);
         try {
-            DriverManager.getConnection(url, prop);
+            Connection conn = DriverManager.getConnection(url, prop);
+            ServiceSession session = ServiceConfig.instance.createNewSession(null);
+            session.setConnection(conn);
+            return session.get("sessionId").toString();
         } catch (SQLException e) {
             throw new RuntimeException("failed to login: " + e.getMessage(), e);
         }
-        return "ok";
     }
 
     @Override

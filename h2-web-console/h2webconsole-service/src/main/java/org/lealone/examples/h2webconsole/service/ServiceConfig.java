@@ -151,7 +151,7 @@ public class ServiceConfig {
     private boolean allowSecureCreation;
     private boolean trace;
     private TranslateThread translateThread;
-    private boolean allowChunked = true;
+    private boolean allowChunked = false;
     private String serverPropertiesDir = Constants.SERVER_PROPERTIES_DIR;
     // null means the history is not allowed to be stored
     private String commandHistoryString;

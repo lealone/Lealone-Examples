@@ -17,9 +17,9 @@ public interface QueryService {
             return new ServiceProxy(url);
     }
 
-    String query(String sql);
+    String query(String jsessionid, String sql);
 
-    String editResult(Integer row, Integer op, String value);
+    String editResult(String jsessionid, Integer row, Integer op, String value);
 
     static class ServiceProxy implements QueryService {
 
@@ -27,14 +27,15 @@ public interface QueryService {
         private final PreparedStatement ps2;
 
         private ServiceProxy(String url) {
-            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE QUERY_SERVICE QUERY(?)");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE QUERY_SERVICE EDIT_RESULT(?, ?, ?)");
+            ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE QUERY_SERVICE QUERY(?, ?)");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE QUERY_SERVICE EDIT_RESULT(?, ?, ?, ?)");
         }
 
         @Override
-        public String query(String sql) {
+        public String query(String jsessionid, String sql) {
             try {
-                ps1.setString(1, sql);
+                ps1.setString(1, jsessionid);
+                ps1.setString(2, sql);
                 ResultSet rs = ps1.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
@@ -46,11 +47,12 @@ public interface QueryService {
         }
 
         @Override
-        public String editResult(Integer row, Integer op, String value) {
+        public String editResult(String jsessionid, Integer row, Integer op, String value) {
             try {
-                ps2.setInt(1, row);
-                ps2.setInt(2, op);
-                ps2.setString(3, value);
+                ps2.setString(1, jsessionid);
+                ps2.setInt(2, row);
+                ps2.setInt(3, op);
+                ps2.setString(4, value);
                 ResultSet rs = ps2.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);

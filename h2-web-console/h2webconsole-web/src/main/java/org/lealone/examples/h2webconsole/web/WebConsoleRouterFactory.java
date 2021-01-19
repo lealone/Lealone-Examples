@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.UUID;
 
 import org.lealone.common.util.CaseInsensitiveMap;
 import org.lealone.examples.h2webconsole.service.ServiceConfig;
@@ -143,10 +142,9 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
     @Override
     protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
             Buffer result) {
-        // if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
-        // JsonObject receiveJson = new JsonObject(result);
-        // routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
-        // }
+        if ("ops_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
+            routingContext.session().put("jsessionid", result.toString());
+        }
         super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
     }
 
@@ -201,11 +199,13 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
 
         router.route("/service/*").handler(routingContext -> {
             String jsessionid = routingContext.session().get("jsessionid");
-            if (jsessionid == null) {
-                jsessionid = UUID.randomUUID().toString();
-                routingContext.session().put("jsessionid", jsessionid);
+            // if (jsessionid == null) {
+            // jsessionid = UUID.randomUUID().toString();
+            // routingContext.session().put("jsessionid", jsessionid);
+            // }
+            if (jsessionid != null) {
+                routingContext.request().params().set("jsessionid", jsessionid);
             }
-            routingContext.request().params().set("jsessionid", jsessionid);
             routingContext.next();
         });
 

@@ -42,8 +42,8 @@ drop service if exists query_service;
 
 -- 创建服务: query_service，会生成一个对应的QueryService接口
 create service if not exists query_service (
-  query(sql varchar) varchar,
-  edit_result(row int, op int, value varchar) varchar
+  query(jsessionid varchar, sql varchar) varchar,
+  edit_result(jsessionid varchar, row int, op int, value varchar) varchar
 )
 package @packageName
 implement by 'org.lealone.examples.h2webconsole.service.QueryServiceImpl' -- QueryService接口的默认实现类

@@ -83,7 +83,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public String query(String sql) {
+    public String query(String jsessionid, String sql) {
         try {
             ScriptReader r = new ScriptReader(new StringReader(sql));
             final ArrayList<String> list = new ArrayList<>();
@@ -94,6 +94,7 @@ public class QueryServiceImpl implements QueryService {
                 }
                 list.add(s);
             }
+            session = ServiceConfig.instance.getSession(jsessionid);
             final Connection conn = session.getConnection();
             if (SysProperties.CONSOLE_STREAM && ServiceConfig.instance.getAllowChunked()) {
                 String page = new String(ServiceConfig.instance.getFile("result.jsp"), StandardCharsets.UTF_8);
@@ -631,7 +632,7 @@ public class QueryServiceImpl implements QueryService {
     }
 
     @Override
-    public String editResult(Integer row, Integer op, String value) {
+    public String editResult(String jsessionid, Integer row, Integer op, String value) {
         JsonObject attributes = new JsonObject(value);
         ResultSet rs = session.result;
         String result = "", error = "";

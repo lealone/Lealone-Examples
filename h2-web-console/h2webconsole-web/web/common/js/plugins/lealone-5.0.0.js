@@ -252,27 +252,30 @@ function initSockJS(sockjsUrl) {
             else if(L.services[serviceName] && L.services[serviceName]["serviceObject"]) {
                 try {
                     var serviceObject = L.services[serviceName]["serviceObject"];
-                    var m = serviceName.split(".")[1];
-                    var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
                     // var keys = Object.keys(serviceObject);
+                    var isJson = true;
                     try {
                         result = JSON.parse(result); // 尝试转换成json对象
                     } catch(e) {
-                        if(route != undefined && route.redirect != undefined) {
-                            location.href = route.redirect;
-                        }
-                        return; // 不是json对象就不管了
+                        isJson = false;
                     }
+
+                    var m = serviceName.split(".")[1];
+                    var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
+                    //手动处理结果
                     if(route != undefined && route.handler != undefined) {
                         route.handler(result);
                         return;
                     }
-                    for(var key in result) {
-                        // 找不到hasOwnProperty方法
-                        // if(serviceObject.hasOwnProperty(key))
-                        // if(keys.indexOf(key) >= 0) //vue3有警告
-                        if(serviceObject[key] != undefined)
-                            serviceObject[key] = result[key];
+                    //自动关联字段
+                    if(isJson) {
+                        for(var key in result) {
+                            // 找不到hasOwnProperty方法
+                            // if(serviceObject.hasOwnProperty(key))
+                            // if(keys.indexOf(key) >= 0) //vue3有警告
+                            if(serviceObject[key] != undefined)
+                                serviceObject[key] = result[key];
+                        }
                     }
                     if(route != undefined && route.redirect != undefined) {
                         location.href = route.redirect;

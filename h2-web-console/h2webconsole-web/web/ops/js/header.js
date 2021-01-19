@@ -8,8 +8,8 @@
         setAutoCommit() {
             var result = "Auto commit is now " + (this.autoCommit ? "ON" : "OFF");
             var that = this;
-            var sql = "";
-            axios.post(OpsCenter.QueryService + '/query', { sql: sql })
+            var sql = '@autocommit_' + this.autoCommit + '.';
+            axios.post(OpsCenter.QueryService + '/query', { sql: sql, jsessionid: lealone.currentUser })
             .then(function (response) {
             	lealone.route('ops', 'result', {result: result});
             })

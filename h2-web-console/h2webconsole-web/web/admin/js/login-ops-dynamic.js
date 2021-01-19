@@ -17,7 +17,10 @@
                     this.txt = data.text;
                     this.text = OpsCenter.i18n.parse(this.txt);
                 }},
-                login: { redirect: "/ops/index.html" },
+                login: {  handler: data=>{
+                    localStorage.currentUser = data; 
+                    location.href = "/ops/index.html";
+                }},
                 settingSave: { redirect: "/admin/index.html" },
                 settingRemove: { redirect: "/admin/index.html" }
             },
