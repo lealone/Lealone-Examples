@@ -17,9 +17,7 @@
  */
 package org.lealone.examples.h2webconsole.service;
 
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -50,7 +48,7 @@ import org.lealone.examples.h2webconsole.service.generated.QueryService;
 import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
-public class QueryServiceImpl implements QueryService {
+public class QueryServiceImpl extends ServiceImpl implements QueryService {
 
     ServiceSession session;
 
@@ -318,7 +316,7 @@ public class QueryServiceImpl implements QueryService {
                         } catch (UnsupportedOperationException e) {
                             updateCount = stat.getUpdateCount();
                         }
-                        buff.append("${text.result.updateCount}: ").append(updateCount);
+                        buff.append(session.i18n("text.result.updateCount")).append(": ").append(updateCount);
                         time = System.currentTimeMillis() - time;
                         buff.append("<br />(").append(time).append(" ms)");
                         stat.close();
@@ -601,12 +599,12 @@ public class QueryServiceImpl implements QueryService {
             String sql = history.get(i);
             buff.append("<tr><td><a href=\"getHistory.do?id=").append(i)
                     .append("&jsessionid=${sessionId}\" target=\"h2query\" >")
-                    .append("<img width=16 height=16 src=\"ico_write.gif\" "
+                    .append("<img width=16 height=16 src=\"/ops/img/ico_write.gif\" "
                             + "onmouseover = \"this.className ='icon_hover'\" ")
-                    .append("onmouseout = \"this.className ='icon'\" "
-                            + "class=\"icon\" alt=\"${text.resultEdit.edit}\" ")
-                    .append("title=\"${text.resultEdit.edit}\" border=\"1\"/></a>").append("</td><td>")
-                    .append(PageParser.escapeHtml(sql)).append("</td></tr>");
+                    .append("onmouseout = \"this.className ='icon'\" " + "class=\"icon\" alt=\""
+                            + session.i18n("text.resultEdit.edit") + "\" ")
+                    .append("title=\"" + session.i18n("text.resultEdit.edit") + "\" border=\"1\"/></a>")
+                    .append("</td><td>").append(PageParser.escapeHtml(sql)).append("</td></tr>");
         }
         buff.append("</table>");
         return buff.toString();
@@ -693,84 +691,6 @@ public class QueryServiceImpl implements QueryService {
         result = error + getResult(conn, -1, sql, true, true) + result;
         session.put("result", result);
         return "result.jsp";
-    }
-
-    String getStackTrace(int id, Throwable e, boolean isH2) {
-        try {
-            StringWriter writer = new StringWriter();
-            e.printStackTrace(new PrintWriter(writer));
-            String stackTrace = writer.toString();
-            stackTrace = PageParser.escapeHtml(stackTrace);
-            if (isH2) {
-                stackTrace = linkToSource(stackTrace);
-            }
-            stackTrace = StringUtils.replaceAll(stackTrace, "\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
-            String message = PageParser.escapeHtml(e.getMessage());
-            String error = "<a class=\"error\" href=\"#\" " + "onclick=\"var x=document.getElementById('st" + id
-                    + "').style;x.display=x.display==''?'none':'';\">" + message + "</a>";
-            if (e instanceof SQLException) {
-                SQLException se = (SQLException) e;
-                error += " " + se.getSQLState() + "/" + se.getErrorCode();
-                if (isH2) {
-                    int code = se.getErrorCode();
-                    error += " <a href=\"https://h2database.com/javadoc/" + "org/h2/api/ErrorCode.html#c" + code
-                            + "\">(${text.a.help})</a>";
-                }
-            }
-            error += "<span style=\"display: none;\" id=\"st" + id + "\"><br />" + stackTrace + "</span>";
-            error = formatAsError(error);
-            return error;
-        } catch (OutOfMemoryError e2) {
-            ServiceConfig.instance.traceError(e);
-            return e.toString();
-        }
-    }
-
-    private static String linkToSource(String s) {
-        try {
-            StringBuilder result = new StringBuilder(s.length());
-            int idx = s.indexOf("<br />");
-            result.append(s, 0, idx);
-            while (true) {
-                int start = s.indexOf("org.h2.", idx);
-                if (start < 0) {
-                    result.append(s.substring(idx));
-                    break;
-                }
-                result.append(s, idx, start);
-                int end = s.indexOf(')', start);
-                if (end < 0) {
-                    result.append(s.substring(idx));
-                    break;
-                }
-                String element = s.substring(start, end);
-                int open = element.lastIndexOf('(');
-                int dotMethod = element.lastIndexOf('.', open - 1);
-                int dotClass = element.lastIndexOf('.', dotMethod - 1);
-                String packageName = element.substring(0, dotClass);
-                int colon = element.lastIndexOf(':');
-                String file = element.substring(open + 1, colon);
-                String lineNumber = element.substring(colon + 1, element.length());
-                String fullFileName = packageName.replace('.', '/') + "/" + file;
-                result.append("<a href=\"https://h2database.com/html/source.html?file=");
-                result.append(fullFileName);
-                result.append("&line=");
-                result.append(lineNumber);
-                result.append("&build=");
-                result.append(Constants.BUILD_ID);
-                result.append("\">");
-                result.append(element);
-                result.append("</a>");
-                idx = end;
-            }
-            return result.toString();
-        } catch (Throwable t) {
-            return s;
-        }
-    }
-
-    static String formatAsError(String s) {
-        return "<div class=\"error\">" + s + "</div>";
     }
 
     private void unescapeData(String x, ResultSet rs, int columnIndex) throws SQLException {

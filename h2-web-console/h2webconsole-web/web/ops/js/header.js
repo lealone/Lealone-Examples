@@ -25,14 +25,13 @@
             lealone.route('ops', 'result', {result: "refreshTables: TODO"});
         },
         commit() {
-            this.lealone.route('ops', 'result', {result: "sql=COMMIT: TODO"});
+            this._query('COMMIT');
         },
         rollback() {
-            this.lealone.route('ops', 'result', {result: "sql=ROLLBACK: TODO"});
+            this._query('ROLLBACK');
         },
         run() {
             this._query(this.lealone.get("query").sql);
-            // this.lealone.route('ops', 'result', {result: "run sql=" + this.lealone.get("query").sql});
         },
         runSelected() {
             this.lealone.route('ops', 'result', {result: "runSelected sql=" + this.lealone.get("query").sql});
@@ -41,7 +40,7 @@
             this.lealone.route('ops', 'result', {result: "sql=@cancel: TODO"});
         },
         history() {
-            this.lealone.route('ops', 'result', {result: "sql=@history: TODO"});
+            this._query('@history.'); 
         }
     },
     mounted() {

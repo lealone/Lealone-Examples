@@ -57,9 +57,12 @@ class ServiceSession {
 
     private final ArrayList<String> commandHistory;
 
-    final ArrayList<String> columnNames = new ArrayList<String>();
-    final ArrayList<ArrayList<String>> rows = new ArrayList<ArrayList<String>>();
+    final ArrayList<String> columnNames = new ArrayList<>();
+    final ArrayList<ArrayList<String>> rows = new ArrayList<>();
     String queryInfo;
+
+    final ArrayList<TableInfo> tableList = new ArrayList<>();
+    final ArrayList<NodeInfo> nodeList = new ArrayList<>();
 
     private Connection conn;
     private DatabaseMetaData meta;
@@ -73,6 +76,14 @@ class ServiceSession {
         // Otherwise, one client could allow
         // saving history for others (insecure).
         this.commandHistory = server.getCommandHistoryList();
+    }
+
+    void addTable(String name, String columns, int id) {
+        tableList.add(new TableInfo(id, name, columns));
+    }
+
+    void addNode(int id, int level, int type, String icon, String text, String link) {
+        nodeList.add(new NodeInfo(id, level, type, icon, text, link));
     }
 
     /**
