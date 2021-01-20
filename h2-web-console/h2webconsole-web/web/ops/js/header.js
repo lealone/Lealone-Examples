@@ -22,7 +22,7 @@
             this._query('@maxrows' + this.rowcount + '.');
         },
         refreshTables() {
-            lealone.route('ops', 'result', {result: "refreshTables: TODO"});
+            this.lealone.get("tables").readTables();
         },
         commit() {
             this._query('COMMIT');
