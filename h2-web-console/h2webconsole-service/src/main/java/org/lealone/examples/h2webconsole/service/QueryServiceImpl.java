@@ -50,8 +50,6 @@ import org.lealone.orm.json.JsonObject;
 
 public class QueryServiceImpl extends ServiceImpl implements QueryService {
 
-    ServiceSession session;
-
     private Profiler profiler;
 
     /**

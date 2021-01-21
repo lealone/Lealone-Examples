@@ -63,12 +63,6 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result7 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result7);
-        case "TABLES":
-            String p_jsessionid_8 = methodArgs[0].getString();
-            String result8 = this.s.tables(p_jsessionid_8);
-            if (result8 == null)
-                return ValueNull.INSTANCE;
-            return ValueString.get(result8);
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -122,12 +116,6 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result7 == null)
                 return null;
             return result7;
-        case "TABLES":
-            String p_jsessionid_8 = ServiceExecutor.toString("JSESSIONID", methodArgs);
-            String result8 = this.s.tables(p_jsessionid_8);
-            if (result8 == null)
-                return null;
-            return result8;
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -187,13 +175,6 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result7 == null)
                 return null;
             return result7;
-        case "TABLES":
-            ja = new JsonArray(json);
-            String p_jsessionid_8 = ja.getString(0);
-            String result8 = this.s.tables(p_jsessionid_8);
-            if (result8 == null)
-                return null;
-            return result8;
         default:
             throw new RuntimeException("no method: " + methodName);
         }

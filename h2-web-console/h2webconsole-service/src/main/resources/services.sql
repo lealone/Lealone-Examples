@@ -30,8 +30,7 @@ create service if not exists ops_service (
   setting_remove(name varchar) varchar,
   read_translations(language varchar) varchar,
   login(url varchar, user varchar, password varchar) varchar,
-  test_connection() varchar,
-  tables(jsessionid varchar) varchar
+  test_connection() varchar
 )
 package @packageName
 implement by 'org.lealone.examples.h2webconsole.service.OpsServiceImpl' -- OpsService接口的默认实现类
@@ -59,3 +58,14 @@ create service if not exists system_service (
 package @packageName
 implement by 'org.lealone.examples.h2webconsole.service.SystemServiceImpl'
 generate code @srcPath;
+
+
+drop service if exists database_service;
+
+create service if not exists database_service (
+  read_all_database_objects(jsessionid varchar) varchar
+)
+package @packageName
+implement by 'org.lealone.examples.h2webconsole.service.DatabaseServiceImpl'
+generate code @srcPath;
+

@@ -5,6 +5,7 @@
 OpsCenter.OpsService = OpsCenter.Host + '/service/ops_service';
 OpsCenter.AdminService = OpsCenter.Host + '/service/admin_service';
 OpsCenter.QueryService = OpsCenter.Host + '/service/query_service';
+OpsCenter.DatabaseService = OpsCenter.Host + '/service/database_service';
 
 OpsService = Lealone.getService("ops_service");
 AdminService = Lealone.getService("admin_service");

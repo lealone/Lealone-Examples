@@ -31,8 +31,6 @@ public interface OpsService {
 
     String testConnection();
 
-    String tables(String jsessionid);
-
     static class ServiceProxy implements OpsService {
 
         private final PreparedStatement ps1;
@@ -42,7 +40,6 @@ public interface OpsService {
         private final PreparedStatement ps5;
         private final PreparedStatement ps6;
         private final PreparedStatement ps7;
-        private final PreparedStatement ps8;
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGES()");
@@ -52,7 +49,6 @@ public interface OpsService {
             ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
             ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
             ps7 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE TEST_CONNECTION()");
-            ps8 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE TABLES(?)");
         }
 
         @Override
@@ -153,20 +149,6 @@ public interface OpsService {
                 return ret;
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("OPS_SERVICE.TEST_CONNECTION", e);
-            }
-        }
-
-        @Override
-        public String tables(String jsessionid) {
-            try {
-                ps8.setString(1, jsessionid);
-                ResultSet rs = ps8.executeQuery();
-                rs.next();
-                String ret =  rs.getString(1);
-                rs.close();
-                return ret;
-            } catch (Throwable e) {
-                throw ClientServiceProxy.failed("OPS_SERVICE.TABLES", e);
             }
         }
     }

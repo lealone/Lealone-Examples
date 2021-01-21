@@ -6,8 +6,7 @@
     },
     methods: {
         readTables() {
-            //this.tables();
-            axios.post(OpsCenter.OpsService + '/tables', { jsessionid: lealone.currentUser })
+            axios.post(OpsCenter.DatabaseService + '/read_all_database_objects', { jsessionid: lealone.currentUser })
             .then(response=> {
                 var t = response.data.tables;
                 for (var i = 0; i < t.length; i++) {
