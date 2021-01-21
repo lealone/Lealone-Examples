@@ -11,14 +11,14 @@
             lealone.get("ops-header")._query(this.sql);
         },
         runSelected() {
-            this.lealone.route('ops', 'result', {result: "runSelected sql=" + this.sql});
+            lealone.route('ops', 'result', {result: "runSelected sql=" + this.sql});
         },
         manualAutoComplete() {
-            this.lealone.route('ops', 'result', {result: "manualAutoComplete sql=" + this.sql});
+            lealone.route('ops', 'result', {result: "manualAutoComplete sql=" + this.sql});
         }
     },
     mounted() {
-        this.lealone.set(this.gid, this);
+        lealone.put(this.gid, this);
     }
 }
 /*

@@ -271,7 +271,7 @@ const Lealone = {
     params: {},
     components: [],
 
-    set(key, value) {
+    put(key, value) {
         this.components[key] = value;
     },
 

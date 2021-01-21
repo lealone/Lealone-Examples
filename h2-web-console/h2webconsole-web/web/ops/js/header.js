@@ -51,6 +51,6 @@
         }
     },
     mounted() {
-        lealone.set(this.gid, this);
+        lealone.put(this.gid, this);
     }
 }

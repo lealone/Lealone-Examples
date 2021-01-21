@@ -6,7 +6,7 @@
     },
     mounted() {
         var lealone = this.lealone;
-        lealone.set(this.gid, this);
+        lealone.put(this.gid, this);
         if(lealone.screen == "ops" && lealone.page == this.gid) {
             this.result = lealone.params.result;
         }

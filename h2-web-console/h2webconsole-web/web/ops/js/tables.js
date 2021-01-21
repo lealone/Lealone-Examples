@@ -22,7 +22,7 @@
         }
     },
     mounted() {
-        lealone.set(this.gid, this);
+        lealone.put(this.gid, this);
         this.readTables();
     }
 }
@@ -125,7 +125,7 @@ function writeTree() {
         if (node.link == null) {
             tree.push(node.text);
         } else {
-            var isTable = node.icon == "table";
+            var isTable = node.icon == "table" || node.icon == "view";
             tree.push("<a id='" + node.text + "' href='/' onclick=\"insertText('" + node.link + "', " + isTable +", event)\">" + node.text + "</a>");
         }
         tree.push("<br />");
