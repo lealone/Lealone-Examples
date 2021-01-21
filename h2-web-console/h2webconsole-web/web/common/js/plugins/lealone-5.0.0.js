@@ -42,72 +42,6 @@ L.call = function(object, apiName) {
     }
 };
 
-// TODO 是否要支持手工传递参数
-L.old_call4 = function(serviceContext, service, apiName, arguments) {
-    if(!L.sockjs) {
-        L.services = {};
-        initSockJS(service.sockjsUrl);
-    }
-    var serviceName = service.serviceName + "." + apiName;
-    // 格式: type;serviceName;[arg1,arg2,...argn]
-    var msg = "1;" + serviceName;
-    var length = arguments.length;
-    if(typeof arguments[length - 1] == 'function') {
-        L.services[serviceName] = function() {};
-        L.services[serviceName]["callback"] = arguments[length - 1];
-        length--;
-    }
-    
-    if(length == 1 && arguments[0].services) {
-        if(!L.services[serviceName]) {
-            L.services[serviceName] = function() {};
-        }
-        L.services[serviceName]["onServiceException"] = arguments[0].onServiceException;
-        L.services[serviceName]["serviceObject"] = arguments[0];
-        length--;
-    }
-
-    if(length > 0) {
-        msg += ";[";
-        for(var j = 0; j < length; j++) {
-            if(arguments[j].onServiceException || arguments[j].services) {
-                if(!L.services[serviceName]) {
-                    L.services[serviceName] = function() {};
-                }
-                L.services[serviceName]["onServiceException"] = arguments[j].onServiceException;
-                L.services[serviceName]["serviceObject"] = arguments[j];
-                continue;
-            }
-            if(j != 0) {
-                msg += ",";
-            }
-            msg += JSON.stringify(arguments[j]);
-        }
-        msg += "]";
-    } else {
-        var names = service.methodInfo[apiName];
-        length = names.length;
-        if(length > 0) {
-            msg += ";[";
-            for(var j = 0; j < length; j++) { 
-                if(j != 0) {
-                    msg += ",";
-                }
-                msg += JSON.stringify(serviceContext[names[j]]);
-            }
-            msg += "]";
-        }
-    }
-    if(L.sockjsReady)
-        L.sockjs.send(msg);
-    else {
-        if(!L.penddingMsgs) {
-            L.penddingMsgs = [];
-        } 
-        L.penddingMsgs.push(msg);
-    }
-};
-
 L.call4 = function(serviceContext, service, apiName, arguments) {
     if(!L.sockjs) {
         L.services = {};
@@ -120,23 +54,38 @@ L.call4 = function(serviceContext, service, apiName, arguments) {
     
     // 格式: type;serviceName;[arg1,arg2,...argn]
     var msg = "1;" + serviceName;
-    var length = arguments.length;
-    if(typeof arguments[length - 1] == 'function') {
-        L.services[serviceName]["callback"] = arguments[length - 1];
-        length--;
-    } 
+    var argumentCount = arguments.length;
+    if(typeof arguments[argumentCount - 1] == 'function') {
+        L.services[serviceName]["callback"] = arguments[argumentCount - 1];
+        argumentCount--;
+    }
+    // 过滤掉事件对象
+    if(argumentCount > 0 && arguments[argumentCount - 1].defaultPrevented != undefined) {
+        argumentCount--;
+    }
     var names = service.methodInfo[apiName];
-    length = names.length;
-    if(length > 0) {
-        msg += ";[";
-        for(var j = 0; j < length; j++) { 
-            if(j != 0) {
+    var columnCount = names.length;
+    var length = columnCount > argumentCount ? argumentCount : columnCount;
+    var columnIndex = 0;
+    msg += ";[";
+    if(argumentCount > 0) {
+        for(var i = 0; i < length; i++) { 
+            if(i != 0) {
                 msg += ",";
             }
-            msg += JSON.stringify(serviceContext[names[j]]);
+            msg += JSON.stringify(arguments[i]);
+            columnIndex++;
         }
-        msg += "]";
     }
+    if(columnIndex < columnCount) { 
+        for(var i = columnIndex; i < columnCount; i++) { 
+            if(i != 0) {
+                msg += ",";
+            }
+            msg += JSON.stringify(serviceContext[names[i]]);
+        }
+    }
+    msg += "]";
     if(L.sockjsReady)
         L.sockjs.send(msg);
     else {
