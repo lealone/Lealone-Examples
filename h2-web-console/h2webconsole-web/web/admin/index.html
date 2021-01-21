@@ -35,7 +35,7 @@
     Lealone.component(app, 'login-admin', loginAdmin);
     Lealone.component(app, 'login-ops', loginOps, OpsService);
     Lealone.component(app, 'admin', admin, AdminService);
-    Lealone.component(app, 'tools', tools);    
+    Lealone.component(app, 'tools', tools, AdminService);    
     Lealone.component(app, 'help');
 
     mount(app, '#adminApp')

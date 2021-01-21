@@ -45,8 +45,7 @@ import org.lealone.examples.h2webconsole.service.generated.AdminService;
 import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
-public class AdminServiceImpl implements AdminService {
-    ServiceSession session;
+public class AdminServiceImpl extends ServiceImpl implements AdminService {
 
     @Override
     public String login(String password) {
@@ -100,9 +99,10 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public String tools(String tool0, String args) {
+        JsonObject json = new JsonObject();
         try {
             String toolName = tool0;
-            session.put("tool", toolName);
+            json.put("tool", toolName);
             String[] argList = StringUtils.arraySplit(args, ',', false);
             Tool tool = null;
             if ("Backup".equals(toolName)) {
@@ -134,14 +134,14 @@ public class AdminServiceImpl implements AdminService {
                 out.flush();
                 String o = Utils10.byteArrayOutputStreamToString(outBuff, StandardCharsets.UTF_8);
                 String result = PageParser.escapeHtml(o);
-                session.put("toolResult", result);
+                json.put("toolResult", result);
             } catch (Exception e) {
-                // session.put("toolResult", getStackTrace(0, e, true));
+                json.put("toolResult", getStackTrace(0, e, true));
             }
         } catch (Exception e) {
             instance.traceError(e);
         }
-        return "ok";
+        return json.encode();
     }
 
     @Override

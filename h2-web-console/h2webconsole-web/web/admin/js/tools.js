@@ -1,4 +1,31 @@
-﻿var current = '';
+﻿const tools = { 
+    data() {
+        return {
+            tool: "",
+            args: "",
+            toolResult: ""
+        }
+    },
+    methods: {
+        run() {
+            this.tools(data => {
+                this.tool = data.tool;
+                this.toolResult = data.toolResult;
+
+                var t = this.tool;
+                if (t != '') {
+                    go(t);
+                    document.getElementById('toolResult').style.display = '';
+                }
+            });
+        }
+    },
+    mounted() {
+        lealone.put(this.gid, this);
+    }
+}
+
+var current = '';
 function go(name) {
     if (name == current) {
         return;
@@ -13,7 +40,7 @@ function go(name) {
     document.getElementById('commandLine').style.display='';
     document.getElementById('toolName').innerHTML = name;
     document.getElementById('tool').value = name;
-    document.getElementById('result').style.display = 'none';
+    document.getElementById('toolResult').style.display = 'none';
     current = name;
     update();
 }
@@ -49,22 +76,6 @@ function update() {
     }
     document.getElementById('toolOptions').innerHTML = line;
     document.getElementById('args').value = args;
-}
-
-const tools = { 
-    data() {
-        return {
-			tool: "",
-		    toolResult: ""
-        }
-    },
-    methods: {
-    },
-    mounted() {
-        var t = this.tool;
-        if (t != '') {
-            go(t);
-            document.getElementById('result').style.display = '';
-        }
-    }
+    lealone.get("tools").tool = current;
+    lealone.get("tools").args = args;
 }

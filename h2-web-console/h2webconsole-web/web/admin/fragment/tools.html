@@ -11,26 +11,30 @@ Initial Developer: H2 Group
 <body>
 
 <div th:fragment="tools">
-<form name="tools" method="post" action="tools.do?jsessionid={{ sessionId}" id="tools">
+<form name="tools" method="post" action="/" id="tools">
 
 <h1>{{ text.a.tools }}</h1>
 <p>
 <a href="/" @click.prevent="logout">{{ text.adminLogout }}</a>
 </p>
 <hr />
+
 <p>
 <a href="javascript:go('Backup')">{{ text.tools.backup }}</a>&nbsp;&nbsp;
 <a href="javascript:go('Restore')">{{ text.tools.restore }}</a>&nbsp;&nbsp;
 <a href="javascript:go('Recover')">{{ text.tools.recover }}</a>&nbsp;&nbsp;
 <a href="javascript:go('DeleteDbFiles')">{{ text.tools.deleteDbFiles }}</a>&nbsp;&nbsp;
 <a href="javascript:go('ChangeFileEncryption')">{{ text.tools.changeFileEncryption }}</a>
-</p><p>
+</p>
+
+<p>
 <a href="javascript:go('Script')">{{ text.tools.script }}</a>&nbsp;&nbsp;
 <a href="javascript:go('RunScript')">{{ text.tools.runScript }}</a>&nbsp;&nbsp;
 <a href="javascript:go('ConvertTraceFile')">{{ text.tools.convertTraceFile }}</a>&nbsp;&nbsp;
 <a href="javascript:go('CreateCluster')">{{ text.tools.createCluster }}</a>
 </p>
 <hr />
+
 <div id="toolBackup" style="display: none">
     <h2>{{ text.tools.backup }}</h2>
     <p>{{ i18n['tools.backup.help'] }}</p>
@@ -158,17 +162,17 @@ Initial Developer: H2 Group
 </div>
 
 <div id="commandLine" style="display: none">
-        <input type="submit" class="button" :value="text.tools.run" />
-        <input type="hidden" name="tool" id="tool" value=""/>
-        <input type="hidden" name="args" id="args" value=""/>
+        <input type="submit" class="button" :value="text.tools.run" @click.prevent="run" />
+        <input type="hidden" v-model="tool" id="tool"/>
+        <input type="hidden" v-model="args" id="args"/>
         <h4>{{ text.tools.commandLine }}:</h4>
         java -cp h2*.jar org.h2.tools.<span id="toolName"></span>
         <span id="toolOptions">{{ tool }}</span>
 </div>
 
-<div id="result" style="display: none">
+<div id="toolResult" style="display: none">
         <h4>{{ text.tools.result }}:</h4>
-        <p>{{ toolResult }}</p>
+        <p v-html = 'toolResult'></p>
 </div>
 
 </form>
