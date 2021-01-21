@@ -65,7 +65,7 @@
     <dependencies>
         <dependency>
             <groupId>org.lealone.examples.petstore</groupId>
-            <artifactId>lealone-petstore-main</artifactId>
+            <artifactId>petstore-main</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
