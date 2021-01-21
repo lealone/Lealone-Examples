@@ -42,23 +42,19 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
             session.loadBnf();
             isH2 = contents.isH2();
 
-            session.addNode(0, 0, 0, "database", url, null);
-            StringBuilder buff = new StringBuilder().append("setNode(0, 0, 0, 'database', '")
-                    .append(escapeJavaScript(url)).append("', null);\n");
+            session.addNode(0, 0, 0, "database", url);
             int treeIndex = 1;
 
             DbSchema defaultSchema = contents.getDefaultSchema();
-            treeIndex = addTablesAndViews(defaultSchema, true, buff, treeIndex);
+            treeIndex = addTablesAndViews(defaultSchema, true, treeIndex);
             DbSchema[] schemas = contents.getSchemas();
             for (DbSchema schema : schemas) {
                 if (schema == defaultSchema || schema == null) {
                     continue;
                 }
-                session.addNode(treeIndex, 0, 1, "folder", schema.name, null);
-                buff.append("setNode(").append(treeIndex).append(", 0, 1, 'folder', '")
-                        .append(escapeJavaScript(schema.name)).append("', null);\n");
+                session.addNode(treeIndex, 0, 1, "folder", schema.name);
                 treeIndex++;
-                treeIndex = addTablesAndViews(schema, false, buff, treeIndex);
+                treeIndex = addTablesAndViews(schema, false, treeIndex);
             }
             if (isH2) {
                 try (Statement stat = conn.createStatement()) {
@@ -72,26 +68,20 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
                     }
                     for (int i = 0; rs.next(); i++) {
                         if (i == 0) {
-                            buff.append("setNode(").append(treeIndex)
-                                    .append(", 0, 1, 'sequences', '${text.tree.sequences}', null);\n");
+                            session.addNode(treeIndex, 0, 1, "sequences", session.i18n("text.tree.sequences"));
                             treeIndex++;
                         }
                         String name = rs.getString(1);
                         String currentBase = rs.getString(2);
                         String increment = rs.getString(3);
-                        session.addNode(treeIndex, 1, 1, "sequence", name, null);
-                        buff.append("setNode(").append(treeIndex).append(", 1, 1, 'sequence', '")
-                                .append(escapeJavaScript(name)).append("', null);\n");
+                        session.addNode(treeIndex, 1, 1, "sequence", name);
                         treeIndex++;
-                        session.addNode(treeIndex, 2, 2, "type", session.i18n("text.tree.current"), null);
-                        buff.append("setNode(").append(treeIndex).append(", 2, 2, 'type', '${text.tree.current}: ")
-                                .append(escapeJavaScript(currentBase)).append("', null);\n");
+                        session.addNode(treeIndex, 2, 2, "type",
+                                session.i18n("text.tree.current") + ": " + currentBase);
                         treeIndex++;
                         if (!"1".equals(increment)) {
-                            session.addNode(treeIndex, 2, 2, "type", session.i18n("text.tree.increment"), null);
-                            buff.append("setNode(").append(treeIndex)
-                                    .append(", 2, 2, 'type', '${text.tree.increment}: ")
-                                    .append(escapeJavaScript(increment)).append("', null);\n");
+                            session.addNode(treeIndex, 2, 2, "type",
+                                    session.i18n("text.tree.increment") + ": " + increment);
                             treeIndex++;
                         }
                     }
@@ -104,21 +94,15 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
                     }
                     for (int i = 0; rs.next(); i++) {
                         if (i == 0) {
-                            session.addNode(treeIndex, 0, 1, "users", session.i18n("text.tree.users"), null);
-                            buff.append("setNode(").append(treeIndex)
-                                    .append(", 0, 1, 'users', '${text.tree.users}', null);\n");
+                            session.addNode(treeIndex, 0, 1, "users", session.i18n("text.tree.users"));
                             treeIndex++;
                         }
                         String name = rs.getString(1);
                         String admin = rs.getString(2);
-                        session.addNode(treeIndex, 1, 1, "user", name, null);
-                        buff.append("setNode(").append(treeIndex).append(", 1, 1, 'user', '")
-                                .append(escapeJavaScript(name)).append("', null);\n");
+                        session.addNode(treeIndex, 1, 1, "user", name);
                         treeIndex++;
                         if (admin.equalsIgnoreCase("TRUE")) {
-                            session.addNode(treeIndex, 2, 2, "type", session.i18n("text.tree.admin"), null);
-                            buff.append("setNode(").append(treeIndex)
-                                    .append(", 2, 2, 'type', '${text.tree.admin}', null);\n");
+                            session.addNode(treeIndex, 2, 2, "type", session.i18n("text.tree.admin"));
                             treeIndex++;
                         }
                     }
@@ -127,28 +111,20 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
             }
             DatabaseMetaData meta = session.getMetaData();
             String version = meta.getDatabaseProductName() + " " + meta.getDatabaseProductVersion();
-            session.addNode(treeIndex, 0, 0, "info", version, null);
-            buff.append("setNode(").append(treeIndex).append(", 0, 0, 'info', '").append(escapeJavaScript(version))
-                    .append("', null);\n").append("refreshQueryTables();");
-            session.put("tree", buff.toString());
+            session.addNode(treeIndex, 0, 0, "info", version);
         } catch (Exception e) {
-            session.put("tree", "");
             session.put("error", getStackTrace(0, e, isH2));
         }
-        if (!session.tableList.isEmpty()) {
-            JsonObject json = new JsonObject();
-            json.put("tables", new JsonArray(session.tableList));
-            json.put("nodes", new JsonArray(session.nodeList));
-            String str = json.encode();
-            session.tableList.clear();
-            session.nodeList.clear();
-            return str;
-        }
-        return session.get("tree").toString();
+        JsonObject json = new JsonObject();
+        json.put("tables", new JsonArray(session.tableList));
+        json.put("nodes", new JsonArray(session.nodeList));
+        String str = json.encode();
+        session.tableList.clear();
+        session.nodeList.clear();
+        return str;
     }
 
-    private int addTablesAndViews(DbSchema schema, boolean mainSchema, StringBuilder builder, int treeIndex)
-            throws SQLException {
+    private int addTablesAndViews(DbSchema schema, boolean mainSchema, int treeIndex) throws SQLException {
         if (schema == null) {
             return treeIndex;
         }
@@ -172,23 +148,23 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
             if (schema.isSystem) {
                 Arrays.sort(tables, SYSTEM_SCHEMA_COMPARATOR);
                 for (DbTableOrView table : tables) {
-                    treeIndex = addTableOrView(schema, mainSchema, builder, treeIndex, meta, false, indentation,
-                            isOracle, notManyTables, table, table.isView(), prep, indentNode);
+                    treeIndex = addTableOrView(schema, mainSchema, treeIndex, meta, false, indentation, isOracle,
+                            notManyTables, table, table.isView(), prep, indentNode);
                 }
             } else {
                 for (DbTableOrView table : tables) {
                     if (table.isView()) {
                         continue;
                     }
-                    treeIndex = addTableOrView(schema, mainSchema, builder, treeIndex, meta, showColumns, indentation,
-                            isOracle, notManyTables, table, false, null, indentNode);
+                    treeIndex = addTableOrView(schema, mainSchema, treeIndex, meta, showColumns, indentation, isOracle,
+                            notManyTables, table, false, null, indentNode);
                 }
                 for (DbTableOrView table : tables) {
                     if (!table.isView()) {
                         continue;
                     }
-                    treeIndex = addTableOrView(schema, mainSchema, builder, treeIndex, meta, showColumns, indentation,
-                            isOracle, notManyTables, table, true, prep, indentNode);
+                    treeIndex = addTableOrView(schema, mainSchema, treeIndex, meta, showColumns, indentation, isOracle,
+                            notManyTables, table, true, prep, indentNode);
                 }
             }
         }
@@ -207,9 +183,9 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
         return null;
     }
 
-    private int addTableOrView(DbSchema schema, boolean mainSchema, StringBuilder builder, int treeIndex,
-            DatabaseMetaData meta, boolean showColumns, String indentation, boolean isOracle, boolean notManyTables,
-            DbTableOrView table, boolean isView, PreparedStatement prep, String indentNode) throws SQLException {
+    private int addTableOrView(DbSchema schema, boolean mainSchema, int treeIndex, DatabaseMetaData meta,
+            boolean showColumns, String indentation, boolean isOracle, boolean notManyTables, DbTableOrView table,
+            boolean isView, PreparedStatement prep, String indentNode) throws SQLException {
         int tableId = treeIndex;
         String tab = table.getQuotedName();
         if (!mainSchema) {
@@ -219,13 +195,10 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
         String[] a = indentation.split(",");
         session.addNode(treeIndex, Integer.parseInt(a[1].trim()), Integer.parseInt(a[2].trim()),
                 isView ? "view" : "table", table.getName(), tab);
-        builder.append("setNode(").append(treeIndex).append(indentation).append(" '").append(isView ? "view" : "table")
-                .append("', '").append(escapeJavaScript(table.getName())).append("', 'javascript:ins(\\'").append(tab)
-                .append("\\',true)');\n");
         treeIndex++;
         if (showColumns) {
             StringBuilder columnsBuilder = new StringBuilder();
-            treeIndex = addColumns(mainSchema, table, builder, treeIndex, notManyTables, columnsBuilder);
+            treeIndex = addColumns(mainSchema, table, treeIndex, notManyTables, columnsBuilder);
             if (isView) {
                 if (prep != null) {
                     prep.setString(2, table.getName());
@@ -235,26 +208,22 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
                             if (sql != null) {
                                 a = indentNode.split(",");
                                 session.addNode(treeIndex, Integer.parseInt(a[1].trim()), Integer.parseInt(a[2].trim()),
-                                        "type", sql, null);
-                                builder.append("setNode(").append(treeIndex).append(indentNode).append(" 'type', '")
-                                        .append(escapeJavaScript(sql)).append("', null);\n");
+                                        "type", sql);
                                 treeIndex++;
                             }
                         }
                     }
                 }
             } else if (!isOracle && notManyTables) {
-                treeIndex = addIndexes(mainSchema, meta, table.getName(), schema.name, builder, treeIndex);
+                treeIndex = addIndexes(mainSchema, meta, table.getName(), schema.name, treeIndex);
             }
             session.addTable(table.getName(), columnsBuilder.toString(), tableId);
-            builder.append("addTable('").append(escapeJavaScript(table.getName())).append("', '")
-                    .append(escapeJavaScript(columnsBuilder.toString())).append("', ").append(tableId).append(");\n");
         }
         return treeIndex;
     }
 
-    private int addColumns(boolean mainSchema, DbTableOrView table, StringBuilder builder, int treeIndex,
-            boolean showColumnTypes, StringBuilder columnsBuilder) {
+    private int addColumns(boolean mainSchema, DbTableOrView table, int treeIndex, boolean showColumnTypes,
+            StringBuilder columnsBuilder) {
         DbColumn[] columns = table.getColumns();
         for (int i = 0; columns != null && i < columns.length; i++) {
             DbColumn column = columns[i];
@@ -267,22 +236,13 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
             String[] a = level.split(",");
             session.addNode(treeIndex, Integer.parseInt(a[1].trim()), Integer.parseInt(a[2].trim()), "column",
                     column.getName(), col);
-            builder.append("setNode(").append(treeIndex).append(level).append(", 'column', '")
-                    .append(escapeJavaScript(column.getName())).append("', 'javascript:ins(\\'").append(col)
-                    .append("\\')');\n");
             treeIndex++;
             if (mainSchema && showColumnTypes) {
-                session.addNode(treeIndex, 2, 2, "type", column.getDataType(), null);
-                builder.append("setNode(").append(treeIndex).append(", 2, 2, 'type', '")
-                        .append(escapeJavaScript(column.getDataType())).append("', null);\n");
+                session.addNode(treeIndex, 2, 2, "type", column.getDataType());
                 treeIndex++;
             }
         }
         return treeIndex;
-    }
-
-    private static String escapeIdentifier(String name) {
-        return StringUtils.urlEncode(escapeJavaScript(name)).replace('+', ' ');
     }
 
     /**
@@ -306,8 +266,8 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
         String columns;
     }
 
-    private int addIndexes(boolean mainSchema, DatabaseMetaData meta, String table, String schema, StringBuilder buff,
-            int treeIndex) throws SQLException {
+    private int addIndexes(boolean mainSchema, DatabaseMetaData meta, String table, String schema, int treeIndex)
+            throws SQLException {
         ResultSet rs;
         try {
             rs = meta.getIndexInfo(null, schema, table, false, true);
@@ -325,7 +285,7 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
                 if (t == DatabaseMetaData.tableIndexClustered) {
                     type = "";
                 } else if (t == DatabaseMetaData.tableIndexHashed) {
-                    type = " (${text.tree.hashed})";
+                    type = " (" + session.i18n("text.tree.hashed") + ")";
                 } else if (t == DatabaseMetaData.tableIndexOther) {
                     type = "";
                 } else {
@@ -334,7 +294,8 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
                 if (name != null && type != null) {
                     info = new IndexInfo();
                     info.name = name;
-                    type = (rs.getBoolean("NON_UNIQUE") ? "${text.tree.nonUnique}" : "${text.tree.unique}") + type;
+                    type = (rs.getBoolean("NON_UNIQUE") ? session.i18n("text.tree.nonUnique")
+                            : session.i18n("text.tree.unique")) + type;
                     info.type = type;
                     info.columns = rs.getString("COLUMN_NAME");
                     indexMap.put(name, info);
@@ -350,31 +311,27 @@ public class DatabaseServiceImpl extends ServiceImpl implements DatabaseService 
             String levelColumnType = mainSchema ? ", 3, 2" : ", 4, 2";
             String[] a = level.split(",");
             session.addNode(treeIndex, Integer.parseInt(a[1].trim()), Integer.parseInt(a[2].trim()), "index_az",
-                    session.i18n("text.tree.indexes"), null);
-            buff.append("setNode(").append(treeIndex).append(level)
-                    .append(", 'index_az', '${text.tree.indexes}', null);\n");
+                    session.i18n("text.tree.indexes"));
             treeIndex++;
             String[] a1 = levelIndex.split(",");
             String[] a2 = levelColumnType.split(",");
             for (IndexInfo info : indexMap.values()) {
                 session.addNode(treeIndex, Integer.parseInt(a1[1].trim()), Integer.parseInt(a1[2].trim()), "index",
-                        info.name, null);
-                buff.append("setNode(").append(treeIndex).append(levelIndex).append(", 'index', '")
-                        .append(escapeJavaScript(info.name)).append("', null);\n");
+                        info.name);
                 treeIndex++;
                 session.addNode(treeIndex, Integer.parseInt(a2[1].trim()), Integer.parseInt(a2[2].trim()), "type",
-                        info.type, null);
-                buff.append("setNode(").append(treeIndex).append(levelColumnType).append(", 'type', '")
-                        .append(info.type).append("', null);\n");
+                        info.type);
                 treeIndex++;
                 session.addNode(treeIndex, Integer.parseInt(a2[1].trim()), Integer.parseInt(a2[2].trim()), "type",
-                        info.columns, null);
-                buff.append("setNode(").append(treeIndex).append(levelColumnType).append(", 'type', '")
-                        .append(escapeJavaScript(info.columns)).append("', null);\n");
+                        info.columns);
                 treeIndex++;
             }
         }
         return treeIndex;
+    }
+
+    private static String escapeIdentifier(String name) {
+        return StringUtils.urlEncode(escapeJavaScript(name)).replace('+', ' ');
     }
 
     /**

@@ -82,6 +82,10 @@ class ServiceSession {
         tableList.add(new TableInfo(id, name, columns));
     }
 
+    void addNode(int id, int level, int type, String icon, String text) {
+        addNode(id, level, type, icon, text, null);
+    }
+
     void addNode(int id, int level, int type, String icon, String text, String link) {
         nodeList.add(new NodeInfo(id, level, type, icon, text, link));
     }
