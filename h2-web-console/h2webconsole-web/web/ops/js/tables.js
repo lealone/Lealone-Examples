@@ -49,22 +49,6 @@ function addTable(name, columns, i) {
     tablesByName[name] = t;
 }
 
-function ins(s, isTable) {
-    if (parent.h2query) {
-        if (parent.h2query.insertText) {
-            parent.h2query.insertText(s, isTable);
-        }
-    }
-}
-
-function refreshQueryTables() {
-    if (parent.h2query) {
-        if (parent.h2query.refreshTables) {
-            parent.h2query.refreshTables();
-        }
-    }
-}
-
 function goToTable(s) {
     var t = tablesByName[s];
     if (t) {
