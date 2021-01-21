@@ -25,10 +25,7 @@ Initial Developer: H2 Group
     <!--<textarea v-model="sql" cols="80" rows="8" onkeydown="return keyDown(event)" onkeyup="return keyUp(event)"
                 onfocus="keyUp()" onchange="return keyUp()">{{ query }}
 	</textarea>-->
-    <br/><textarea v-model="sql" cols="80" rows="8">{{ query }}</textarea>
-  </form>
-  <form name="h2querysubmit" method="post" action="query.do?jsessionid=${sessionId}" target="h2result" style="display:none">
-    <textarea id="sql" name="sql" style="display:none"></textarea>
+    <br/><textarea name="sql" v-model="sql" cols="80" rows="8">{{ query }}</textarea>
   </form>
 </div>
 

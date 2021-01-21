@@ -21,7 +21,7 @@
                 this.result = tree.join(" ");
                 tree = [];
             })
-        },
+        }
     },
     mounted() {
         lealone.set(this.gid, this);
@@ -127,7 +127,8 @@ function writeTree() {
         if (node.link == null) {
             tree.push(node.text);
         } else {
-            tree.push("<a id='" + node.text + "' href=\"" + node.link + "\" >" + node.text + "</a>");
+            var isTable = node.icon == "table";
+            tree.push("<a id='" + node.text + "' href='/' onclick=\"insertText('" + node.link + "', " + isTable +", event)\">" + node.text + "</a>");
         }
         tree.push("<br />");
     }
