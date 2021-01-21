@@ -128,10 +128,15 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
         router.route().handler(routingContext -> {
             String file = routingContext.request().path();
             if (file.startsWith("/ops/") || file.startsWith("/common/") || file.startsWith("/admin/")
-                    || file.startsWith("/service/") || file.startsWith("/_lealone_sockjs_/"))
+                    || file.startsWith("/service/") || file.startsWith("/_lealone_sockjs_/")
+                    || file.startsWith("/deprecated/"))
                 routingContext.next();
             else if (file.endsWith(".css"))
                 routingContext.redirect("/common/css/opscenter.css");
+            else if (file.equals("/tree.js"))
+                routingContext.redirect("/deprecated/js/tree.js");
+            else if (file.equals("/table.js"))
+                routingContext.redirect("/deprecated/js/table.js");
             else if (file.endsWith(".js"))
                 routingContext.redirect("/ops/js" + file);
             else
