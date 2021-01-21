@@ -19,8 +19,6 @@ public interface AdminService {
 
     String login(String password);
 
-    String logout();
-
     String save(String port, String allowOthers, String ssl);
 
     String admin();
@@ -39,16 +37,14 @@ public interface AdminService {
         private final PreparedStatement ps4;
         private final PreparedStatement ps5;
         private final PreparedStatement ps6;
-        private final PreparedStatement ps7;
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE LOGIN(?)");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE LOGOUT()");
-            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE SAVE(?, ?, ?)");
-            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE ADMIN()");
-            ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE START_TRANSLATE()");
-            ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE SHUTDOWN()");
-            ps7 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE TOOLS(?, ?)");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE SAVE(?, ?, ?)");
+            ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE ADMIN()");
+            ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE START_TRANSLATE()");
+            ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE SHUTDOWN()");
+            ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE ADMIN_SERVICE TOOLS(?, ?)");
         }
 
         @Override
@@ -66,25 +62,12 @@ public interface AdminService {
         }
 
         @Override
-        public String logout() {
-            try {
-                ResultSet rs = ps2.executeQuery();
-                rs.next();
-                String ret =  rs.getString(1);
-                rs.close();
-                return ret;
-            } catch (Throwable e) {
-                throw ClientServiceProxy.failed("ADMIN_SERVICE.LOGOUT", e);
-            }
-        }
-
-        @Override
         public String save(String port, String allowOthers, String ssl) {
             try {
-                ps3.setString(1, port);
-                ps3.setString(2, allowOthers);
-                ps3.setString(3, ssl);
-                ResultSet rs = ps3.executeQuery();
+                ps2.setString(1, port);
+                ps2.setString(2, allowOthers);
+                ps2.setString(3, ssl);
+                ResultSet rs = ps2.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -97,7 +80,7 @@ public interface AdminService {
         @Override
         public String admin() {
             try {
-                ResultSet rs = ps4.executeQuery();
+                ResultSet rs = ps3.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -110,7 +93,7 @@ public interface AdminService {
         @Override
         public String startTranslate() {
             try {
-                ResultSet rs = ps5.executeQuery();
+                ResultSet rs = ps4.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -123,7 +106,7 @@ public interface AdminService {
         @Override
         public String shutdown() {
             try {
-                ResultSet rs = ps6.executeQuery();
+                ResultSet rs = ps5.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();
@@ -136,9 +119,9 @@ public interface AdminService {
         @Override
         public String tools(String tool, String args) {
             try {
-                ps7.setString(1, tool);
-                ps7.setString(2, args);
-                ResultSet rs = ps7.executeQuery();
+                ps6.setString(1, tool);
+                ps6.setString(2, args);
+                ResultSet rs = ps6.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();

@@ -228,6 +228,10 @@ public class ServiceConfig {
         return getSession(newId);
     }
 
+    ServiceSession removeSession(String sessionId) {
+        return sessions.remove(sessionId);
+    }
+
     String getStartDateTime() {
         if (startDateTime == null) {
             startDateTime = DateTimeFormatter.ofPattern("EEE, d MMM yyyy HH:mm:ss z", Locale.ENGLISH)

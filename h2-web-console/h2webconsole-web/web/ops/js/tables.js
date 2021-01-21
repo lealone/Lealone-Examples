@@ -6,13 +6,12 @@
     },
     methods: {
         readTables() {
-            axios.post(OpsCenter.DatabaseService + '/read_all_database_objects', { jsessionid: lealone.currentUser })
-            .then(response=> {
-                var t = response.data.tables;
+            DatabaseService.readAllDatabaseObjects(lealone.currentUser, data=> {
+                var t = data.tables;
                 for (var i = 0; i < t.length; i++) {
                     addTable(t[i].name, t[i].columns, t[i].id);
                 }
-                var n = response.data.nodes;
+                var n = data.nodes;
                 for (var i = 0; i < n.length; i++) {
                     setNode(n[i].id, n[i].level, n[i].type, n[i].icon, n[i].text, n[i].link);
                 }

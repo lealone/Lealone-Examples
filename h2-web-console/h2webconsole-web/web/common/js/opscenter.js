@@ -10,7 +10,7 @@ OpsCenter.DatabaseService = OpsCenter.Host + '/service/database_service';
 OpsService = Lealone.getService("ops_service");
 AdminService = Lealone.getService("admin_service");
 QueryService = Lealone.getService("query_service");
-
+DatabaseService = Lealone.getService("database_service");
 
 OpsCenter.i18n = { 
     data() { return { text: {} } },
@@ -75,7 +75,7 @@ var mount = function(app, appName) {
     app.mixin({
         methods: {
             logout() {
-                AdminService.logout(_=>(location.href = "/admin/index.html"));
+                OpsService.logout(lealone.currentUser, _=>(location.href = "/admin/index.html"));
             }
         }
     });

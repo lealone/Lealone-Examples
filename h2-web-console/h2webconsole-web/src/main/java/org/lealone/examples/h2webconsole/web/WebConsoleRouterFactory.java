@@ -18,13 +18,10 @@
 package org.lealone.examples.h2webconsole.web;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import org.lealone.common.util.CaseInsensitiveMap;
 import org.lealone.examples.h2webconsole.service.ServiceConfig;
 import org.lealone.examples.h2webconsole.web.deprecated.WebOpsHandler;
 import org.lealone.examples.h2webconsole.web.deprecated.WebServer;
@@ -69,62 +66,35 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
         setH2Handler(vertx, router);
     }
 
-    protected static CaseInsensitiveMap<Object> getMethodArgs(RoutingContext routingContext) {
-        CaseInsensitiveMap<Object> methodArgs = new CaseInsensitiveMap<>();
-        for (Map.Entry<String, String> e : routingContext.request().params().entries()) {
-            addMethodArgs(methodArgs, e.getKey(), e.getValue());
-        }
-        return methodArgs;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static void addMethodArgs(CaseInsensitiveMap<Object> methodArgs, String key, String value) {
-        Object oldValue = methodArgs.get(key);
-        if (oldValue != null) {
-            List<String> list;
-            if (oldValue instanceof String) {
-                list = new ArrayList<String>();
-                list.add((String) oldValue);
-                methodArgs.put(key, list);
-            } else {
-                list = (List<String>) oldValue;
-            }
-            list.add(value);
-        } else {
-            methodArgs.put(key, value);
-        }
-    }
-
     private void setSessionHandler(Vertx vertx, Router router) {
         router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
         router.route().handler(BodyHandler.create(false));
-        router.route("/service/admin_service/logout").handler(routingContext -> {
-            // routingContext.session().remove("currentUser");
-            // routingContext.session().remove("jsessionid");
-            routingContext.next();
+        // router.route("/service/admin_service/logout").handler(routingContext -> {
+        // routingContext.session().remove("jsessionid");
+        // routingContext.next();
+        // });
+    }
+
+    private void setRedirectHandler(Router router) {
+        router.route("/").handler(routingContext -> {
+            routingContext.redirect("/admin/index.html");
+        });
+        router.route("/admin").handler(routingContext -> {
+            routingContext.redirect("/admin/index.html");
+        });
+        router.route("/ops").handler(routingContext -> {
+            routingContext.redirect("/ops/index.html");
+        });
+        router.route("/old").handler(routingContext -> {
+            routingContext.redirect("/index.do");
         });
     }
 
     private void setH2Handler(Vertx vertx, Router router) {
-        router.route("/").handler(routingContext -> {
-            routingContext.redirect("/index.do");
-        });
         // 用正则表达式判断路径是否以“.do”结尾（不区分大小写）
-        router.routeWithRegex(".*\\.(?i)do").handler(routingContext -> {
-            try {
-                new WebOpsHandler(webServer).process(routingContext, getMethodArgs(routingContext));
-            } catch (IOException e) {
-                routingContext.failed();
-            }
-        });
+        setH2Handler(router, ".*\\.(?i)do");
+        setH2Handler(router, ".*\\.(?i)jsp");
 
-        router.routeWithRegex(".*\\.(?i)jsp").handler(routingContext -> {
-            try {
-                new WebOpsHandler(webServer).process(routingContext, getMethodArgs(routingContext));
-            } catch (IOException e) {
-                routingContext.failed();
-            }
-        });
         router.route().handler(routingContext -> {
             String file = routingContext.request().path();
             if (file.startsWith("/ops/") || file.startsWith("/common/") || file.startsWith("/admin/")
@@ -144,25 +114,23 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
         });
     }
 
+    private void setH2Handler(Router router, String regex) {
+        router.routeWithRegex(regex).handler(routingContext -> {
+            try {
+                new WebOpsHandler(webServer).process(routingContext, getMethodArgs(routingContext, false));
+            } catch (IOException e) {
+                routingContext.failed();
+            }
+        });
+    }
+
     @Override
     protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
             Buffer result) {
-        if ("ops_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
-            routingContext.session().put("jsessionid", result.toString());
-        }
+        // if ("ops_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
+        // routingContext.session().put("jsessionid", result.toString());
+        // }
         super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
-    }
-
-    private void setRedirectHandler(Router router) {
-        router.route("/").handler(routingContext -> {
-            routingContext.redirect("/index.do");
-        });
-        router.route("/ops").handler(routingContext -> {
-            routingContext.redirect("/ops/index.html");
-        });
-        router.route("/admin").handler(routingContext -> {
-            routingContext.redirect("/admin/index.html");
-        });
     }
 
     private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
@@ -179,10 +147,6 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
             JsonObject jsonObject = new JsonObject();
-            // String currentUser = routingContext.session().get("currentUser");
-            // if (currentUser != null) {
-            // jsonObject.put("currentUser", currentUser);
-            // }
             String file = routingContext.request().path();
             render(templateEngine, routingContext, jsonObject, file);
         });
@@ -202,17 +166,13 @@ public class WebConsoleRouterFactory extends HttpRouterFactory {
             routingContext.next();
         });
 
-        router.route("/service/*").handler(routingContext -> {
-            String jsessionid = routingContext.session().get("jsessionid");
-            // if (jsessionid == null) {
-            // jsessionid = UUID.randomUUID().toString();
-            // routingContext.session().put("jsessionid", jsessionid);
-            // }
-            if (jsessionid != null) {
-                routingContext.request().params().set("jsessionid", jsessionid);
-            }
-            routingContext.next();
-        });
+        // router.route("/service/*").handler(routingContext -> {
+        // String jsessionid = routingContext.session().get("jsessionid");
+        // if (jsessionid != null) {
+        // routingContext.request().params().set("jsessionid", jsessionid);
+        // }
+        // routingContext.next();
+        // });
 
         super.setHttpServiceHandler(config, vertx, router);
     }

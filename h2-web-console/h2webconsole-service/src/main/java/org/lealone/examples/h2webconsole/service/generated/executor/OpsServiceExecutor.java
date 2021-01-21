@@ -58,11 +58,17 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result6);
-        case "TEST_CONNECTION":
-            String result7 = this.s.testConnection();
+        case "LOGOUT":
+            String p_jsessionid_7 = methodArgs[0].getString();
+            String result7 = this.s.logout(p_jsessionid_7);
             if (result7 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result7);
+        case "TEST_CONNECTION":
+            String result8 = this.s.testConnection();
+            if (result8 == null)
+                return ValueNull.INSTANCE;
+            return ValueString.get(result8);
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -111,11 +117,17 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return null;
             return result6;
-        case "TEST_CONNECTION":
-            String result7 = this.s.testConnection();
+        case "LOGOUT":
+            String p_jsessionid_7 = ServiceExecutor.toString("JSESSIONID", methodArgs);
+            String result7 = this.s.logout(p_jsessionid_7);
             if (result7 == null)
                 return null;
             return result7;
+        case "TEST_CONNECTION":
+            String result8 = this.s.testConnection();
+            if (result8 == null)
+                return null;
+            return result8;
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -170,11 +182,18 @@ public class OpsServiceExecutor implements ServiceExecutor {
             if (result6 == null)
                 return null;
             return result6;
-        case "TEST_CONNECTION":
-            String result7 = this.s.testConnection();
+        case "LOGOUT":
+            ja = new JsonArray(json);
+            String p_jsessionid_7 = ja.getString(0);
+            String result7 = this.s.logout(p_jsessionid_7);
             if (result7 == null)
                 return null;
             return result7;
+        case "TEST_CONNECTION":
+            String result8 = this.s.testConnection();
+            if (result8 == null)
+                return null;
+            return result8;
         default:
             throw new RuntimeException("no method: " + methodName);
         }

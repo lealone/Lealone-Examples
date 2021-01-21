@@ -29,6 +29,8 @@ public interface OpsService {
 
     String login(String url, String user, String password);
 
+    String logout(String jsessionid);
+
     String testConnection();
 
     static class ServiceProxy implements OpsService {
@@ -40,6 +42,7 @@ public interface OpsService {
         private final PreparedStatement ps5;
         private final PreparedStatement ps6;
         private final PreparedStatement ps7;
+        private final PreparedStatement ps8;
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE GET_LANGUAGES()");
@@ -48,7 +51,8 @@ public interface OpsService {
             ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE SETTING_REMOVE(?)");
             ps5 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE READ_TRANSLATIONS(?)");
             ps6 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGIN(?, ?, ?)");
-            ps7 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE TEST_CONNECTION()");
+            ps7 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE LOGOUT(?)");
+            ps8 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE OPS_SERVICE TEST_CONNECTION()");
         }
 
         @Override
@@ -140,9 +144,23 @@ public interface OpsService {
         }
 
         @Override
+        public String logout(String jsessionid) {
+            try {
+                ps7.setString(1, jsessionid);
+                ResultSet rs = ps7.executeQuery();
+                rs.next();
+                String ret =  rs.getString(1);
+                rs.close();
+                return ret;
+            } catch (Throwable e) {
+                throw ClientServiceProxy.failed("OPS_SERVICE.LOGOUT", e);
+            }
+        }
+
+        @Override
         public String testConnection() {
             try {
-                ResultSet rs = ps7.executeQuery();
+                ResultSet rs = ps8.executeQuery();
                 rs.next();
                 String ret =  rs.getString(1);
                 rs.close();

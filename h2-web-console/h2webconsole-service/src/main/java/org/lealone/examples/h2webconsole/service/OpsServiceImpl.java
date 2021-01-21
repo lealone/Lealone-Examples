@@ -135,6 +135,21 @@ public class OpsServiceImpl extends ServiceImpl implements OpsService {
     }
 
     @Override
+    public String logout(String jsessionid) {
+        ServiceSession session = ServiceConfig.instance.removeSession(jsessionid);
+        if (session != null) {
+            Connection conn = session.getConnection();
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return "ok";
+    }
+
+    @Override
     public String readTranslations(String language) {
         JsonObject json = new JsonObject();
         if (language == null)

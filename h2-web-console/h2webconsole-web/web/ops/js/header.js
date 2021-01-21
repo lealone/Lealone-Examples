@@ -9,12 +9,11 @@
     },
     methods: {
         _query(sql) {
-            axios.post(OpsCenter.QueryService + '/query', { sql: sql, jsessionid: lealone.currentUser })
-            .then(function (response) {
-                if(response.data.type == "result-table")
-                    lealone.route('ops', 'result-table', {result: response.data});
+            QueryService.query(lealone.currentUser, sql, data=> {
+                if(data.type == "result-table")
+                    lealone.route('ops', 'result-table', {result: data});
                 else
-                    lealone.route('ops', 'result', {result: response.data});
+                    lealone.route('ops', 'result', {result: data});
             })
         },
         setAutoCommit() {
