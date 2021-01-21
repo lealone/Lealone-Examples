@@ -32,8 +32,8 @@
             var that = this;
             axios.get(OpsCenter.OpsService + '/read_translations?language=' + this.language)
             .then(response => {
-                that.txt = response.data.text;
-                that.text = OpsCenter.i18n.parse(that.txt);
+                that.i18n = response.data.text;
+                that.text = OpsCenter.i18n.parse(that.i18n);
             });
         },
         settingSave() {

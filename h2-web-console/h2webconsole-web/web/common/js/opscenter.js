@@ -29,7 +29,7 @@ OpsCenter.i18n = {
             var text = response.data.text;
             var newText = OpsCenter.i18n.parse(text);
             app.mixin({
-                data() { return { txt: text,  text: newText } },
+                data() { return { i18n: text,  text: newText } },
             });
             Lealone.loadServices(services => {
                 // console.log(services);
@@ -64,7 +64,7 @@ OpsCenter.i18n = {
             }, newText);
         }
         // 支持两种访问方式:
-        // {{ txt['toolbar.autoSelect.on'] }}
+        // {{ i18n['toolbar.autoSelect.on'] }}
         // {{ text.toolbar.autoSelect }}
         // 因为vue不能像这样使用{{ text.toolbar.autoSelect.on }}
         return newText;

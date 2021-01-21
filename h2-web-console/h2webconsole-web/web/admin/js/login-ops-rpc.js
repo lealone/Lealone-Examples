@@ -26,8 +26,8 @@
         },
         changeLanguage() {
             OpsService.readTranslations(this.language, data => { 
-                this.txt = data.text;
-                this.text = OpsCenter.i18n.parse(this.txt);
+                this.i18n = data.text;
+                this.text = OpsCenter.i18n.parse(this.i18n);
             });
         },
         settingSave() {

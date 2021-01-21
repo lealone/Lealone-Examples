@@ -118,13 +118,13 @@ Initial Developer: H2 Group
                     <select v-model="autoComplete" size="1"
                         @change.prevent="setAutoComplete">
                         <option selected="selected" value="0">
-                            {{ txt['toolbar.autoComplete.off'] }}
+                            {{ i18n['toolbar.autoComplete.off'] }}
                         </option>
                         <option value="1">
-                            {{ txt['toolbar.autoComplete.normal'] }}
+                            {{ i18n['toolbar.autoComplete.normal'] }}
                         </option>
                         <option value="2">
-                            {{ txt['toolbar.autoComplete.full'] }}
+                            {{ i18n['toolbar.autoComplete.full'] }}
                         </option>
                     </select>&nbsp;
                 </td>
@@ -133,10 +133,10 @@ Initial Developer: H2 Group
                     <select v-model="autoSelect" size="1"
                         @change.prevent="setAutoSelect()">
                         <option value="0">
-                            {{ txt['toolbar.autoSelect.off'] }}
+                            {{ i18n['toolbar.autoSelect.off'] }}
                         </option>
                         <option selected="selected" value="1">
-                            {{ txt['toolbar.autoSelect.on'] }}
+                            {{ i18n['toolbar.autoSelect.on'] }}
                         </option>
                     </select>
                 </td>
