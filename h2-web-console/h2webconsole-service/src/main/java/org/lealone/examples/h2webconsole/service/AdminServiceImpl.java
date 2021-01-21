@@ -98,11 +98,9 @@ public class AdminServiceImpl extends ServiceImpl implements AdminService {
     }
 
     @Override
-    public String tools(String tool0, String args) {
+    public String tools(String toolName, String args) {
         JsonObject json = new JsonObject();
         try {
-            String toolName = tool0;
-            json.put("tool", toolName);
             String[] argList = StringUtils.arraySplit(args, ',', false);
             Tool tool = null;
             if ("Backup".equals(toolName)) {

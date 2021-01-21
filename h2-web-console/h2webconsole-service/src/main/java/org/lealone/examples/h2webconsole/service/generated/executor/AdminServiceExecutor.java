@@ -48,9 +48,9 @@ public class AdminServiceExecutor implements ServiceExecutor {
                 return ValueNull.INSTANCE;
             return ValueString.get(result5);
         case "TOOLS":
-            String p_tool_6 = methodArgs[0].getString();
+            String p_toolName_6 = methodArgs[0].getString();
             String p_args_6 = methodArgs[1].getString();
-            String result6 = this.s.tools(p_tool_6, p_args_6);
+            String result6 = this.s.tools(p_toolName_6, p_args_6);
             if (result6 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result6);
@@ -92,9 +92,9 @@ public class AdminServiceExecutor implements ServiceExecutor {
                 return null;
             return result5;
         case "TOOLS":
-            String p_tool_6 = ServiceExecutor.toString("TOOL", methodArgs);
+            String p_toolName_6 = ServiceExecutor.toString("TOOL_NAME", methodArgs);
             String p_args_6 = ServiceExecutor.toString("ARGS", methodArgs);
-            String result6 = this.s.tools(p_tool_6, p_args_6);
+            String result6 = this.s.tools(p_toolName_6, p_args_6);
             if (result6 == null)
                 return null;
             return result6;
@@ -140,9 +140,9 @@ public class AdminServiceExecutor implements ServiceExecutor {
             return result5;
         case "TOOLS":
             ja = new JsonArray(json);
-            String p_tool_6 = ja.getString(0);
+            String p_toolName_6 = ja.getString(0);
             String p_args_6 = ja.getString(1);
-            String result6 = this.s.tools(p_tool_6, p_args_6);
+            String result6 = this.s.tools(p_toolName_6, p_args_6);
             if (result6 == null)
                 return null;
             return result6;

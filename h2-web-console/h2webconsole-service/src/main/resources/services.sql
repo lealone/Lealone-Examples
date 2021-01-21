@@ -11,7 +11,7 @@ create service if not exists admin_service (
   admin() varchar,
   start_translate() varchar,
   shutdown() varchar,
-  tools(tool varchar, args varchar) varchar
+  tools(tool_name varchar, args varchar) varchar
 )
 package @packageName
 implement by 'org.lealone.examples.h2webconsole.service.AdminServiceImpl' -- AdminService接口的默认实现类

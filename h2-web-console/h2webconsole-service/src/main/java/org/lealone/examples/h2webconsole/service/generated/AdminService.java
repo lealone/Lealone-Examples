@@ -27,7 +27,7 @@ public interface AdminService {
 
     String shutdown();
 
-    String tools(String tool, String args);
+    String tools(String toolName, String args);
 
     static class ServiceProxy implements AdminService {
 
@@ -117,9 +117,9 @@ public interface AdminService {
         }
 
         @Override
-        public String tools(String tool, String args) {
+        public String tools(String toolName, String args) {
             try {
-                ps6.setString(1, tool);
+                ps6.setString(1, toolName);
                 ps6.setString(2, args);
                 ResultSet rs = ps6.executeQuery();
                 rs.next();

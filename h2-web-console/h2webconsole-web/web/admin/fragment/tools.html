@@ -20,157 +20,158 @@ Initial Developer: H2 Group
 <hr />
 
 <p>
-<a href="javascript:go('Backup')">{{ text.tools.backup }}</a>&nbsp;&nbsp;
-<a href="javascript:go('Restore')">{{ text.tools.restore }}</a>&nbsp;&nbsp;
-<a href="javascript:go('Recover')">{{ text.tools.recover }}</a>&nbsp;&nbsp;
-<a href="javascript:go('DeleteDbFiles')">{{ text.tools.deleteDbFiles }}</a>&nbsp;&nbsp;
-<a href="javascript:go('ChangeFileEncryption')">{{ text.tools.changeFileEncryption }}</a>
+<a href="/" @click.prevent="go('Backup')">{{ text.tools.backup }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('Restore')">{{ text.tools.restore }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('Recover')">{{ text.tools.recover }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('DeleteDbFiles')">{{ text.tools.deleteDbFiles }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('ChangeFileEncryption')">{{ text.tools.changeFileEncryption }}</a>
 </p>
 
 <p>
-<a href="javascript:go('Script')">{{ text.tools.script }}</a>&nbsp;&nbsp;
-<a href="javascript:go('RunScript')">{{ text.tools.runScript }}</a>&nbsp;&nbsp;
-<a href="javascript:go('ConvertTraceFile')">{{ text.tools.convertTraceFile }}</a>&nbsp;&nbsp;
-<a href="javascript:go('CreateCluster')">{{ text.tools.createCluster }}</a>
+<a href="/" @click.prevent="go('Script')">{{ text.tools.script }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('RunScript')">{{ text.tools.runScript }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('ConvertTraceFile')">{{ text.tools.convertTraceFile }}</a>&nbsp;&nbsp;
+<a href="/" @click.prevent="go('CreateCluster')">{{ text.tools.createCluster }}</a>
 </p>
 <hr />
 
-<div id="toolBackup" style="display: none">
+<!-- 不能使用v-if，因为要提前提取optionXXX的值，用v-if时div都还不存在  -->
+<div id="toolBackup" v-show="show('Backup')">
     <h2>{{ text.tools.backup }}</h2>
     <p>{{ i18n['tools.backup.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.targetFileName }}:&nbsp;</td><td><input id="optionBackup.0" name="file" onkeyup="update()" onchange="update()" value="~/backup.zip" size="50" />
+        {{ text.tools.targetFileName }}:&nbsp;</td><td><input id="optionBackup.0" name="file" @keyup="update()" @change="update()" value="~/backup.zip" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.sourceDirectory }}:&nbsp;</td><td><input id="optionBackup.1" name="dir" onkeyup="update()" onchange="update()" value="~" size="50" />
+        {{ text.tools.sourceDirectory }}:&nbsp;</td><td><input id="optionBackup.1" name="dir" @keyup="update()" @change="update()" value="~" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.sourceDatabaseName }}:&nbsp;</td><td><input id="optionBackup.2" name="db" onkeyup="update()" onchange="update()" value="" size="50" />
+        {{ text.tools.sourceDatabaseName }}:&nbsp;</td><td><input id="optionBackup.2" name="db" @keyup="update()" @change="update()" value="" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolRestore" name="Restore" style="display: none">
+<div id="toolRestore" name="Restore" v-show="show('Restore')">
     <h2>{{ text.tools.restore }}</h2>
     <p>{{ i18n['tools.restore.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.sourceFileName }}:&nbsp;</td><td><input id="optionRestore.0" name="file" onkeyup="update()" onchange="update()" value="~/backup.zip" size="50" />
+        {{ text.tools.sourceFileName }}:&nbsp;</td><td><input id="optionRestore.0" name="file" @keyup="update()" @change="update()" value="~/backup.zip" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.targetDirectory }}:&nbsp;</td><td><input id="optionRestore.1" name="dir" onkeyup="update()" onchange="update()" value="~" size="50" />
+        {{ text.tools.targetDirectory }}:&nbsp;</td><td><input id="optionRestore.1" name="dir" @keyup="update()" @change="update()" value="~" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.targetDatabaseName }}:&nbsp;</td><td><input id="optionRestore.2" name="db" onkeyup="update()" onchange="update()" value="" size="50" />
+        {{ text.tools.targetDatabaseName }}:&nbsp;</td><td><input id="optionRestore.2" name="db" @keyup="update()" @change="update()" value="" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolRecover" style="display: none">
+<div id="toolRecover" v-show="show('Recover')">
     <h2>{{ text.tools.recover }}</h2>
     <p>{{ i18n['tools.recover.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionRecover.0" name="dir" onkeyup="update()" onchange="update()" value="~" size="50" />
+        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionRecover.0" name="dir" @keyup="update()" @change="update()" value="~" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionRecover.1" name="db" onkeyup="update()" onchange="update()" value="" size="50" />
+        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionRecover.1" name="db" @keyup="update()" @change="update()" value="" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolDeleteDbFiles" style="display: none">
+<div id="toolDeleteDbFiles" v-show="show('DeleteDbFiles')">
     <h2>{{ text.tools.deleteDbFiles }}</h2>
     <p>{{ i18n['tools.deleteDbFiles.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionDeleteDbFiles.0" name="dir" onkeyup="update()" onchange="update()" value="~" size="50" />
+        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionDeleteDbFiles.0" name="dir" @keyup="update()" @change="update()" value="~" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionDeleteDbFiles.1" name="db" onkeyup="update()" onchange="update()" value="delete" size="50" />
+        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionDeleteDbFiles.1" name="db" @keyup="update()" @change="update()" value="delete" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolChangeFileEncryption" style="display: none">
+<div id="toolChangeFileEncryption" v-show="show('ChangeFileEncryption')">
     <h2>{{ text.tools.changeFileEncryption }}</h2>
     <p>{{ i18n['tools.changeFileEncryption.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.cipher }}:&nbsp;</td><td><input id="optionChangeFileEncryption.0" name="cipher" onkeyup="update()" onchange="update()" value="XTEA" />
+        {{ text.tools.cipher }}:&nbsp;</td><td><input id="optionChangeFileEncryption.0" name="cipher" @keyup="update()" @change="update()" value="XTEA" />
         </td></tr><tr><td>
-        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionChangeFileEncryption.1" name="dir" onkeyup="update()" onchange="update()" value="~" size="50" />
+        {{ text.tools.directory }}:&nbsp;</td><td><input id="optionChangeFileEncryption.1" name="dir" @keyup="update()" @change="update()" value="~" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionChangeFileEncryption.2" name="db" onkeyup="update()" onchange="update()" value="test" size="50" />
+        {{ text.tools.databaseName }}:&nbsp;</td><td><input id="optionChangeFileEncryption.2" name="db" @keyup="update()" @change="update()" value="test" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.decryptionPassword }}:&nbsp;</td><td><input type="password" id="optionChangeFileEncryption.3" name="decrypt" onkeyup="update()" onchange="update()" value="" />
+        {{ text.tools.decryptionPassword }}:&nbsp;</td><td><input type="password" id="optionChangeFileEncryption.3" name="decrypt" @keyup="update()" @change="update()" value="" />
         </td></tr><tr><td>
-        {{ text.tools.encryptionPassword }}:&nbsp;</td><td><input type="password" id="optionChangeFileEncryption.4" name="encrypt" onkeyup="update()" onchange="update()" value="" />
+        {{ text.tools.encryptionPassword }}:&nbsp;</td><td><input type="password" id="optionChangeFileEncryption.4" name="encrypt" @keyup="update()" @change="update()" value="" />
         </td></tr>
     </table>
 </div>
-<div id="toolScript" style="display: none">
+<div id="toolScript" v-show="show('Script')">
     <h2>{{ text.tools.script }}</h2>
     <p>{{ i18n['tools.script.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.sourceDatabaseURL }}:&nbsp;</td><td><input id="optionScript.0" name="url" onkeyup="update()" onchange="update()" value="jdbc:h2:~/test" size="50" />
+        {{ text.tools.sourceDatabaseURL }}:&nbsp;</td><td><input id="optionScript.0" name="url" @keyup="update()" @change="update()" value="jdbc:h2:~/test" size="50" />
         </td></tr><tr><td>
-        {{ text.a.user }}:&nbsp;</td><td><input id="optionScript.1" name="user" onkeyup="update()" onchange="update()" value="sa" />
+        {{ text.a.user }}:&nbsp;</td><td><input id="optionScript.1" name="user" @keyup="update()" @change="update()" value="sa" />
         </td></tr><tr><td>
-        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionScript.2" name="password" onkeyup="update()" onchange="update()" value="" />
+        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionScript.2" name="password" @keyup="update()" @change="update()" value="" />
         </td></tr><tr><td>
-        {{ text.tools.targetScriptFileName }}:&nbsp;</td><td><input id="optionScript.3" name="script" onkeyup="update()" onchange="update()" value="~/backup.sql" size="50" />
+        {{ text.tools.targetScriptFileName }}:&nbsp;</td><td><input id="optionScript.3" name="script" @keyup="update()" @change="update()" value="~/backup.sql" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolRunScript" style="display: none">
+<div id="toolRunScript" v-show="show('RunScript')">
     <h2>{{ text.tools.runScript }}</h2>
     <p>{{ i18n['tools.runScript.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.targetDatabaseURL }}:&nbsp;</td><td><input id="optionRunScript.0" name="url" onkeyup="update()" onchange="update()" value="jdbc:h2:~/test" size="50" />
+        {{ text.tools.targetDatabaseURL }}:&nbsp;</td><td><input id="optionRunScript.0" name="url" @keyup="update()" @change="update()" value="jdbc:h2:~/test" size="50" />
         </td></tr><tr><td>
-        {{ text.a.user }}:&nbsp;</td><td><input id="optionRunScript.1" name="user" onkeyup="update()" onchange="update()" value="sa" />
+        {{ text.a.user }}:&nbsp;</td><td><input id="optionRunScript.1" name="user" @keyup="update()" @change="update()" value="sa" />
         </td></tr><tr><td>
-        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionRunScript.2" name="password" onkeyup="update()" onchange="update()" value="" />
+        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionRunScript.2" name="password" @keyup="update()" @change="update()" value="" />
         </td></tr><tr><td>
-        {{ text.tools.sourceScriptFileName }}:&nbsp;</td><td><input id="optionRunScript.3" name="script" onkeyup="update()" onchange="update()" value="~/backup.sql" size="50" />
+        {{ text.tools.sourceScriptFileName }}:&nbsp;</td><td><input id="optionRunScript.3" name="script" @keyup="update()" @change="update()" value="~/backup.sql" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolConvertTraceFile" style="display: none">
+<div id="toolConvertTraceFile" v-show="show('ConvertTraceFile')">
     <h2>{{ text.tools.convertTraceFile }}</h2>
     <p>{{ i18n['tools.convertTraceFile.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.traceFileName }}:&nbsp;</td><td><input id="optionConvertTraceFile.0" name="traceFile" onkeyup="update()" onchange="update()" value="~/test.trace.db" size="50" />
+        {{ text.tools.traceFileName }}:&nbsp;</td><td><input id="optionConvertTraceFile.0" name="traceFile" @keyup="update()" @change="update()" value="~/test.trace.db" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.scriptFileName }}:&nbsp;</td><td><input id="optionConvertTraceFile.1" name="script" onkeyup="update()" onchange="update()" value="~/test.sql" size="50" />
+        {{ text.tools.scriptFileName }}:&nbsp;</td><td><input id="optionConvertTraceFile.1" name="script" @keyup="update()" @change="update()" value="~/test.sql" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.javaDirectoryClassName }}:&nbsp;</td><td><input id="optionConvertTraceFile.2" name="javaClass" onkeyup="update()" onchange="update()" value="~/Test" size="50" />
+        {{ text.tools.javaDirectoryClassName }}:&nbsp;</td><td><input id="optionConvertTraceFile.2" name="javaClass" @keyup="update()" @change="update()" value="~/Test" size="50" />
         </td></tr>
     </table>
 </div>
-<div id="toolCreateCluster" style="display: none">
+<div id="toolCreateCluster" v-show="show('CreateCluster')">
     <h2>{{ text.tools.createCluster }}</h2>
     <p>{{ i18n['tools.createCluster.help'] }}</p>
     <table class="tool">
         <tr><td>
-        {{ text.tools.sourceDatabaseURL }}:&nbsp;</td><td><input id="optionCreateCluster.0" name="urlSource" onkeyup="update()" onchange="update()" value="jdbc:h2:~/test" size="50" />
+        {{ text.tools.sourceDatabaseURL }}:&nbsp;</td><td><input id="optionCreateCluster.0" name="urlSource" @keyup="update()" @change="update()" value="jdbc:h2:~/test" size="50" />
         </td></tr><tr><td>
-        {{ text.tools.targetDatabaseURL }}:&nbsp;</td><td><input id="optionCreateCluster.1" name="urlTarget" onkeyup="update()" onchange="update()" value="jdbc:h2:~/copy/test" size="50" />
+        {{ text.tools.targetDatabaseURL }}:&nbsp;</td><td><input id="optionCreateCluster.1" name="urlTarget" @keyup="update()" @change="update()" value="jdbc:h2:~/copy/test" size="50" />
         </td></tr><tr><td>
-        {{ text.a.user }}:&nbsp;</td><td><input id="optionCreateCluster.2" name="user" onkeyup="update()" onchange="update()" value="sa" />
+        {{ text.a.user }}:&nbsp;</td><td><input id="optionCreateCluster.2" name="user" @keyup="update()" @change="update()" value="sa" />
         </td></tr><tr><td>
-        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionCreateCluster.3" name="password" onkeyup="update()" onchange="update()" value="" />
+        {{ text.a.password }}:&nbsp;</td><td><input type="password" id="optionCreateCluster.3" name="password" @keyup="update()" @change="update()" value="" />
         </td></tr><tr><td>
-        {{ text.tools.serverList }}:&nbsp;</td><td><input id="optionCreateCluster.4" name="serverList" onkeyup="update()" onchange="update()" value="server1,server2" size="50" />
+        {{ text.tools.serverList }}:&nbsp;</td><td><input id="optionCreateCluster.4" name="serverList" @keyup="update()" @change="update()" value="server1,server2" size="50" />
         </td></tr>
     </table>
 </div>
 
-<div id="commandLine" style="display: none">
-        <input type="submit" class="button" :value="text.tools.run" @click.prevent="run" />
-        <input type="hidden" v-model="tool" id="tool"/>
-        <input type="hidden" v-model="args" id="args"/>
+<div id="commandLine" v-if="toolName != ''">
+        <input type="submit" class="button" :value="text.tools.run" @click.prevent="tools" />
+        <input type="hidden" v-model="toolName"/>
+        <input type="hidden" v-model="args"/>
         <h4>{{ text.tools.commandLine }}:</h4>
-        java -cp h2*.jar org.h2.tools.<span id="toolName"></span>
-        <span id="toolOptions">{{ tool }}</span>
+        java -cp h2*.jar org.h2.tools.<span>{{ toolName }}</span>
+        <span>{{ args }}</span>
 </div>
 
-<div id="toolResult" style="display: none">
+<div id="toolResult" v-if="toolResult != ''">
         <h4>{{ text.tools.result }}:</h4>
         <p v-html = 'toolResult'></p>
 </div>
