@@ -115,8 +115,8 @@ Initial Developer: H2 Group
                 </td>
                 <td class="toolbar">
                     {{ text.toolbar.autoComplete }}&nbsp;
-                    <select name="autoComplete" size="1"
-                        onchange="javascript:parent.h2query.setAutoComplete(this.value)">
+                    <select v-model="autoComplete" size="1"
+                        @change.prevent="setAutoComplete">
                         <option selected="selected" value="0">
                             {{ txt['toolbar.autoComplete.off'] }}
                         </option>
@@ -130,8 +130,8 @@ Initial Developer: H2 Group
                 </td>
                 <td class="toolbar">
                     {{ text.toolbar.autoSelect }}&nbsp;
-                    <select name="autoSelect" size="1"
-                        onchange="javascript:parent.h2query.setAutoSelect(this.value)">
+                    <select v-model="autoSelect" size="1"
+                        @change.prevent="setAutoSelect()">
                         <option value="0">
                             {{ txt['toolbar.autoSelect.off'] }}
                         </option>

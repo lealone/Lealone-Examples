@@ -2,7 +2,9 @@
     data() {
         return {
             autoCommit: true,
-            rowcount: 1000
+            rowcount: 1000,
+            autoComplete: 0,
+            autoSelect: 1,
         }
     },
     methods: {
@@ -22,7 +24,7 @@
             this._query('@maxrows' + this.rowcount + '.');
         },
         refreshTables() {
-            this.lealone.get("tables").readTables();
+            lealone.get("tables").readTables();
         },
         commit() {
             this._query('COMMIT');
@@ -31,19 +33,25 @@
             this._query('ROLLBACK');
         },
         run() {
-            this._query(this.lealone.get("query").sql);
+            this._query(lealone.get("query").sql);
         },
         runSelected() {
-            this.lealone.route('ops', 'result', {result: "runSelected sql=" + this.lealone.get("query").sql});
+            lealone.route('ops', 'result', {result: "runSelected sql=" + lealone.get("query").sql});
         },
         cancel() {
-            this.lealone.route('ops', 'result', {result: "sql=@cancel: TODO"});
+            lealone.route('ops', 'result', {result: "sql=@cancel: TODO"});
         },
         history() {
             this._query('@history.'); 
+        },
+        setAutoComplete() {
+            lealone.get('query').autoComplete = this.autoComplete;
+        },
+        setAutoSelect() {
+            lealone.get('query').autoSelect = this.autoSelect;
         }
     },
     mounted() {
-        this.lealone.set(this.gid, this);
+        lealone.set(this.gid, this);
     }
 }

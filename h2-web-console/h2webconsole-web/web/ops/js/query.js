@@ -2,11 +2,13 @@
     data() {
         return {
 			sql: "",
+			autoComplete,
+			autoSelect
         }
     },
     methods: {
         run() {
-            this.lealone.route('ops', 'result', {result: "run sql=" + this.sql});
+            lealone.get("ops-header")._query(this.sql);
         },
         runSelected() {
             this.lealone.route('ops', 'result', {result: "runSelected sql=" + this.sql});
