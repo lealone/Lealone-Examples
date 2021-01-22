@@ -24,9 +24,8 @@ OpsCenter.i18n = {
         app.mixin(this);
     },
     loadAndMount(app, appName) {
-        axios.get(OpsCenter.OpsService + '/read_translations')
-        .then(response => {
-            var text = response.data.text;
+        OpsService.readTranslations("zh_CN", data => {
+            var text = data.text;
             var newText = OpsCenter.i18n.parse(text);
             app.mixin({
                 data() { return { i18n: text,  text: newText } },
