@@ -49,17 +49,9 @@ public class AdminServiceImpl extends ServiceImpl implements AdminService {
 
     @Override
     public String login(String password) {
-        // if (password == null || password.isEmpty() || !server.checkAdminPassword(password)) {
-        // return "adminLogin.jsp";
-        // }
-        // String back = (String) session.remove("adminBack");
-        // session.put("admin", true);
-        // return back != null ? back : "admin.do";
-
         if (password == null || password.isEmpty() || !instance.checkAdminPassword(password)) {
             return "failed";
         }
-
         return "ok";
     }
 

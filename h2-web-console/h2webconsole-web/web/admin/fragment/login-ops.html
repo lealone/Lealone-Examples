@@ -18,8 +18,8 @@ Initial Developer: H2 Group
     		  <option :value="language[0]" :selected="language[0] == language">{{ language[1] }}</option>
             </template>
           </select>
-          &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'admin')">{{ text.login.goAdmin }}</a>
-          &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'tools')">{{ text.a.tools }}</a>
+          &nbsp;&nbsp; <a href="/" @click.prevent="route('admin')">{{ text.login.goAdmin }}</a>
+          &nbsp;&nbsp; <a href="/" @click.prevent="route('tools')">{{ text.a.tools }}</a>
           &nbsp;&nbsp; <a href="/" @click.prevent="lealone.route('admin', 'help')">{{ text.a.help }}</a>
         </p>
         <table class="login">

@@ -24,10 +24,24 @@
                 settingSave: { redirect: "/admin/index.html" },
                 settingRemove: { redirect: "/admin/index.html" }
             },
+            
+            adminLoginOk: false,
+            adminBack: ""
+            
         }
     },
-
+    methods: {
+        route(page) {
+            if(this.adminLoginOk) {
+                lealone.route("admin", page)
+            } else {
+                this.adminBack = page;
+                lealone.route("admin", "login-admin")
+            }
+        }
+    },
     mounted() {
+        lealone.put(this.gid, this);
         this.language = this.text.language;  
         this.getLanguages();
         this.getSettings(); 
