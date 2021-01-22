@@ -58,6 +58,10 @@
             <source>h2webconsole-dist/target/h2webconsole-${project.version}.jar</source>
             <outputDirectory>lib</outputDirectory>
         </file>
+        <file>
+            <source>h2webconsole-dal/h2/h2-2.0.201.jar</source>
+            <outputDirectory>lib</outputDirectory>
+        </file>
     </files>
 
     <moduleSets>
