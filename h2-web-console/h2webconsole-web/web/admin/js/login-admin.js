@@ -9,8 +9,9 @@
         login() {
             AdminService.login(this.password, data => {
                 if(data == "ok") {
-                    lealone.get("login-ops").adminLoginOk = true;
-                    lealone.route("admin", lealone.get("login-ops").adminBack);
+                    var ops = lealone.get("login-ops");
+                    ops.adminLoginOk = true;
+                    lealone.route("admin", ops.adminBack);
                 }
                 else {
                     this.error = "密码错误";

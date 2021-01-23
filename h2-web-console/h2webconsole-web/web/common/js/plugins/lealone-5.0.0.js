@@ -82,7 +82,9 @@ L.call4 = function(serviceContext, service, apiName, arguments) {
             if(i != 0) {
                 msg += ",";
             }
-            msg += JSON.stringify(serviceContext[names[i]]);
+            // 存在相应字段时才加
+            if(serviceContext[names[i]] != undefined)
+                msg += JSON.stringify(serviceContext[names[i]]);
         }
     }
     msg += "]";
