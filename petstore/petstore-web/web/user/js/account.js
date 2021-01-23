@@ -8,23 +8,22 @@
     },
     methods: {
         getAccountInfo() {
-            if(!this.lealone.currentUser) {
-                this.lealone.route('user', 'login');
+            if(!lealone.currentUser) {
+                lealone.route('user', 'login');
                 return;
             }
-            var that = this;
-            axios.get(PetStore.UserService + '/get_user?user_id=' + this.lealone.currentUser)
-            .then(function (response) {
+            axios.get(PetStore.UserService + '/get_user?user_id=' + lealone.currentUser)
+            .then(response => {
                 if(response.data) {
                     if(response.data.account)
-                        that.account = response.data.account;
+                        this.account = response.data.account;
                     if(response.data.user)
-                        that.user = response.data.user;
+                        this.user = response.data.user;
                 }
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
-                that.errorMessage = "用户信息获取失败";
+                this.errorMessage = "用户信息获取失败";
             });
         }
     },

@@ -23,19 +23,18 @@
                     'Content-Type': 'multipart/form-data'
                 }
             };
-            var that = this;
             axios.post(PetStore.StoreService + '/add_product', formData, config)
-            .then(function (response) {
-                that.lealone.route("store", "edit-category-list");
+            .then(response => {
+                lealone.route("store", "edit-category-list");
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
-                that.errorMessage = "添加产品失败";
+                this.errorMessage = "添加产品失败";
             });
         }
     },
     mounted() {
-        var categoryid = this.lealone.params.categoryid;
+        var categoryid = lealone.params.categoryid;
         if(categoryid)
             this.product.categoryid = categoryid;
     }

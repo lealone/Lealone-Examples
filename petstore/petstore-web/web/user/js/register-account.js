@@ -7,15 +7,14 @@
     },
     methods: {
         update() {
-            var that = this;
-            this.account.user_id = this.lealone.currentUser;
+            this.account.user_id = lealone.currentUser;
             axios.post(PetStore.UserService + '/update', {account: JSON.stringify(this.account)})
-            .then(function (response) {
-                that.lealone.route('user', 'account');
+            .then(response => {
+                lealone.route('user', 'account');
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
-                that.errorMessage = "用户信息修改失败，请重试";
+                this.errorMessage = "用户信息修改失败，请重试";
             });
         }
     }

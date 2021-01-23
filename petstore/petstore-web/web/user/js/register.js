@@ -11,18 +11,17 @@
                 this.errorMessage = "密码验证 必须和 密码 相同";
                 return;
             }
-            var that = this;
             axios.post(PetStore.UserService + '/register', {user: JSON.stringify(this.user)})
-            .then(function (response) {
-                if(!that.lealone.currentUser) {
-                    that.lealone.currentUser = that.user.user_id;
-                    localStorage.currentUser = that.user.user_id;
+            .then(response => {
+                if(!lealone.currentUser) {
+                    lealone.currentUser = this.user.user_id;
+                    localStorage.currentUser = this.user.user_id;
                 }
                 location.href = "/";
             })
-            .catch(function (error) {
+            .catch(error => {
                 console.log(error);
-                that.errorMessage = "登录名\"" + that.user.user_id + "\"已经被人注掉了，请尝试另一个名字";
+                this.errorMessage = "登录名\"" + this.user.user_id + "\"已经被人注掉了，请尝试另一个名字";
             });
         }
     }
