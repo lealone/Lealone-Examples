@@ -4,6 +4,7 @@
   <title>Welcome to PetStore!</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/sockjs.min-1.1.2.js"></script>
   <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/petstore.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
@@ -64,15 +65,14 @@
 <template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
 
 <script src="/store/js/category-list.js"></script>
-<script src="/user/js/login.js"></script>
 <script>
     const app = Lealone.createVueApp("home", "login"); 
 
-    Lealone.component(app, 'login', userLogin);
-    Lealone.component(app, 'category-list', storeCategoryList);
-    Lealone.component(app, 'petstore-nav', userLogin);
+    Lealone.component(app, 'login', 'login', UserService);
+    Lealone.component(app, 'category-list', 'get_all_categories', storeCategoryList);
+    Lealone.component(app, 'petstore-nav');
 
-    app.mount('#homeApp')
+    mount(app, '#homeApp');
 </script>
 
 </body>

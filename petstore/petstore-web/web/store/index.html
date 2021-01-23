@@ -4,6 +4,7 @@
   <title>PetStore Sample</title>
   <script src="/common/js/plugins/vue-3.0.0.js"></script>
   <script src="/common/js/plugins/axios-0.21.1.js"></script>
+  <script src="/common/js/plugins/sockjs.min-1.1.2.js"></script>
   <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/petstore.js"></script>
   <link rel="stylesheet" href="/common/css/petstore-common.css">
@@ -48,7 +49,6 @@
 <script src="/store/js/item-list.js"></script>
 <script src="/store/js/add-product.js"></script>
 <script src="/store/js/view-cart.js"></script>
-<script src="/user/js/login.js"></script>
 <script>
     const app = Lealone.createVueApp("store", "edit-category-list"); //打开store子应用时，默认显示edit-category-list页
 
@@ -58,7 +58,7 @@
     Lealone.component(app, 'edit-category-list', storeCategoryList);
     Lealone.component(app, 'edit-item-list', storeItemlist);
     Lealone.component(app, 'add-product', storeAddProduct);
-    Lealone.component(app, 'petstore-nav', userLogin);
+    Lealone.component(app, 'petstore-nav');
 
     app.mount('#storeApp')
 </script>

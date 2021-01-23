@@ -29,8 +29,10 @@ public class UserServiceExecutor implements ServiceExecutor {
                 return ValueNull.INSTANCE;
             return ValueString.get(JsonObject.mapFrom(result1).encode());
         case "REGISTER":
-            User p_user_2 =  new JsonObject(methodArgs[0].getString()).mapTo(User.class);
-            this.s.register(p_user_2);
+            String p_userId_2 = methodArgs[0].getString();
+            String p_password_2 = methodArgs[1].getString();
+            String p_password2_2 = methodArgs[2].getString();
+            this.s.register(p_userId_2, p_password_2, p_password2_2);
             return ValueNull.INSTANCE;
         case "UPDATE":
             Account p_account_3 =  new JsonObject(methodArgs[0].getString()).mapTo(Account.class);
@@ -58,8 +60,10 @@ public class UserServiceExecutor implements ServiceExecutor {
                 return null;
             return JsonObject.mapFrom(result1).encode();
         case "REGISTER":
-            User p_user_2 =  new JsonObject(ServiceExecutor.toString("USER", methodArgs)).mapTo(User.class);
-            this.s.register(p_user_2);
+            String p_userId_2 = ServiceExecutor.toString("USER_ID", methodArgs);
+            String p_password_2 = ServiceExecutor.toString("PASSWORD", methodArgs);
+            String p_password2_2 = ServiceExecutor.toString("PASSWORD2", methodArgs);
+            this.s.register(p_userId_2, p_password_2, p_password2_2);
             return NO_RETURN_VALUE;
         case "UPDATE":
             Account p_account_3 =  new JsonObject(ServiceExecutor.toString("ACCOUNT", methodArgs)).mapTo(Account.class);
@@ -90,8 +94,10 @@ public class UserServiceExecutor implements ServiceExecutor {
             return JsonObject.mapFrom(result1).encode();
         case "REGISTER":
             ja = new JsonArray(json);
-            User p_user_2 = ja.getJsonObject(0).mapTo(User.class);
-            this.s.register(p_user_2);
+            String p_userId_2 = ja.getString(0);
+            String p_password_2 = ja.getString(1);
+            String p_password2_2 = ja.getString(2);
+            this.s.register(p_userId_2, p_password_2, p_password2_2);
             return NO_RETURN_VALUE;
         case "UPDATE":
             ja = new JsonArray(json);

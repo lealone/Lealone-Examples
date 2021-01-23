@@ -47,10 +47,22 @@ L.call4 = function(serviceContext, service, apiName, arguments) {
         L.services = {};
         initSockJS(service.sockjsUrl);
     }
+    if(service.hooks != undefined) { 
+        let hook = service.hooks[apiName];
+        if(hook != undefined) {
+            let beforeHook = hook["before"];
+            if(beforeHook != undefined) {
+                let ret = beforeHook.apply(serviceContext, arguments);
+                if(ret === false)
+                    return
+            }
+        }
+    } 
     var serviceName = service.serviceName + "." + apiName;
     L.services[serviceName] = function() {};
     L.services[serviceName]["onServiceException"] = serviceContext.onServiceException;
     L.services[serviceName]["serviceObject"] = serviceContext;
+    L.services[serviceName]["hooks"] = service.hooks;
     
     // 格式: type;serviceName;[arg1,arg2,...argn]
     var msg = "1;" + serviceName;
@@ -188,7 +200,8 @@ function initSockJS(sockjsUrl) {
     sockjs.onmessage = function(e) {
         var a = JSON.parse(e.data);
         var type = a[0];
-        var serviceName = a[1]; 
+        var serviceName = a[1];
+        var methodName = serviceName.split(".")[1];
         var result = a[2];
         switch(type) {
         case 2: // 正常返回
@@ -211,7 +224,7 @@ function initSockJS(sockjsUrl) {
                         isJson = false;
                     }
 
-                    var m = serviceName.split(".")[1];
+                    var m = methodName;
                     var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
                     //手动处理结果
                     if(route != undefined && route.handler != undefined) {
@@ -231,6 +244,17 @@ function initSockJS(sockjsUrl) {
                     if(route != undefined && route.redirect != undefined) {
                         location.href = route.redirect;
                     }
+
+                    let hooks = L.services[serviceName]["hooks"];
+                    if(hooks != undefined) { 
+                        let hook = hooks[m];
+                        if(hook != undefined) {
+                            let afterHook = hook["after"];
+                            if(afterHook != undefined) {
+                                afterHook.call(serviceObject, result);
+                            }
+                        }
+                    } 
                 } catch(e) {
                     console.log(e);
                 } 
@@ -240,8 +264,20 @@ function initSockJS(sockjsUrl) {
             var msg = "failed to call service: " + serviceName + ", backend error: " + result;
             if(L.services[serviceName] && L.services[serviceName]["onServiceException"]) 
                 L.services[serviceName]["onServiceException"](msg);
-            else
+            else {
+                let hooks = L.services[serviceName]["hooks"];
+                if(hooks != undefined) { 
+                    let hook = hooks[methodName];
+                    if(hook != undefined) {
+                        let errorHook = hook["error"];
+                        if(errorHook != undefined) {
+                            errorHook.call(L.services[serviceName]["serviceObject"], msg);
+                            return;
+                        }
+                    }
+                } 
                 console.log(msg)
+            }
             break;
         default:
             var msg = "unknown response type: " + type + ", serviceName: " + serviceName + ", data: " + e.data;
@@ -344,7 +380,7 @@ const Lealone = {
         return app;
     },
 
-    component(app, name) {
+    component0(app, name) {
         var mixins = [];
         var services = [];
         var len = arguments.length;
@@ -381,6 +417,49 @@ const Lealone = {
         })
     },
 
+    component(app, name, methodName) {
+        var mixins = [];
+        var services = [];
+        services.push(methodName);
+        var len = arguments.length;
+        for(var i = 3; i < len; i++){
+            if(arguments[i].serviceName == undefined)
+                mixins.push(arguments[i]);
+            else
+                services.push(arguments[i]);
+        }
+        app.component(name, {
+            data() { return { services: services } },
+            mixins: mixins, 
+            props: {
+                // 组件实例的全局唯一ID，默认是组件名
+                gid: { type: String, default: name }
+            },
+            template: document.getElementById(name).innerHTML,
+            beforeMount() {
+                var len = this.services.length;
+                for(var i = 1; i < len; i++){
+                    var service = this.services[i];
+                    for(var m in service.methods) {
+                        if(typeof service[m] == 'function' && m == this.services[0]) {
+                            let method = service[m];
+                            let that = this;
+                            var fun = function() {
+                                method.apply(that, arguments);
+                            }
+                            this[m] = fun;
+                            
+                            var methodInfo = service.methodInfo[m];
+                            for(var j = 0; j < methodInfo.length; j++){
+                                this.$data[methodInfo[j]] = "";
+                            }
+                            this.$data.errorMessage = "";
+                        }
+                    }
+                }
+            }
+        })
+    },
     install(app, options) {
         var that = this;
         app.mixin({

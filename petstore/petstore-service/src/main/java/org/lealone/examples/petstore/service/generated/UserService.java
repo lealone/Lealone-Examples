@@ -22,7 +22,7 @@ public interface UserService {
 
     User login(String userId, String password);
 
-    void register(User user);
+    void register(String userId, String password, String password2);
 
     void update(Account account);
 
@@ -37,7 +37,7 @@ public interface UserService {
 
         private ServiceProxy(String url) {
             ps1 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE USER_SERVICE LOGIN(?, ?)");
-            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE USER_SERVICE REGISTER(?)");
+            ps2 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE USER_SERVICE REGISTER(?, ?, ?)");
             ps3 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE USER_SERVICE UPDATE(?)");
             ps4 = ClientServiceProxy.prepareStatement(url, "EXECUTE SERVICE USER_SERVICE GET_USER(?)");
         }
@@ -58,9 +58,11 @@ public interface UserService {
         }
 
         @Override
-        public void register(User user) {
+        public void register(String userId, String password, String password2) {
             try {
-                ps2.setString(1, JsonObject.mapFrom(user).encode());
+                ps2.setString(1, userId);
+                ps2.setString(2, password);
+                ps2.setString(3, password2);
                 ps2.executeUpdate();
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("USER_SERVICE.REGISTER", e);

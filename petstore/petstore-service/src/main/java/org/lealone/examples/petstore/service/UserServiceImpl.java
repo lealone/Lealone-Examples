@@ -33,8 +33,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void register(User user) {
-        user.insert();
+    public void register(String userId, String password, String password2) {
+         new User().userId.set(userId).password.set(password).insert(); 
     }
 
     @Override
