@@ -48,12 +48,12 @@
 <script>
     const app = Lealone.createVueApp("store", "category-list"); //打开store子应用时，默认显示category-list页
 
-    Lealone.component(app, 'category-list', 'get_all_categories', storeCategoryList);
-    Lealone.component(app, 'item-list', 'get_all_product_items', storeItemlist);
-    Lealone.component(app, 'add-product', 'add_product', storeAddProduct);
+    Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
+    Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
+    Lealone.component(app, 'add-product', '', storeAddProduct);
     Lealone.component(app, 'petstore-nav');
 
-    app.mount('#storeApp')
+    mount(app, '#storeApp')
 </script>
 
 </body>

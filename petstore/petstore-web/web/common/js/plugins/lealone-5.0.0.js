@@ -387,43 +387,6 @@ const Lealone = {
         return app;
     },
 
-    component0(app, name) {
-        var mixins = [];
-        var services = [];
-        var len = arguments.length;
-        for(var i = 2; i < len; i++){
-            if(arguments[i].serviceName == undefined)
-                mixins.push(arguments[i]);
-            else
-                services.push(arguments[i]);
-        }
-        app.component(name, {
-            data() { return { services: services } },
-            mixins: mixins, 
-            props: {
-                // 组件实例的全局唯一ID，默认是组件名
-                gid: { type: String, default: name }
-            },
-            template: document.getElementById(name).innerHTML,
-            beforeMount() {
-                var len = this.services.length;
-                for(var i = 0; i < len; i++){
-                    var service = this.services[i];
-                    for(var m in service.methods) {
-                        if(typeof service[m] == 'function') {
-                            let method = service[m];
-                            let that = this;
-                            var fun = function() {
-                                method.apply(that, arguments);
-                            }
-                            this[m] = fun;
-                        }
-                    }
-                }
-            }
-        })
-    },
-
     component(app, name, method) {
         var mixins = [];
         var services = [];
