@@ -5,7 +5,7 @@
                 lealone.route('user', 'login');
                 return false;
             }
-            this.user_id = lealone.currentUser;
+            this.userId = lealone.currentUser;
         }
     },
     register: {
@@ -17,8 +17,8 @@
         },
         after(response) {
             if(!lealone.currentUser) {
-                lealone.currentUser = this.user.user_id;
-                localStorage.currentUser = this.user.user_id;
+                lealone.currentUser = this.userId;
+                localStorage.currentUser = this.userId;
             }
             location.href = "/";
         }

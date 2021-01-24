@@ -444,7 +444,7 @@ const Lealone = {
                             }
                             var fields = this.services[2];
                             for(var j = 0; j < fields.length; j++){
-                                this.$data[fields[j]] = "";
+                                this.$data[fields[j]] = {};
                             }
                             this.$data.errorMessage = "";
                             if(this.services[1])
@@ -459,7 +459,7 @@ const Lealone = {
         var that = this;
         app.mixin({
             data() { return { lealone: that } },
-            mounted() {
+            beforeMount() {
                 window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的
             }
         });
