@@ -34,7 +34,9 @@
                 <td>{{ item.LISTPRICE }}</td>
                 <td>{{ item.ATTR }}1</td>
                 <td>{{ item.quantity }}</td>
-                <td align="right"><input type="button" value="放到购物车" @click.prevent="addCartItem(item.ITEMID)"/></td>
+                <td align="right">
+                  <input type="button" value="放到购物车" @click.prevent="lealone.route('home', 'view-cart', {itemId:item.ITEMID, method:'addItem'})"/>
+                </td>
             </tr>
             </template>
 

@@ -5,7 +5,6 @@
         }
     },
     mounted() {
-        axios.get(PetStore.StoreService + '/get_all_categories')
-        .then(response => (this.categories = response.data))
+        this.getAllCategories();
     }
 }

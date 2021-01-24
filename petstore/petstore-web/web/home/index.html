@@ -64,20 +64,23 @@
 
 <template id="category-list" th:insert="/home/fragment/shopping/category-list.html :: category-list"/>
 <template id="item-list" th:insert="/home/fragment/shopping/item-list.html :: item-list"/>
-<template id="view-cart" th:insert="//home/fragment/shopping/view-cart.html :: view-cart"/>
+<template id="view-cart" th:insert="/home/fragment/shopping/view-cart.html :: view-cart"/>
 <template id="petstore-nav" th:insert="/home/fragment/layout/nav.html :: nav"/>
 <template id="login" th:insert="/user/fragment/login.html :: login"/>
 
 <script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>
 <script src="/home/js/view-cart.js"></script>
+<script src="/user/js/hooks.js"></script>
 <script>
     const app = Lealone.createVueApp("home", "category-list"); 
 
     Lealone.component(app, 'login', 'login', UserService);
-    Lealone.component(app, 'category-list', 'get_all_categories', storeCategoryList);
-    Lealone.component(app, 'item-list', 'get_all_categories', storeViewCart, storeItemlist);
-    Lealone.component(app, 'view-cart', 'get_all_categories', storeViewCart);
+    
+    //Lealone.component(app, 'category-list', {methodName: 'getAllCategories', init: true, fields: 'categories'}, StoreService);
+    Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
+    Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
+    Lealone.component(app, 'view-cart', '*', viewCart, ViewCartService);
     Lealone.component(app, 'petstore-nav');
 
     mount(app, '#homeApp');

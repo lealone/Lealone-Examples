@@ -40,7 +40,7 @@ public class StoreServiceImpl implements StoreService {
         Product p = Product.dao;
         // TODO 不加where()会导致排序错误
         List<Category> list = Category.dao.join(p).on().catid.eq(p.categoryid).where().orderBy().catid.asc().findList();
-        return new JsonArray(list).encode();
+        return new JsonObject().put("categories", new JsonArray(list)).encode();
     }
 
     @Override

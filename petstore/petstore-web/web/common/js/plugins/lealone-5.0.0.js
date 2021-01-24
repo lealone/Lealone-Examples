@@ -1,4 +1,4 @@
-﻿var LealoneRpcClient = (function() {
+﻿const LealoneRpcClient = (function() {
 var L = {};
 L.call = function(object, apiName) {
     if(!L.sockjs) {
@@ -233,11 +233,14 @@ function initSockJS(sockjsUrl) {
                     }
                     //自动关联字段
                     if(isJson) {
+                        var isInitMethod = serviceObject.services != undefined && serviceObject.services[1] === true;
                         for(var key in result) {
                             // 找不到hasOwnProperty方法
                             // if(serviceObject.hasOwnProperty(key))
                             // if(keys.indexOf(key) >= 0) //vue3有警告
-                            if(serviceObject[key] != undefined)
+                            if(isInitMethod)
+                                serviceObject.$data[key] = result[key];
+                            else if(serviceObject[key] != undefined)
                                 serviceObject[key] = result[key];
                         }
                     }
@@ -421,10 +424,29 @@ const Lealone = {
         })
     },
 
-    component(app, name, methodName) {
+    component(app, name, method) {
         var mixins = [];
         var services = [];
+        var methodName = "";
+        var init = false;
+        var fields = [];
+        if(typeof method == 'string')
+            methodName = method;
+        else if(method != undefined) {
+            if(method.methodName != undefined) {
+                methodName = method.methodName;
+            }
+            if(method.init != undefined) {
+                init = method.init;
+            }
+            if(method.fields != undefined) {
+                fields = method.fields.split(",");
+            }
+        }
         services.push(methodName);
+        services.push(init);
+        services.push(fields);
+
         var len = arguments.length;
         for(var i = 3; i < len; i++){
             if(arguments[i].serviceName == undefined)
@@ -442,10 +464,10 @@ const Lealone = {
             template: document.getElementById(name).innerHTML,
             beforeMount() {
                 var len = this.services.length;
-                for(var i = 1; i < len; i++){
+                for(var i = 3; i < len; i++){
                     var service = this.services[i];
                     for(var m in service.methods) {
-                        if(typeof service[m] == 'function' && m == this.services[0]) {
+                        if(typeof service[m] == 'function' && (this.services[0] === "*" || m == this.services[0])) {
                             let method = service[m];
                             let that = this;
                             var fun = function() {
@@ -457,7 +479,13 @@ const Lealone = {
                             for(var j = 0; j < methodInfo.length; j++){
                                 this.$data[methodInfo[j]] = "";
                             }
+                            var fields = this.services[2];
+                            for(var j = 0; j < fields.length; j++){
+                                this.$data[fields[j]] = "";
+                            }
                             this.$data.errorMessage = "";
+                            if(this.services[1])
+                                method.call(this);
                         }
                     }
                 }
