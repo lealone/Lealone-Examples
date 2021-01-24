@@ -16,7 +16,7 @@
 <div id="storeApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><div th:replace="/home/fragment/top.html :: top"></div></td>
+    <td><div th:replace="/home/fragment/layout/top.html :: top"></div></td>
   </tr>
   <tr>
     <td align="center">
@@ -32,32 +32,25 @@
     </td>
   </tr>
   <tr>
-    <td><div th:replace="/home/fragment/footer.html :: footer"></div></td>
+    <td><div th:replace="/home/fragment/layout/footer.html :: footer"></div></td>
   </tr>
 </table>
 </div>
 
 <template id="category-list" th:insert="/store/fragment/category-list.html :: category-list"/>
 <template id="item-list" th:insert="/store/fragment/item-list.html :: item-list"/>
-<template id="view-cart" th:insert="/store/fragment/view-cart.html :: view-cart"/>
-<template id="edit-category-list" th:insert="/store/fragment/edit/category-list.html :: edit-category-list"/>
-<template id="edit-item-list" th:insert="/store/fragment/edit/item-list.html :: edit-item-list"/>
-<template id="add-product" th:insert="/store/fragment/edit/add-product.html :: add-product"/>
-<template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
+<template id="add-product" th:insert="/store/fragment/add-product.html :: add-product"/>
+<template id="petstore-nav" th:insert="/home/fragment/layout/nav.html :: nav"/>
 
 <script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>
 <script src="/store/js/add-product.js"></script>
-<script src="/store/js/view-cart.js"></script>
 <script>
-    const app = Lealone.createVueApp("store", "edit-category-list"); //打开store子应用时，默认显示edit-category-list页
+    const app = Lealone.createVueApp("store", "category-list"); //打开store子应用时，默认显示category-list页
 
-    Lealone.component(app, 'category-list', storeCategoryList);
-    Lealone.component(app, 'item-list', storeItemlist, storeViewCart);
-    Lealone.component(app, 'view-cart', storeViewCart);
-    Lealone.component(app, 'edit-category-list', storeCategoryList);
-    Lealone.component(app, 'edit-item-list', storeItemlist);
-    Lealone.component(app, 'add-product', storeAddProduct);
+    Lealone.component(app, 'category-list', 'get_all_categories', storeCategoryList);
+    Lealone.component(app, 'item-list', 'get_all_product_items', storeItemlist);
+    Lealone.component(app, 'add-product', 'add_product', storeAddProduct);
     Lealone.component(app, 'petstore-nav');
 
     app.mount('#storeApp')

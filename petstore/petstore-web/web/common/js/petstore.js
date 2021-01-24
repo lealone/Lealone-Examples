@@ -3,7 +3,7 @@
 };
 PetStore.UserService = PetStore.Host + '/service/user_service';
 PetStore.StoreService = PetStore.Host + '/service/store_service';
-PetStore.CarService = PetStore.Host + '/service/car_service';
+PetStore.ViewCartService = PetStore.Host + '/service/view_cart_service';
 
 UserService = Lealone.getService("user_service");
 

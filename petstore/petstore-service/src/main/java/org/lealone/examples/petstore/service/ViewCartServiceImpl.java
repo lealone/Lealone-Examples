@@ -22,51 +22,50 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lealone.examples.petstore.dal.model.Item;
-import org.lealone.examples.petstore.service.generated.CarService;
+import org.lealone.examples.petstore.service.generated.ViewCartService;
 import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
-public class CarServiceImpl implements CarService {
+public class ViewCartServiceImpl implements ViewCartService {
 
-    public static class Car {
+    public static class ViewCart {
         CopyOnWriteArrayList<String> items = new CopyOnWriteArrayList<>();
     }
 
-    private final ConcurrentHashMap<String, Car> cars = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, ViewCart> viewCarts = new ConcurrentHashMap<>();
 
     @Override
-    public void addItem(String carId, String itemId) {
-        Car car = new Car();
-        Car old = cars.putIfAbsent(carId, car);
+    public void addItem(String cartId, String itemId) {
+        ViewCart viewCart = new ViewCart();
+        ViewCart old = viewCarts.putIfAbsent(cartId, viewCart);
         if (old != null)
-            car = old;
-        car.items.add(itemId);
+            viewCart = old;
+        viewCart.items.add(itemId);
     }
 
     @Override
-    public void removeItem(String carId, String itemId) {
-        Car car = cars.get(carId);
-        if (car != null)
-            car.items.remove(itemId);
+    public void removeItem(String cartId, String itemId) {
+        ViewCart viewCart = viewCarts.get(cartId);
+        if (viewCart != null)
+            viewCart.items.remove(itemId);
     }
 
     @Override
-    public void update(String carId, String itemId, Integer quantity) {
+    public void update(String cartId, String itemId, Integer quantity) {
         // TODO Auto-generated method stub
-
     }
 
     @Override
-    public String getItems(String carId) {
+    public String getItems(String cartId) {
         JsonObject json = new JsonObject();
-        Car car = cars.get(carId);
-        if (car == null) {
+        ViewCart viewCart = viewCarts.get(cartId);
+        if (viewCart == null) {
             json.put("items", new JsonArray());
         } else {
-            int size = car.items.size();
+            int size = viewCart.items.size();
             ArrayList<Item> items = new ArrayList<>();
             for (int i = 0; i < size; i++) {
-                Item item = Item.dao.where().itemid.eq(car.items.get(i)).findOne();
+                Item item = Item.dao.where().itemid.eq(viewCart.items.get(i)).findOne();
                 items.add(item);
             }
             json.put("items", new JsonArray(items));

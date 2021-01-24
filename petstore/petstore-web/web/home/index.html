@@ -33,17 +33,19 @@
     </td>
     <td><img src="/home/img/dot_transparent.png" width="30"/></td>
     <td width="100%" valign="top">
-      <div th:replace="/home/fragment/top-no-logo.html :: top-no-logo"></div>
+      <div th:replace="/home/fragment/layout/top-no-logo.html :: top-no-logo"></div>
       <table width="100%"  border="0" cellspacing="0" cellpadding="0">
         <tr valign="bottom">
-          <td width="10" align="left"><div th:replace="/home/fragment/tabs.html :: tabs"></div></td>
+          <td width="10" align="left"><div th:replace="/home/fragment/layout/tabs.html :: tabs"></div></td>
         </tr>
         <tr>
           <td>
             <table border="0" cellpadding="0" cellspacing="10" width="100%" class="box">
               <tr align="left">
                 <td width="100%">
-                  <category-list/>
+                  <keep-alive>
+                    <component :is="currentComponent"/>
+                  </keep-alive>
                 </td>
               </tr>
             </table>
@@ -54,22 +56,28 @@
   </tr>
   <tr>
     <td colspan="3" valign="top">
-      <div th:replace="/home/fragment/footer.html :: footer"></div>
+      <div th:replace="/home/fragment/layout/footer.html :: footer"></div>
     </td>
   </tr>
 </table>
 </div>
 
+<template id="category-list" th:insert="/home/fragment/shopping/category-list.html :: category-list"/>
+<template id="item-list" th:insert="/home/fragment/shopping/item-list.html :: item-list"/>
+<template id="view-cart" th:insert="//home/fragment/shopping/view-cart.html :: view-cart"/>
+<template id="petstore-nav" th:insert="/home/fragment/layout/nav.html :: nav"/>
 <template id="login" th:insert="/user/fragment/login.html :: login"/>
-<template id="category-list" th:insert="/store/fragment/category-list.html :: category-list"/>
-<template id="petstore-nav" th:insert="/home/fragment/nav.html :: nav"/>
 
 <script src="/store/js/category-list.js"></script>
+<script src="/store/js/item-list.js"></script>
+<script src="/home/js/view-cart.js"></script>
 <script>
-    const app = Lealone.createVueApp("home", "login"); 
+    const app = Lealone.createVueApp("home", "category-list"); 
 
     Lealone.component(app, 'login', 'login', UserService);
     Lealone.component(app, 'category-list', 'get_all_categories', storeCategoryList);
+    Lealone.component(app, 'item-list', 'get_all_categories', storeViewCart, storeItemlist);
+    Lealone.component(app, 'view-cart', 'get_all_categories', storeViewCart);
     Lealone.component(app, 'petstore-nav');
 
     mount(app, '#homeApp');

@@ -50,7 +50,7 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做
         router.route("/user/logout").handler(routingContext -> {
             // routingContext.session().remove("currentUser");
-            // routingContext.session().remove("car_id");
+            // routingContext.session().remove("cart_id");
             routingContext.redirect("/home/index.html");
         });
     }
@@ -109,13 +109,13 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         setFileUploadHandler(config, vertx, router);
 
         // 提取购物车ID用于调用后续的购物车服务
-        router.route("/service/car_service/*").handler(routingContext -> {
-            String car = routingContext.session().get("car_id");
-            if (car == null) {
-                car = "car-" + UUID.randomUUID();
-                routingContext.session().put("car_id", car);
+        router.route("/service/view_cart_service/*").handler(routingContext -> {
+            String cartId = routingContext.session().get("cart_id");
+            if (cartId == null) {
+                cartId = "cart-" + UUID.randomUUID();
+                routingContext.session().put("cart_id", cartId);
             }
-            routingContext.request().params().set("car_id", car);
+            routingContext.request().params().set("cart_id", cartId);
             routingContext.next();
         });
 

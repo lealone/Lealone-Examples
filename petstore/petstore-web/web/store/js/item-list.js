@@ -27,7 +27,8 @@
         }
     },
     mounted() {
-        if(lealone.page == "item-list" || lealone.page == "edit-item-list") {
+        lealone.put(this.gid, this);
+        if(lealone.page == "item-list") {
             var productId = lealone.params.productId;
             if(productId)
                 this.getItemList(productId);

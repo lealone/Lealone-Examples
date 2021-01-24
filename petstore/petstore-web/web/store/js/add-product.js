@@ -25,7 +25,7 @@
             };
             axios.post(PetStore.StoreService + '/add_product', formData, config)
             .then(response => {
-                lealone.route("store", "edit-category-list");
+                lealone.route("store", "category-list");
             })
             .catch(error => {
                 console.log(error);

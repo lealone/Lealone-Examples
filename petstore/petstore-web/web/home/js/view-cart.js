@@ -8,7 +8,7 @@
     },
     methods: {
         getCartItemList() {
-            axios.get(PetStore.CarService + '/get_items')
+            axios.get(PetStore.ViewCartService + '/get_items')
             .then(response => {
                 if(response.data) {
                     if(response.data.items)
@@ -21,10 +21,10 @@
             });
         },
         addCartItem(itemId) {
-            axios.post(PetStore.CarService + '/add_item?item_id=' + itemId)
+            axios.post(PetStore.ViewCartService + '/add_item?item_id=' + itemId)
             .then(response => {
                 this.itemAdded = true;
-                lealone.route('store', "item-list");
+                lealone.route('home', "item-list");
             })
             .catch(error => {
                 console.log(error);
@@ -32,10 +32,10 @@
             });
         },
         removeCartItem(itemId) {
-            axios.post(PetStore.CarService + '/remove_item?item_id=' + itemId)
+            axios.post(PetStore.ViewCartService + '/remove_item?item_id=' + itemId)
             .then(response => {
                 this.itemAdded = false;
-                lealone.route('store', "view-cart");
+                lealone.route('home', "view-cart");
                 this.getCartItemList();
             })
             .catch(error => {
@@ -43,15 +43,15 @@
                 this.errorMessage = "remove_item失败";
             });
         },
-        updateCar() {
-            axios.post(PetStore.CarService + '/update')
+        updateCart() {
+            axios.post(PetStore.ViewCartService + '/update')
             .then(response => {
                 this.itemAdded = false;
-                lealone.route('store', "view-cart");
+                lealone.route('home', "view-cart");
             })
             .catch(error => {
                 console.log(error);
-                this.errorMessage = "updateCar失败";
+                this.errorMessage = "updateCart失败";
             });
         }
     },

@@ -5,14 +5,18 @@
 </head>
 <body>
 
-<div th:fragment="edit-item-list">
+<div th:fragment="item-list">
 <table width="100%" border="0" cellspacing="0" cellpadding="10">
   <tr>
     <td rowspan="2" width="1%"><template v-if="category.LOGO"><img v-bind:src="'/store/img/' + category.LOGO"></template></td>
     <td class="categoryName">{{ category.NAME }}</td>
   </tr>
   <tr>
-    <td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}</td>
+    <td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}
+        <template v-if="itemAdded">
+            | <span class="errorMessage">已加入购物车，您可以 [<a href="/" @click.prevent="lealone.route('home', 'category-list')">继续购物</a>]</span>
+        </template>
+    </td>
   </tr>
   <tr>
     <td colspan="2">
@@ -24,15 +28,21 @@
                 <th>库存数量</th>
                 <th>&nbsp;</th>
             </tr>
-        <template v-for="item in items">
+            <template v-for="item in items">
             <tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
                 <td>{{ item.ITEMID }}</td>
                 <td>{{ item.LISTPRICE }}</td>
                 <td>{{ item.ATTR }}1</td>
                 <td>{{ item.quantity }}</td>
-                <td align="right">[<a href="#" onclick="alert('未实现')">修改</a>]</td>
+                <td align="right"><input type="button" value="放到购物车" @click.prevent="addCartItem(item.ITEMID)"/></td>
             </tr>
-        </template>
+            </template>
+
+            <tr bgcolor="#DDDDDD">
+                <td colspan="10" align="right">
+                    <input type="button" value="继 续 购 物" @click.prevent="lealone.route('home', 'category-list')"/>
+                </td>
+            </tr>
         </table>
     </td>
   </tr>

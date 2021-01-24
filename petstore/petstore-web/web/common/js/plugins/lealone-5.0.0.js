@@ -343,6 +343,10 @@ const Lealone = {
         state = JSON.stringify(this);
         // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
+        if(this.screen == screen) {
+            if(this.components[page])
+                this.components[page].$options.mounted.call(this.components[page]);
+        }
     },
 
     createVueApp(screen, defaultPage) {
