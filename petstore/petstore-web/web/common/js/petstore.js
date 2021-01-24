@@ -1,9 +1,9 @@
 ﻿const PetStore = {
     Host: '',
-};
-PetStore.UserService = PetStore.Host + '/service/user_service';
+}
+
+//在文件上传时用到
 PetStore.StoreService = PetStore.Host + '/service/store_service';
-PetStore.ViewCartService = PetStore.Host + '/service/view_cart_service';
 
 const UserService = Lealone.getService("user_service");
 const StoreService = Lealone.getService("store_service");
