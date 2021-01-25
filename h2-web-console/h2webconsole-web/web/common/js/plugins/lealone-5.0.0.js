@@ -1,4 +1,4 @@
-﻿var LealoneRpcClient = (function() {
+﻿const LealoneRpcClient = (function() {
 var L = {};
 L.call = function(object, apiName) {
     if(!L.sockjs) {
@@ -47,10 +47,22 @@ L.call4 = function(serviceContext, service, apiName, arguments) {
         L.services = {};
         initSockJS(service.sockjsUrl);
     }
+    if(service.hooks != undefined) { 
+        let hook = service.hooks[apiName];
+        if(hook != undefined) {
+            let beforeHook = hook["before"];
+            if(beforeHook != undefined) {
+                let ret = beforeHook.apply(serviceContext, arguments);
+                if(ret === false)
+                    return
+            }
+        }
+    } 
     var serviceName = service.serviceName + "." + apiName;
     L.services[serviceName] = function() {};
     L.services[serviceName]["onServiceException"] = serviceContext.onServiceException;
     L.services[serviceName]["serviceObject"] = serviceContext;
+    L.services[serviceName]["hooks"] = service.hooks;
     
     // 格式: type;serviceName;[arg1,arg2,...argn]
     var msg = "1;" + serviceName;
@@ -188,7 +200,8 @@ function initSockJS(sockjsUrl) {
     sockjs.onmessage = function(e) {
         var a = JSON.parse(e.data);
         var type = a[0];
-        var serviceName = a[1]; 
+        var serviceName = a[1];
+        var methodName = serviceName.split(".")[1];
         var result = a[2];
         switch(type) {
         case 2: // 正常返回
@@ -211,7 +224,7 @@ function initSockJS(sockjsUrl) {
                         isJson = false;
                     }
 
-                    var m = serviceName.split(".")[1];
+                    var m = methodName;
                     var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
                     //手动处理结果
                     if(route != undefined && route.handler != undefined) {
@@ -220,17 +233,31 @@ function initSockJS(sockjsUrl) {
                     }
                     //自动关联字段
                     if(isJson) {
+                        var isInitMethod = serviceObject.services != undefined && serviceObject.services[1] === true;
                         for(var key in result) {
                             // 找不到hasOwnProperty方法
                             // if(serviceObject.hasOwnProperty(key))
                             // if(keys.indexOf(key) >= 0) //vue3有警告
-                            if(serviceObject[key] != undefined)
+                            if(isInitMethod)
+                                serviceObject.$data[key] = result[key];
+                            else if(serviceObject[key] != undefined)
                                 serviceObject[key] = result[key];
                         }
                     }
                     if(route != undefined && route.redirect != undefined) {
                         location.href = route.redirect;
                     }
+
+                    let hooks = L.services[serviceName]["hooks"];
+                    if(hooks != undefined) { 
+                        let hook = hooks[m];
+                        if(hook != undefined) {
+                            let afterHook = hook["after"];
+                            if(afterHook != undefined) {
+                                afterHook.call(serviceObject, result);
+                            }
+                        }
+                    } 
                 } catch(e) {
                     console.log(e);
                 } 
@@ -240,8 +267,20 @@ function initSockJS(sockjsUrl) {
             var msg = "failed to call service: " + serviceName + ", backend error: " + result;
             if(L.services[serviceName] && L.services[serviceName]["onServiceException"]) 
                 L.services[serviceName]["onServiceException"](msg);
-            else
+            else {
+                let hooks = L.services[serviceName]["hooks"];
+                if(hooks != undefined) { 
+                    let hook = hooks[methodName];
+                    if(hook != undefined) {
+                        let errorHook = hook["error"];
+                        if(errorHook != undefined) {
+                            errorHook.call(L.services[serviceName]["serviceObject"], msg);
+                            return;
+                        }
+                    }
+                } 
                 console.log(msg)
+            }
             break;
         default:
             var msg = "unknown response type: " + type + ", serviceName: " + serviceName + ", data: " + e.data;
@@ -307,6 +346,10 @@ const Lealone = {
         state = JSON.stringify(this);
         // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
+        if(this.screen == screen) {
+            if(this.components[page])
+                this.components[page].$options.mounted.call(this.components[page]);
+        }
     },
 
     createVueApp(screen, defaultPage) {
@@ -344,11 +387,35 @@ const Lealone = {
         return app;
     },
 
-    component(app, name) {
+    component(app, name, method) {
         var mixins = [];
         var services = [];
+        var methodName = "";
+        var init = false;
+        var fields = [];
+        var startIndex = 2;
+        if(typeof method == 'string') { //单一方法
+            methodName = method;
+            startIndex = 3;
+        }
+        else if(method != undefined && method.methodName != undefined) { //通过配置指定方法名
+            methodName = method.methodName;
+            if(method.init != undefined) {
+                init = method.init;
+            }
+            if(method.fields != undefined) {
+                fields = method.fields.split(",");
+            } 
+            startIndex = 3;
+        } else {
+            methodName = "*"; //默认是所有方法
+        }
+        services.push(methodName);
+        services.push(init);
+        services.push(fields);
+
         var len = arguments.length;
-        for(var i = 2; i < len; i++){
+        for(var i = startIndex; i < len; i++){
             if(arguments[i].serviceName == undefined)
                 mixins.push(arguments[i]);
             else
@@ -364,28 +431,39 @@ const Lealone = {
             template: document.getElementById(name).innerHTML,
             beforeMount() {
                 var len = this.services.length;
-                for(var i = 0; i < len; i++){
+                for(var i = 3; i < len; i++){
                     var service = this.services[i];
                     for(var m in service.methods) {
-                        if(typeof service[m] == 'function') {
+                        if(typeof service[m] == 'function' && (this.services[0] === "*" || m == this.services[0])) {
                             let method = service[m];
                             let that = this;
                             var fun = function() {
                                 method.apply(that, arguments);
                             }
                             this[m] = fun;
+                            
+                            var methodInfo = service.methodInfo[m];
+                            for(var j = 0; j < methodInfo.length; j++){
+                                this.$data[methodInfo[j]] = "";
+                            }
+                            var fields = this.services[2];
+                            for(var j = 0; j < fields.length; j++){
+                                this.$data[fields[j]] = {};
+                            }
+                            this.$data.errorMessage = "";
+                            if(this.services[1])
+                                method.call(this);
                         }
                     }
                 }
             }
         })
     },
-
     install(app, options) {
         var that = this;
         app.mixin({
             data() { return { lealone: that } },
-            mounted() {
+            beforeMount() {
                 window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的
             }
         });

@@ -393,25 +393,29 @@ const Lealone = {
         var methodName = "";
         var init = false;
         var fields = [];
-        if(typeof method == 'string')
+        var startIndex = 2;
+        if(typeof method == 'string') { //单一方法
             methodName = method;
-        else if(method != undefined) {
-            if(method.methodName != undefined) {
-                methodName = method.methodName;
-            }
+            startIndex = 3;
+        }
+        else if(method != undefined && method.methodName != undefined) { //通过配置指定方法名
+            methodName = method.methodName;
             if(method.init != undefined) {
                 init = method.init;
             }
             if(method.fields != undefined) {
                 fields = method.fields.split(",");
-            }
+            } 
+            startIndex = 3;
+        } else {
+            methodName = "*"; //默认是所有方法
         }
         services.push(methodName);
         services.push(init);
         services.push(fields);
 
         var len = arguments.length;
-        for(var i = 3; i < len; i++){
+        for(var i = startIndex; i < len; i++){
             if(arguments[i].serviceName == undefined)
                 mixins.push(arguments[i]);
             else

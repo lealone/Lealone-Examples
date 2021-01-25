@@ -50,7 +50,7 @@
 
     Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
     Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
-    Lealone.component(app, 'add-product', '', storeAddProduct);
+    Lealone.component(app, 'add-product', storeAddProduct);
     Lealone.component(app, 'petstore-nav');
 
     mount(app, '#storeApp')
