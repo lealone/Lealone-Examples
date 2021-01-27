@@ -238,10 +238,15 @@ function initSockJS(sockjsUrl) {
                             // 找不到hasOwnProperty方法
                             // if(serviceObject.hasOwnProperty(key))
                             // if(keys.indexOf(key) >= 0) //vue3有警告
-                            if(isInitMethod)
-                                serviceObject.$data[key] = result[key];
-                            else if(serviceObject[key] != undefined)
+                            if(isInitMethod) {
+                                if(serviceObject.$data)
+                                    serviceObject.$data[key] = result[key];
+                                else
+                                    serviceObject[key] = result[key];
+                            }
+                            else if(serviceObject[key] != undefined) {
                                 serviceObject[key] = result[key];
+                            }
                         }
                     }
                     if(route != undefined && route.redirect != undefined) {
@@ -316,17 +321,18 @@ const Lealone = {
         this.components[key] = value;
     },
 
-    get(key) {
-        return this.components[key];
-    },
+    //get(key) {
+    //    return this.components[key];
+    //},
 
-    route(screen, page, params) {
+    route(screen, page, params, methodName) {
         var state = JSON.stringify(this);
         if(params){
             this.params = params;
         }
         // 当前page没有变化，但是参数可能变了，所以手工调用
         if(this.screen == screen && this.page == page) {
+            var instance = this.get(page);
             if(this.components[page])
                 this.components[page].$options.mounted.call(this.components[page]);
             return;
@@ -347,8 +353,10 @@ const Lealone = {
         // window.history.pushState(state, page, "/" + this.screen + "/" + page);
         window.history.pushState(state, page, null);
         if(this.screen == screen) {
-            if(this.components[page])
-                this.components[page].$options.mounted.call(this.components[page]);
+            var instance = this.find(page);
+            if(instance && methodName) {
+                return instance[methodName].apply(instance, this.params);
+            }
         }
     },
 
@@ -358,7 +366,7 @@ const Lealone = {
         this.params = sessionStorage.params ? JSON.parse(sessionStorage.params) : {};
         sessionStorage.removeItem("page");
         sessionStorage.removeItem("params");
-        var app = Vue.createApp({
+        var options = {
             data() { return { } },
             computed: {
                 currentComponent() {
@@ -382,8 +390,21 @@ const Lealone = {
                     that.lealone.page = state.page;
                 }, false);
             }
-        });
-        app.use(this);
+        };
+        Vue.use(this);
+        var app = {
+                options: options,
+                mount(appName) {
+                    this.options.el = appName;
+                    new Vue(this.options);
+                },
+                component(name, options) {
+                    Vue.component(name, options);
+                },
+                mixin(options) {
+                    Vue.mixin(options);
+                }
+        }
         return app;
     },
 
@@ -430,6 +451,7 @@ const Lealone = {
             },
             template: document.getElementById(name).innerHTML,
             beforeMount() {
+                if(this._beforeMount_) return;
                 var len = this.services.length;
                 for(var i = 3; i < len; i++){
                     var service = this.services[i];
@@ -444,18 +466,25 @@ const Lealone = {
                             
                             var methodInfo = service.methodInfo[m];
                             for(var j = 0; j < methodInfo.length; j++){
-                                this.$data[methodInfo[j]] = "";
+                                if(this.$data)
+                                    this.$data[methodInfo[j]] = "";
+                                this[methodInfo[j]] = "";
                             }
                             var fields = this.services[2];
                             for(var j = 0; j < fields.length; j++){
-                                this.$data[fields[j]] = {};
+                                if(this.$data)
+                                    this.$data[fields[j]] = {};
+                                this[fields[j]] = {};
                             }
-                            this.$data.errorMessage = "";
+                            if(this.$data)
+                                this.$data.errorMessage = "";
+                            this.errorMessage = "";
                             if(this.services[1])
                                 method.call(this);
                         }
                     }
                 }
+                this._beforeMount_ = true;
             }
         })
     },
@@ -464,6 +493,24 @@ const Lealone = {
         app.mixin({
             data() { return { lealone: that } },
             beforeMount() {
+                if(this.getComponentInstance && this.lealone.get == undefined) {
+                    let that = this;
+                    var funGet = function() {
+                       var instance = that.getComponentInstance.apply(that, arguments);
+                       if(instance.mounted == false) {
+                           for(var m in instance.$options.beforeMount) {
+                               instance.$options.beforeMount[m].apply(instance);
+                           }
+                       }
+                       return instance;
+                    }
+                    this.lealone.get = funGet;
+                    
+                    var funFind = function() {
+                        return that.findComponentInstance.apply(that, arguments);
+                    }
+                    this.lealone.find = funFind;
+                }
                 window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的
             }
         });

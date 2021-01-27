@@ -8,14 +8,18 @@
             errorMessage: ""
         }
     },
+    methods: {
+        addCartItem(itemId) {
+            var cart = lealone.get('view-cart');
+            cart.addItem(cart.cartId, itemId, data=>{
+                this.itemAdded = true;
+            });
+        }
+    },
     mounted() {
-        lealone.put(this.gid, this);
-        if(lealone.page == "item-list") {
-            this.itemAdded = lealone.params.itemAdded;
-            var productId = lealone.params.productId;
-            if(productId) {
-                this.getAllProductItems(productId);
-            }
+        var productId = lealone.params[0];
+        if(productId) {
+            this.getAllProductItems(productId);
         }
     }
 }

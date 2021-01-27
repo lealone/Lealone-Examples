@@ -19,7 +19,7 @@
               <td class="subcategoryName">
               <template v-for="(product, index) in category.ProductList">
                 <template v-if="index != 0"> | </template>
-                <a href="/" v-bind:title="product.DESCN" @click.prevent="lealone.route('store', 'item-list', {productId:product.PRODUCTID})">
+                <a href="/" v-bind:title="product.DESCN" @click.prevent="lealone.route('store', 'item-list', [product.PRODUCTID], 'getAllProductItems')">
                   {{ product.NAME }}
                 </a>
               </template>
