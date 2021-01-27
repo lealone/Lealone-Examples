@@ -4632,7 +4632,39 @@
     Object.defineProperty(target, key, sharedPropertyDefinition);
   }
 
+  var componentInstances = [];
+  function findComponentInstance (name) {
+	 return componentInstances[name];
+  }
+  function getComponentInstance (name) {
+	if(componentInstances[name])
+		return componentInstances[name];
+	var options= this.$options.components[name].options;
+    var instance = {$options: options};
+    initState(instance);
+    componentInstances[name] = instance;
+	instance.mounted = false;
+	return instance;
+  }
+
   function initState (vm) {
+	if(vm.$options._componentTag && componentInstances[vm.$options._componentTag]) {
+	  var componentInstance = componentInstances[vm.$options._componentTag];
+	  vm._watchers = componentInstance._watchers;
+	  vm.props = componentInstance.props;
+	  vm.methods = componentInstance.methods;
+	  vm.data = componentInstance.data;
+	  vm._data = componentInstance._data;
+	  vm.computed = componentInstance.computed;
+	  vm.watch = componentInstance.watch;
+	  for(var m in componentInstance) {
+		try {
+		  if(!vm[m] && m != "services")
+	        vm[m] = componentInstance[m];
+		} catch {}
+	  }
+	  return;
+    }
     vm._watchers = [];
     var opts = vm.$options;
     if (opts.props) { initProps(vm, opts.props); }
@@ -5001,6 +5033,13 @@
       initProvide(vm); // resolve provide after data/props
       callHook(vm, 'created');
 
+	  if(vm.$options._componentTag) {
+		componentInstances[vm.$options._componentTag] = vm;
+	  } else {
+		vm.getComponentInstance = getComponentInstance; 
+		vm.findComponentInstance = findComponentInstance;
+	  }
+
       /* istanbul ignore if */
       if (config.performance && mark) {
         vm._name = formatComponentName(vm, false);
@@ -5076,6 +5115,8 @@
       warn('Vue is a constructor and should be called with the `new` keyword');
     }
     this._init(options);
+	this.getComponentInstance = getComponentInstance;
+	this.findComponentInstance = findComponentInstance;
   }
 
   initMixin(Vue);
