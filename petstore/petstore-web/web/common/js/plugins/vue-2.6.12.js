@@ -4644,27 +4644,11 @@
     initState(instance);
     componentInstances[name] = instance;
 	instance.mounted = false;
+	instance.external = true;
 	return instance;
   }
 
   function initState (vm) {
-	if(vm.$options._componentTag && componentInstances[vm.$options._componentTag]) {
-	  var componentInstance = componentInstances[vm.$options._componentTag];
-	  vm._watchers = componentInstance._watchers;
-	  vm.props = componentInstance.props;
-	  vm.methods = componentInstance.methods;
-	  vm.data = componentInstance.data;
-	  vm._data = componentInstance._data;
-	  vm.computed = componentInstance.computed;
-	  vm.watch = componentInstance.watch;
-	  for(var m in componentInstance) {
-		try {
-		  if(!vm[m] && m != "services")
-	        vm[m] = componentInstance[m];
-		} catch {}
-	  }
-	  return;
-    }
     vm._watchers = [];
     var opts = vm.$options;
     if (opts.props) { initProps(vm, opts.props); }
@@ -4677,6 +4661,24 @@
     if (opts.computed) { initComputed(vm, opts.computed); }
     if (opts.watch && opts.watch !== nativeWatch) {
       initWatch(vm, opts.watch);
+    }
+
+    if(vm.$options._componentTag && componentInstances[vm.$options._componentTag]) {
+      var componentInstance = componentInstances[vm.$options._componentTag];
+      if(componentInstance.external) {
+        for(var m in componentInstance._data) {
+          try {
+            vm._data[m] = componentInstance._data[m];
+          } catch {}
+        }
+        for(var m in componentInstance) {
+          try {
+            if(typeof componentInstance[m] == 'function' && !m.startsWith("$")) {
+              vm[m] = componentInstance[m];
+            }
+          } catch {}
+        }
+      }
     }
   }
 
