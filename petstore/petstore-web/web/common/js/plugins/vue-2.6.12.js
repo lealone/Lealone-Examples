@@ -4643,7 +4643,6 @@
     var instance = {$options: options};
     initState(instance);
     componentInstances[name] = instance;
-	instance.mounted = false;
 	instance.external = true;
 	return instance;
   }

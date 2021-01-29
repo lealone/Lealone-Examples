@@ -315,16 +315,9 @@ const Lealone = {
     screen: "" ,
     page: "", 
     params: {},
-    components: [],
 
     put(key, value) {
-        this.components[key] = value;
-    },
-
-    //get(key) {
-    //    return this.components[key];
-    //},
-
+    }, 
     route(screen, page, params, methodName) {
         var state = JSON.stringify(this);
         if(params){
@@ -333,8 +326,8 @@ const Lealone = {
         // 当前page没有变化，但是参数可能变了，所以手工调用
         if(this.screen == screen && this.page == page) {
             var instance = this.get(page);
-            if(this.components[page])
-                this.components[page].$options.mounted.call(this.components[page]);
+            if(Array.isArray(instance.$options.mounted) && typeof instance.$options.mounted[0] == 'function')
+                return instance.$options.mounted[0].apply(instance);
             return;
         }
         if(this.screen != screen) {
@@ -354,8 +347,11 @@ const Lealone = {
         window.history.pushState(state, page, null);
         if(this.screen == screen) {
             var instance = this.find(page);
-            if(instance && methodName) {
-                return instance[methodName].apply(instance, this.params);
+            if(instance) {
+                if(methodName)
+                    return instance[methodName].apply(instance, this.params);
+                else if(Array.isArray(instance.$options.mounted) && typeof instance.$options.mounted[0] == 'function')
+                    return instance.$options.mounted[0].apply(instance);
             }
         }
     },
@@ -495,21 +491,18 @@ const Lealone = {
             beforeMount() {
                 if(this.getComponentInstance && this.lealone.get == undefined) {
                     let that = this;
-                    var funGet = function() {
+                    this.lealone.get = function() {
                        var instance = that.getComponentInstance.apply(that, arguments);
-                       if(instance.mounted == false) {
+                       if(instance.external) {
                            for(var m in instance.$options.beforeMount) {
                                instance.$options.beforeMount[m].apply(instance);
                            }
                        }
                        return instance;
                     }
-                    this.lealone.get = funGet;
-                    
-                    var funFind = function() {
+                    this.lealone.find = function() {
                         return that.findComponentInstance.apply(that, arguments);
                     }
-                    this.lealone.find = funFind;
                 }
                 window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的
             }
