@@ -37,12 +37,7 @@
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-auth-common</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web-templ-thymeleaf</artifactId>
+            <artifactId>vertx-web</artifactId>
             <version>4.0.0</version>
         </dependency>
     </dependencies>

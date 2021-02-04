@@ -61,7 +61,7 @@ REM call mvn package assembly:assembly -Dmaven.test.skip=true
 
 call mvn package -Dmaven.test.skip=true
 java -cp ${appName}-dist/target/${artifactId}-${version}.jar^
-     ${packageName}.web.thymeleaf.ThymeleafTemplateCompiler^
+     org.lealone.server.template.TemplateCompiler^
      -webRoot ${appName}-web/web -targetDir ${appName}-dist/target
 call mvn assembly:assembly -Dmaven.test.skip=true
 goto end

@@ -19,13 +19,13 @@ package ${packageName}.test;
 
 import java.io.IOException;
 
-import ${packageName}.web.thymeleaf.ThymeleafTemplateCompiler;
+import org.lealone.server.template.TemplateCompiler;
 
 public class ${appClassName}TemplateCompilerTest {
 
     public static void main(String[] args) throws IOException {
         args = new String[] { "-webRoot", "../${appName}-web/web" };
-        ThymeleafTemplateCompiler.main(args);
+        TemplateCompiler.main(args);
     }
 
 }

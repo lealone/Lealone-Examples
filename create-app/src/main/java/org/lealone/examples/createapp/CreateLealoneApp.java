@@ -363,12 +363,6 @@ public class CreateLealoneApp {
         webDir.mkdir();
         writeFile("/web/RouterFactory.java.ftl", webDir, appClassName + "RouterFactory.java");
 
-        File toThymeleafDir = new File(webDir, "thymeleaf");
-        toThymeleafDir.mkdir();
-        writeFile("/web/thymeleaf/ThymeleafTemplateCompiler.java.ftl", toThymeleafDir,
-                "ThymeleafTemplateCompiler.java");
-        writeFile("/web/thymeleaf/ThymeleafTemplateEngineImpl.java.ftl", toThymeleafDir,
-                "ThymeleafTemplateEngineImpl.java");
         writeFile("/web/pom.xml", moduleDir);
 
         webDir = new File(moduleDir, "web");
