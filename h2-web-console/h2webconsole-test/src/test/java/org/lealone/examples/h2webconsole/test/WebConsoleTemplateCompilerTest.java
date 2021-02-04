@@ -19,13 +19,13 @@ package org.lealone.examples.h2webconsole.test;
 
 import java.io.IOException;
 
-import org.lealone.examples.h2webconsole.web.thymeleaf.ThymeleafTemplateCompiler;
+import org.lealone.server.template.TemplateCompiler;
 
 public class WebConsoleTemplateCompilerTest {
 
     public static void main(String[] args) throws IOException {
         args = new String[] { "-webRoot", "../h2webconsole-web/web" };
-        ThymeleafTemplateCompiler.main(args);
+        TemplateCompiler.main(args);
     }
 
 }

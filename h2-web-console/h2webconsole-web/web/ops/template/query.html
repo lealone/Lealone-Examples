@@ -1,16 +1,9 @@
-<!DOCTYPE html>
 <!--
 Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
 and the EPL 1.0 (https://h2database.com/html/license.html).
 Initial Developer: H2 Group
 -->
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
-
-<div th:fragment="query" style="padding-right: 10px; padding-bottom:0px">
+<div id="query" style="padding-right: 10px; padding-bottom:0px">
   <form name="h2query" action="javascript:alert('should not be submitting this form');">
     <span style="white-space:nowrap;">
       <input type="button" class="button" :value="text.toolbar.run" @click.prevent="run"/>
@@ -28,6 +21,3 @@ Initial Developer: H2 Group
     <br/><textarea name="sql" v-model="sql" cols="80" rows="8">{{ sql }}</textarea>
   </form>
 </div>
-
-</body>
-</html>

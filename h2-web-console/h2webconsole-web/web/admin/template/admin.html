@@ -1,16 +1,9 @@
-<!DOCTYPE html>
 <!--
 Copyright 2004-2020 H2 Group. Multiple-Licensed under the MPL 2.0,
 and the EPL 1.0 (https://h2database.com/html/license.html).
 Initial Developer: H2 Group
 -->
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="utf-8">
-</head>
-<body>
-
-<div th:fragment="admin">
+<div id="admin">
     <h1>
         {{ text.adminTitle }}
     </h1>
@@ -123,6 +116,3 @@ Initial Developer: H2 Group
         <input type="submit" class="button" :value="text.adminShutdown" @click.prevent="shutdown" />
     </form>
 </div>
-
-</body>
-</html>

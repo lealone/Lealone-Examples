@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.9" />
   <title>H2 Web Console</title>
-  <script src="/common/js/plugins/vue.min-3.0.5.js"></script>
+  <script src="/common/js/plugins/vue-2.6.12.js"></script>
   <script src="/common/js/plugins/sockjs.min-1.1.2.js"></script>
   <script src="/common/js/plugins/lealone-5.0.0.js"></script>
   <script src="/common/js/opscenter.js"></script>
@@ -74,12 +74,12 @@
     </div>
   </div>
 
-  <template id="help" th:insert="/ops/fragment/help.html :: help" />
-  <template id="ops-header" th:insert="/ops/fragment/header.html :: header" />
-  <template id="tables" th:insert="/ops/fragment/tables.html :: tables" />
-  <template id="query" th:insert="/ops/fragment/query.html :: query" />
-  <template id="result" th:insert="/ops/fragment/result.html :: result" />
-  <template id="result-table" th:insert="/ops/fragment/result-table.html :: result-table" />
+  <template id="help" v-insert="/ops/template/help.html" />
+  <template id="ops-header" v-insert="/ops/template/header.html" />
+  <template id="tables" v-insert="/ops/template/tables.html" />
+  <template id="query" v-insert="/ops/template/query.html" />
+  <template id="result" v-insert="/ops/template/result.html" />
+  <template id="result-table" v-insert="/ops/template/result-table.html" />
 
   <script src="/ops/js/header.js"></script>
   <script src="/ops/js/tables.js"></script>
