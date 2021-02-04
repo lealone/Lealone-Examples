@@ -16,7 +16,7 @@
 <div id="storeApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><div th:replace="/home/fragment/layout/top.html :: top"></div></td>
+    <td><div v-replace="/home/template/layout/top.html"></div></td>
   </tr>
   <tr>
     <td align="center">
@@ -32,15 +32,14 @@
     </td>
   </tr>
   <tr>
-    <td><div th:replace="/home/fragment/layout/footer.html :: footer"></div></td>
+    <td><div v-replace="/home/template/layout/footer.html"></div></td>
   </tr>
 </table>
 </div>
 
-<template id="category-list" th:insert="/store/fragment/category-list.html :: category-list"/>
-<template id="item-list" th:insert="/store/fragment/item-list.html :: item-list"/>
-<template id="add-product" th:insert="/store/fragment/add-product.html :: add-product"/>
-<template id="petstore-nav" th:insert="/home/fragment/layout/nav.html :: nav"/>
+<template id="category-list" v-insert="/store/template/category-list.html"/>
+<template id="item-list" v-insert="/store/template/item-list.html"/>
+<template id="add-product" v-insert="/store/template/add-product.html"/> 
 
 <script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>
@@ -50,8 +49,7 @@
 
     Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
     Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
-    Lealone.component(app, 'add-product', storeAddProduct);
-    Lealone.component(app, 'petstore-nav');
+    Lealone.component(app, 'add-product', storeAddProduct); 
 
     mount(app, '#storeApp')
 </script>

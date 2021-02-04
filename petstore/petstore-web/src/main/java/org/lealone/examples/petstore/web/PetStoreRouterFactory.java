@@ -21,16 +21,14 @@ import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
-import org.lealone.examples.petstore.web.thymeleaf.ThymeleafTemplateEngineImpl;
+import org.lealone.examples.petstore.web.template.TemplateEngine;
 import org.lealone.server.http.HttpRouterFactory;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.common.template.TemplateEngine;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.SessionHandler;
 import io.vertx.ext.web.sstore.SessionStore;
@@ -84,23 +82,22 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
     private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
         if (!isDevelopmentEnvironment(config))
             return;
-
         System.setProperty("vertxweb.environment", "development");
-        router.routeWithRegex(".*/fragment/.*").handler(routingContext -> {
-            routingContext.fail(404);// 不允许访问Thymeleaf的fragment文件
+        router.routeWithRegex(".*/template/.*").handler(routingContext -> {
+            routingContext.fail(404); // 不允许访问template文件
         });
 
         String webRoot = config.get("web_root");
-        TemplateEngine templateEngine = new ThymeleafTemplateEngineImpl(vertx, webRoot);
+        TemplateEngine te = new TemplateEngine(webRoot, "utf-8");
         // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
         router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
-            JsonObject jsonObject = new JsonObject();
-            // String currentUser = routingContext.session().get("currentUser");
-            // if (currentUser != null) {
-            // jsonObject.put("currentUser", currentUser);
-            // }
             String file = routingContext.request().path();
-            render(templateEngine, routingContext, jsonObject, file);
+            try {
+                String str = te.process(file);
+                routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(str, "utf-8");
+            } catch (Exception e) {
+                routingContext.fail(e);
+            }
         });
     }
 
@@ -139,15 +136,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
                 break;
             }
             routingContext.next();
-        });
-    }
-
-    private static void render(TemplateEngine templateEngine, RoutingContext routingContext, JsonObject context,
-            String templateFileName) {
-        templateEngine.render(context, templateFileName).onSuccess(buffer -> {
-            routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(buffer);
-        }).onFailure(cause -> {
-            routingContext.fail(cause);
         });
     }
 }

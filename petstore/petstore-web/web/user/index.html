@@ -16,7 +16,7 @@
 <div id="userApp">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td><div th:replace="/home/fragment/layout/top.html :: top"></div></td>
+    <td><div v-replace="/home/template/layout/top.html"></div></td>
   </tr>
   <tr>
     <td>
@@ -26,16 +26,15 @@
     </td>
   </tr>
   <tr>
-    <td><div th:replace="/home/fragment/layout/footer.html :: footer"></div></td>
+    <td><div v-replace="/home/template/layout/footer.html"></div></td>
   </tr>
 </table>
 </div>
 
-<template id="login" th:insert="/user/fragment/login.html :: login"/>
-<template id="account" th:insert="/user/fragment/account.html :: account"/>
-<template id="register" th:insert="/user/fragment/register.html :: register"/>
-<template id="register-account" th:insert="/user/fragment/register-account.html :: register-account"/>
-<template id="petstore-nav" th:insert="/home/fragment/layout/nav.html :: nav"/>
+<template id="login" v-insert="/user/template/login.html"/>
+<template id="account" v-insert="/user/template/account.html"/>
+<template id="register" v-insert="/user/template/register.html"/>
+<template id="register-account" v-insert="/user/template/register-account.html"/>
 
 <script src="/user/js/hooks.js"></script>
 <script>
@@ -44,8 +43,7 @@
     Lealone.component(app, 'login', 'login', UserService);
     Lealone.component(app, 'account', {methodName: 'getUser', init: true, fields: 'account,user'}, UserService);
     Lealone.component(app, 'register', 'register', UserService);
-    Lealone.component(app, 'register-account', 'update', UserService); 
-    Lealone.component(app, 'petstore-nav'); 
+    Lealone.component(app, 'register-account', 'update', UserService);
 
     mount(app, '#userApp')
 </script>

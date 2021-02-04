@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lealone.examples.petstore.web.thymeleaf;
+package org.lealone.examples.petstore.web.template;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -28,22 +28,19 @@ import java.io.OutputStream;
 
 import org.lealone.storage.fs.FileUtils;
 
-import io.vertx.core.Vertx;
-import io.vertx.core.json.JsonObject;
-
-public class ThymeleafTemplateCompiler {
+public class TemplateCompiler {
 
     public static void main(String[] args) throws IOException {
-        ThymeleafTemplateCompiler compiler = new ThymeleafTemplateCompiler();
+        TemplateCompiler compiler = new TemplateCompiler();
         compiler.parseArgs(args);
         compiler.compile();
     }
 
     private String webRoot = "./web";
-    private String fragmentDirName = "fragment";
+    private String templateDirName = "template";
     private String targetDir = "./target";
-
-    private ThymeleafTemplateEngineImpl te;
+    private String charsetName = "utf-8";
+    private TemplateEngine te;
 
     private void parseArgs(String[] args) {
         for (int i = 0; i < args.length; i++) {
@@ -59,19 +56,21 @@ public class ThymeleafTemplateCompiler {
             case "-targetDir":
                 targetDir = args[++i];
                 break;
-            case "-fragmentDirName":
-                fragmentDirName = args[++i];
+            case "-templateDirName":
+                templateDirName = args[++i];
+                break;
+            case "-charsetName":
+                charsetName = args[++i];
                 break;
             default:
                 System.out.println("选项名 '" + a + "' 无效");
                 System.exit(-1);
             }
         }
+        te = new TemplateEngine(webRoot, charsetName);
     }
 
     private void compile() throws IOException {
-        Vertx vertx = Vertx.vertx();
-        te = new ThymeleafTemplateEngineImpl(vertx, this.webRoot);
         File webRoot = new File(this.webRoot);
         File targetDir = new File(this.targetDir, webRoot.getName());
         if (targetDir.exists()) {
@@ -92,7 +91,7 @@ public class ThymeleafTemplateCompiler {
         if (fileName.startsWith("."))
             return;
         if (file.isDirectory()) {
-            if (fileName.equals(fragmentDirName))
+            if (fileName.equals(templateDirName))
                 return;
             targetDir = new File(targetDir, fileName);
             targetDir.mkdir();
@@ -103,17 +102,13 @@ public class ThymeleafTemplateCompiler {
             fileName = fileName.toLowerCase();
             File outFile = new File(targetDir, fileName);
             if (fileName.endsWith(".html")) {
-                JsonObject jsonObject = new JsonObject();
                 System.out.println("compile file: " + file.getCanonicalPath() + ", to: " + outFile.getCanonicalPath());
-                te.render(jsonObject, file.getAbsolutePath()).onSuccess(buffer -> {
-                    try (OutputStream out = new BufferedOutputStream(new FileOutputStream(outFile))) {
-                        out.write(buffer.getBytes());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }).onFailure(cause -> {
-                    cause.printStackTrace();
-                });
+                try (OutputStream out = new BufferedOutputStream(new FileOutputStream(outFile))) {
+                    String str = te.process(file.getAbsolutePath());
+                    out.write(str.getBytes(charsetName));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
                 try (InputStream in = new BufferedInputStream(new FileInputStream(file));
                         OutputStream out = new BufferedOutputStream(new FileOutputStream(outFile))) {
