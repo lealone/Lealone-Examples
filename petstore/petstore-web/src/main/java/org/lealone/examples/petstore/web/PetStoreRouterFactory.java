@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.lealone.server.http.HttpRouterFactory;
-import org.lealone.server.template.TemplateEngine;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -76,28 +75,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         // 实现footer.html中的重定向功能
         router.route("/redirect.do").handler(routingContext -> {
             routingContext.redirect(routingContext.request().getParam("location"));
-        });
-    }
-
-    private void setDevelopmentEnvironmentRouter(Map<String, String> config, Vertx vertx, Router router) {
-        if (!isDevelopmentEnvironment(config))
-            return;
-        System.setProperty("vertxweb.environment", "development");
-        router.routeWithRegex(".*/template/.*").handler(routingContext -> {
-            routingContext.fail(404); // 不允许访问template文件
-        });
-
-        String webRoot = config.get("web_root");
-        TemplateEngine te = new TemplateEngine(webRoot, "utf-8");
-        // 用正则表达式判断路径是否以“.html”结尾（不区分大小写）
-        router.routeWithRegex(".*\\.(?i)html").handler(routingContext -> {
-            String file = routingContext.request().path();
-            try {
-                String str = te.process(file);
-                routingContext.response().putHeader("Content-Type", "text/html; charset=utf-8").end(str, "utf-8");
-            } catch (Exception e) {
-                routingContext.fail(e);
-            }
         });
     }
 
