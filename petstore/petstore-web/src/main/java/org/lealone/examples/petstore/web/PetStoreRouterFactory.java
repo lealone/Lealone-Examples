@@ -21,8 +21,8 @@ import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
-import org.lealone.examples.petstore.web.template.TemplateEngine;
 import org.lealone.server.http.HttpRouterFactory;
+import org.lealone.server.template.TemplateEngine;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;

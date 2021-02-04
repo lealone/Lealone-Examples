@@ -19,7 +19,7 @@ package org.lealone.examples.petstore.test;
 
 import java.io.IOException;
 
-import org.lealone.examples.petstore.web.template.TemplateCompiler;
+import org.lealone.server.template.TemplateCompiler;
 
 public class PetStoreTemplateCompilerTest {
 
