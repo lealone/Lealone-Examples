@@ -12,17 +12,7 @@ AdminService = Lealone.getService("admin_service");
 QueryService = Lealone.getService("query_service");
 DatabaseService = Lealone.getService("database_service");
 
-OpsCenter.i18n = { 
-    data() { return { text: {} } },
-    
-    // 这个方法会自动调用多次，注册了多少个组件就调用多少次，
-    // 如果想避免多次异步请求，虽然弄个标志字段能实现，
-    // 但是注册到vue的其他组件拿到的text是空的。
-    created() {
-    },
-    install(app, options) {
-        app.mixin(this);
-    },
+OpsCenter.i18n = {
     loadAndMount(app, appName) {
         OpsService.readTranslations("zh_CN", data => {
             var text = data.text;
@@ -30,8 +20,7 @@ OpsCenter.i18n = {
             app.mixin({
                 data() { return { i18n: text,  text: newText } },
             });
-            Lealone.loadServices(services => {
-                // console.log(services);
+            Lealone.loadServices(() => {
                 app.mount(appName)
             });
         });

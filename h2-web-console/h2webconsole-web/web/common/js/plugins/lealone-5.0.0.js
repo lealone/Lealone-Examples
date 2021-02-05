@@ -317,7 +317,8 @@ const Lealone = {
     params: {},
 
     put(key, value) {
-    }, 
+    },
+
     route(screen, page, params, methodName) {
         var state = JSON.stringify(this);
         if(params){
@@ -389,17 +390,17 @@ const Lealone = {
         };
         Vue.use(this);
         var app = {
-                options: options,
-                mount(appName) {
-                    this.options.el = appName;
-                    new Vue(this.options);
-                },
-                component(name, options) {
-                    Vue.component(name, options);
-                },
-                mixin(options) {
-                    Vue.mixin(options);
-                }
+            options: options,
+            mount(appName) {
+                this.options.el = appName;
+                new Vue(this.options);
+            },
+            component(name, options) {
+                Vue.component(name, options);
+            },
+            mixin(options) {
+                Vue.mixin(options);
+            }
         }
         return app;
     },
@@ -484,6 +485,7 @@ const Lealone = {
             }
         })
     },
+
     install(app, options) {
         var that = this;
         app.mixin({

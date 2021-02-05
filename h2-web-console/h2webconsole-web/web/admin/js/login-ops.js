@@ -41,7 +41,6 @@
         }
     },
     mounted() {
-        lealone.put(this.gid, this);
         this.language = this.text.language;  
         this.getLanguages();
         this.getSettings(); 

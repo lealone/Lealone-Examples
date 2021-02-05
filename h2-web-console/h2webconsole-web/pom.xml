@@ -35,10 +35,5 @@
             <artifactId>h2webconsole-service</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web</artifactId>
-            <version>4.0.0</version>
-        </dependency>
     </dependencies>
 </project>
