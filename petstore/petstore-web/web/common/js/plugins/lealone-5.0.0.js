@@ -224,12 +224,17 @@ function initSockJS(sockjsUrl) {
                         isJson = false;
                     }
 
-                    var m = methodName;
-                    var route = serviceObject.routes != undefined ? serviceObject.routes[m] : undefined;
-                    //手动处理结果
-                    if(route != undefined && route.handler != undefined) {
-                        route.handler(result);
-                        return;
+                    let hooks = L.services[serviceName]["hooks"];
+                    if(hooks != undefined) { 
+                        let hook = hooks[methodName];
+                        if(hook != undefined) {
+                            let handleHook = hook["handle"];
+                            //手动处理结果
+                            if(handleHook != undefined) {
+                                handleHook.call(serviceObject, result);
+                                return;
+                            }
+                        }
                     }
                     //自动关联字段
                     if(isJson) {
@@ -249,13 +254,8 @@ function initSockJS(sockjsUrl) {
                             }
                         }
                     }
-                    if(route != undefined && route.redirect != undefined) {
-                        location.href = route.redirect;
-                    }
-
-                    let hooks = L.services[serviceName]["hooks"];
                     if(hooks != undefined) { 
-                        let hook = hooks[m];
+                        let hook = hooks[methodName];
                         if(hook != undefined) {
                             let afterHook = hook["after"];
                             if(afterHook != undefined) {
@@ -317,7 +317,8 @@ const Lealone = {
     params: {},
 
     put(key, value) {
-    }, 
+    },
+
     route(screen, page, params, methodName) {
         var state = JSON.stringify(this);
         if(params){
@@ -389,17 +390,17 @@ const Lealone = {
         };
         Vue.use(this);
         var app = {
-                options: options,
-                mount(appName) {
-                    this.options.el = appName;
-                    new Vue(this.options);
-                },
-                component(name, options) {
-                    Vue.component(name, options);
-                },
-                mixin(options) {
-                    Vue.mixin(options);
-                }
+            options: options,
+            mount(appName) {
+                this.options.el = appName;
+                new Vue(this.options);
+            },
+            component(name, options) {
+                Vue.component(name, options);
+            },
+            mixin(options) {
+                Vue.mixin(options);
+            }
         }
         return app;
     },
@@ -484,6 +485,7 @@ const Lealone = {
             }
         })
     },
+
     install(app, options) {
         var that = this;
         app.mixin({

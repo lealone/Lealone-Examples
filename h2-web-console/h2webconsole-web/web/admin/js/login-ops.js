@@ -11,23 +11,8 @@
             setting: "",
             settings: [],
             errorMessage: "",
-
-            routes: {
-                readTranslations: { handler: data=>{
-                    this.i18n = data.text;
-                    this.text = OpsCenter.i18n.parse(this.i18n);
-                }},
-                login: {  handler: data=>{
-                    localStorage.currentUser = data; 
-                    location.href = "/ops/index.html";
-                }},
-                settingSave: { redirect: "/admin/index.html" },
-                settingRemove: { redirect: "/admin/index.html" }
-            },
-            
             adminLoginOk: false,
             adminBack: ""
-            
         }
     },
     methods: {
@@ -46,3 +31,21 @@
         this.getSettings(); 
     }
 }
+const opsHooks = {
+    readTranslations: {
+        handle(data) {
+            this.i18n = data.text;
+            this.text = OpsCenter.i18n.parse(this.i18n);
+        }
+    },
+    login: {
+        handle(data) {
+            localStorage.currentUser = data; 
+            location.href = "/ops/index.html";
+        }
+    },
+    settingSave: { after() { location.href = "/admin/index.html" } },
+    settingRemove: { after() { location.href = "/admin/index.html" } }
+}
+
+OpsService.hooks = opsHooks;
