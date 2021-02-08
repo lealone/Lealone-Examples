@@ -67,7 +67,6 @@
 <template id="view-cart" v-insert="/home/template/shopping/view-cart.html"/>
 <template id="login" v-insert="/user/template/login.html"/>
 
-<script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>
 <script src="/home/js/view-cart.js"></script>
 <script src="/user/js/hooks.js"></script>
@@ -75,9 +74,7 @@
     const app = Lealone.createVueApp("home", "category-list"); 
 
     Lealone.component(app, 'login', 'login', UserService);
-    
-    //Lealone.component(app, 'category-list', {methodName: 'getAllCategories', init: true, fields: 'categories'}, StoreService);
-    Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
+    Lealone.component(app, 'category-list', {initMethod: 'getAllCategories'}, StoreService);
     Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
     Lealone.component(app, 'view-cart', viewCart, ViewCartService); 
 

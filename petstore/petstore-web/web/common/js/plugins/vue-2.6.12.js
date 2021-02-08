@@ -4064,7 +4064,17 @@
       };
     } else {
       updateComponent = function () {
-        vm._update(vm._render(), hydrating);
+        if(typeof vm._beforeRender == 'function') {
+          vm._beforeRender(result=>{
+            for(var key in result) {
+              vm[key] = result[key];
+            }
+            vm._update(vm._render(), hydrating);
+          });
+          vm._update(vm._c('div',{}), hydrating);
+        } else {
+          vm._update(vm._render(), hydrating);
+        }
       };
     }
 
@@ -4634,17 +4644,17 @@
 
   var componentInstances = [];
   function findComponentInstance (name) {
-	 return componentInstances[name];
+     return componentInstances[name];
   }
   function getComponentInstance (name) {
-	if(componentInstances[name])
-		return componentInstances[name];
-	var options= this.$options.components[name].options;
+    if(componentInstances[name])
+        return componentInstances[name];
+    var options= this.$options.components[name].options;
     var instance = {$options: options};
     initState(instance);
     componentInstances[name] = instance;
-	instance.external = true;
-	return instance;
+    instance.external = true;
+    return instance;
   }
 
   function initState (vm) {
@@ -5034,12 +5044,12 @@
       initProvide(vm); // resolve provide after data/props
       callHook(vm, 'created');
 
-	  if(vm.$options._componentTag) {
-		componentInstances[vm.$options._componentTag] = vm;
-	  } else {
-		vm.getComponentInstance = getComponentInstance; 
-		vm.findComponentInstance = findComponentInstance;
-	  }
+      if(vm.$options._componentTag) {
+        componentInstances[vm.$options._componentTag] = vm;
+      } else {
+        vm.getComponentInstance = getComponentInstance; 
+        vm.findComponentInstance = findComponentInstance;
+      }
 
       /* istanbul ignore if */
       if (config.performance && mark) {
@@ -5116,8 +5126,8 @@
       warn('Vue is a constructor and should be called with the `new` keyword');
     }
     this._init(options);
-	this.getComponentInstance = getComponentInstance;
-	this.findComponentInstance = findComponentInstance;
+    this.getComponentInstance = getComponentInstance;
+    this.findComponentInstance = findComponentInstance;
   }
 
   initMixin(Vue);

@@ -410,27 +410,20 @@ const Lealone = {
         var services = [];
         var methodName = "";
         var init = false;
-        var fields = [];
         var startIndex = 2;
         if(typeof method == 'string') { //单一方法
             methodName = method;
             startIndex = 3;
         }
-        else if(method != undefined && method.methodName != undefined) { //通过配置指定方法名
-            methodName = method.methodName;
-            if(method.init != undefined) {
-                init = method.init;
-            }
-            if(method.fields != undefined) {
-                fields = method.fields.split(",");
-            } 
+        else if(method != undefined && method.initMethod != undefined) { //通过配置指定方法名
+            methodName = method.initMethod;
+            init = true;
             startIndex = 3;
         } else {
             methodName = "*"; //默认是所有方法
         }
         services.push(methodName);
         services.push(init);
-        services.push(fields);
 
         var len = arguments.length;
         for(var i = startIndex; i < len; i++){
@@ -450,7 +443,7 @@ const Lealone = {
             beforeMount() {
                 if(this._beforeMount_) return;
                 var len = this.services.length;
-                for(var i = 3; i < len; i++){
+                for(var i = 2; i < len; i++){
                     var service = this.services[i];
                     for(var m in service.methods) {
                         if(typeof service[m] == 'function' && (this.services[0] === "*" || m == this.services[0])) {
@@ -467,17 +460,14 @@ const Lealone = {
                                     this.$data[methodInfo[j]] = "";
                                 this[methodInfo[j]] = "";
                             }
-                            var fields = this.services[2];
-                            for(var j = 0; j < fields.length; j++){
-                                if(this.$data)
-                                    this.$data[fields[j]] = {};
-                                this[fields[j]] = {};
-                            }
                             if(this.$data)
                                 this.$data.errorMessage = "";
                             this.errorMessage = "";
-                            if(this.services[1])
-                                method.call(this);
+                            if(this.services[1]) {
+                                this._beforeRender = function(cb) {
+                                    method.call(that, cb); 
+                                }
+                            }
                         }
                     }
                 }

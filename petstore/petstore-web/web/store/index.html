@@ -41,13 +41,12 @@
 <template id="item-list" v-insert="/store/template/item-list.html"/>
 <template id="add-product" v-insert="/store/template/add-product.html"/> 
 
-<script src="/store/js/category-list.js"></script>
 <script src="/store/js/item-list.js"></script>
 <script src="/store/js/add-product.js"></script>
 <script>
     const app = Lealone.createVueApp("store", "category-list"); //打开store子应用时，默认显示category-list页
 
-    Lealone.component(app, 'category-list', "getAllCategories", storeCategoryList, StoreService);
+    Lealone.component(app, 'category-list', {initMethod: 'getAllCategories'}, StoreService);
     Lealone.component(app, 'item-list', 'getAllProductItems', storeItemlist, StoreService);
     Lealone.component(app, 'add-product', storeAddProduct); 
 
