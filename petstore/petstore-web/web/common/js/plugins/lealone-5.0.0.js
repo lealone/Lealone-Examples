@@ -80,7 +80,17 @@ L.call4 = function(serviceContext, service, apiName, arguments) {
     var length = columnCount > argumentCount ? argumentCount : columnCount;
     var columnIndex = 0;
     msg += ";[";
-    if(argumentCount > 0) {
+    if(serviceContext.gid == lealone.page && apiName == lealone.methodName) {
+        length = lealone.params.length;
+        for(var i = 0; i < length; i++) { 
+            if(i != 0) {
+                msg += ",";
+            }
+            msg += JSON.stringify(lealone.params[i]);
+            columnIndex++;
+        }
+    }
+    else if(argumentCount > 0) {
         for(var i = 0; i < length; i++) { 
             if(i != 0) {
                 msg += ",";
@@ -315,6 +325,7 @@ const Lealone = {
     screen: "" ,
     page: "", 
     params: {},
+    methodName: "",
 
     put(key, value) {
     },
@@ -324,6 +335,7 @@ const Lealone = {
         if(params){
             this.params = params;
         }
+        this.methodName = methodName;
         // 当前page没有变化，但是参数可能变了，所以手工调用
         if(this.screen == screen && this.page == page) {
             var instance = this.get(page);
@@ -389,14 +401,15 @@ const Lealone = {
             }
         };
         Vue.use(this);
+        let lealone = this;
         var app = {
             options: options,
             mount(appName) {
                 this.options.el = appName;
                 new Vue(this.options);
             },
-            component(name, options) {
-                Vue.component(name, options);
+            component(name, service, method) {
+                lealone.component(name, service, method);
             },
             mixin(options) {
                 Vue.mixin(options);
@@ -405,34 +418,38 @@ const Lealone = {
         return app;
     },
 
-    component(app, name, method) {
+    component(name, service, method) {
         var mixins = [];
         var services = [];
-        var methodName = "";
-        var init = false;
-        var startIndex = 2;
+        var bindMethod = "";
+        var initMethod = "";
         if(typeof method == 'string') { //单一方法
-            methodName = method;
-            startIndex = 3;
+            bindMethod = method;
         }
-        else if(method != undefined && method.initMethod != undefined) { //通过配置指定方法名
-            methodName = method.initMethod;
-            init = true;
-            startIndex = 3;
+        else if(method != undefined && 
+                (method.initMethod != undefined || method.bindMethod != undefined)) { //通过配置指定方法名
+            bindMethod = method.bindMethod;
+            initMethod = method.initMethod;
         } else {
-            methodName = "*"; //默认是所有方法
+            bindMethod = "*"; //默认是所有方法
         }
-        services.push(methodName);
-        services.push(init);
-
-        var len = arguments.length;
-        for(var i = startIndex; i < len; i++){
-            if(arguments[i].serviceName == undefined)
-                mixins.push(arguments[i]);
+        services.push(bindMethod);
+        services.push(initMethod);
+        
+        var serviceArray = [];
+        if(Array.isArray(service)) {
+            serviceArray = service;
+        } else {
+            serviceArray.push(service);
+        }
+        var len = serviceArray.length;
+        for(var i = 0; i < len; i++){
+            if(serviceArray[i].serviceName == undefined)
+                mixins.push(serviceArray[i]);
             else
-                services.push(arguments[i]);
+                services.push(serviceArray[i]);
         }
-        app.component(name, {
+        Vue.component(name, {
             data() { return { services: services } },
             mixins: mixins, 
             props: {
@@ -446,7 +463,8 @@ const Lealone = {
                 for(var i = 2; i < len; i++){
                     var service = this.services[i];
                     for(var m in service.methods) {
-                        if(typeof service[m] == 'function' && (this.services[0] === "*" || m == this.services[0])) {
+                        if(typeof service[m] == 'function' && 
+                                (this.services[0] === "*" || m == this.services[0] || m == this.services[1])) {
                             let method = service[m];
                             let that = this;
                             var fun = function() {

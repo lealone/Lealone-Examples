@@ -24,12 +24,8 @@
         }
     },
     update: {
-        before() {
-            this.account.user_id = lealone.currentUser;
-        },
-        after() {
-            lealone.route('user', 'account');
-        }
+        before() { this.account.user_id = lealone.currentUser },
+        after() { lealone.route('user', 'account') }
     },
     login: {
         after(data) {
@@ -37,9 +33,7 @@
             localStorage.currentUser = data.USER_ID;
             location.href = "/";
         },
-        error(msg) {
-            this.errorMessage = "用户名或密码不正确,请重新输入";
-        }
+        error(msg) { this.errorMessage = "用户名或密码不正确,请重新输入" }
     }
 }
 

@@ -40,10 +40,10 @@
 <script>
     const app = Lealone.createVueApp("user", "login"); //打开user子应用时，默认显示login页
     
-    Lealone.component(app, 'login', 'login', UserService);
-    Lealone.component(app, 'account', {methodName: 'getUser', init: true, fields: 'account,user'}, UserService);
-    Lealone.component(app, 'register', 'register', UserService);
-    Lealone.component(app, 'register-account', 'update', UserService);
+    app.component('login', UserService, 'login');
+    app.component('account', UserService, {initMethod: 'getUser'});
+    app.component('register', UserService, 'register');
+    app.component('register-account', UserService, 'update');
 
     mount(app, '#userApp')
 </script>

@@ -34,8 +34,6 @@
         }
     },
     mounted() {
-        var categoryid = lealone.params.categoryid;
-        if(categoryid)
-            this.product.categoryid = categoryid;
+        this.product.categoryid = lealone.params.categoryid;
     }
 }
