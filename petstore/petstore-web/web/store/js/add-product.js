@@ -18,19 +18,28 @@
             var formData = new FormData();
             formData.append('product', JSON.stringify(this.product));
             formData.append('logo_file', this.file);
-            var config = {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            };
-            axios.post(PetStore.StoreService + '/add_product', formData, config)
+//不需要手工增加Content-Type头，axios会自动删除
+//            var config = {
+//                headers: {
+//                    'Content-Type': 'multipart/form-data'
+//                }
+//            };
+//            axios.post(PetStore.StoreService + '/add_product', formData, config)
+            const CancelToken = axios.CancelToken;
+            const source = CancelToken.source();
+            axios.post(PetStore.StoreService + '/add_product', formData, { cancelToken: source.token })
             .then(response => {
                 lealone.route("store", "category-list");
             })
             .catch(error => {
-                console.log(error);
-                this.errorMessage = "添加产品失败";
+                if (axios.isCancel(error)) {
+                    console.log('Request canceled', error.message)
+                } else {
+                    console.log(error);
+                    this.errorMessage = "添加产品失败";
+                }
             });
+            //source.cancel("请求已取消");
         }
     },
     mounted() {
