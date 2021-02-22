@@ -2,8 +2,8 @@
 <html>
 
 <head>
-    <script src="sockjs.min-1.1.2.js"></script>
-    <script src="lealone-5.0.0.js"></script>
+    <script src="axios.min-0.21.1.js"></script>
+    <script src="lealone-rpc-5.0.0.js"></script>
     <script src="vue.min-2.3.3.js"></script>
 </head>
 
@@ -25,12 +25,11 @@
         },
         methods: {
             sayHello: function() {
-                var that = this;
                 //获得一个服务代理
                 var s = lealone.getService("hello_service");
                 //调用服务
-                s.sayHello(this.name, function(message) {
-                    that.message = message;
+                s.sayHello(this.name, message => {
+                    this.message = message;
                 });
             }
         }
