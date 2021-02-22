@@ -18,13 +18,13 @@
             var formData = new FormData();
             formData.append('product', JSON.stringify(this.product));
             formData.append('logo_file', this.file);
-//不需要手工增加Content-Type头，axios会自动删除
-//            var config = {
-//                headers: {
-//                    'Content-Type': 'multipart/form-data'
-//                }
-//            };
-//            axios.post(PetStore.StoreService + '/add_product', formData, config)
+            // 不需要手工增加Content-Type头，axios会自动删除
+            // var config = {
+            // headers: {
+            // 'Content-Type': 'multipart/form-data'
+            // }
+            // };
+            // axios.post(PetStore.StoreService + '/add_product', formData, config)
             const CancelToken = axios.CancelToken;
             const source = CancelToken.source();
             axios.post(PetStore.StoreService + '/add_product', formData, { cancelToken: source.token })
