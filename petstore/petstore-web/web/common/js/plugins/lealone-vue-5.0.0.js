@@ -93,7 +93,7 @@
         return app;
     },
 
-    component(name, service, method) {
+    component(name, service, method) { //service和method有可能都是undefined
         var mixins = [];
         var services = [];
         var bindMethod = "";
@@ -115,7 +115,8 @@
         if(Array.isArray(service)) {
             serviceArray = service;
         } else {
-            serviceArray.push(service);
+            if(service != undefined)
+                serviceArray.push(service);
         }
         var len = serviceArray.length;
         for(var i = 0; i < len; i++){
