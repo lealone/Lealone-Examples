@@ -33,8 +33,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public String logout(String userId) {
+        return "ok";
+    }
+
+    @Override
     public void register(String userId, String password, String password2) {
-         new User().userId.set(userId).password.set(password).insert(); 
+        new User().userId.set(userId).password.set(password).insert();
     }
 
     @Override

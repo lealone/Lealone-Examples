@@ -19,12 +19,13 @@ package org.lealone.examples.petstore.web;
 
 import java.io.File;
 import java.util.Map;
-import java.util.UUID;
 
 import org.lealone.server.http.HttpRouterFactory;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -43,22 +44,27 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
 
     private void setSessionHandler(Vertx vertx, Router router) {
         router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
-        // 只拦截logout，login直接转到UserServiceImpl.login处理了
-        // 如果想处理UserServiceImpl.login的结果，可以像下面的sendHttpServiceResponse方法那样做
-        router.route("/user/logout").handler(routingContext -> {
-            // routingContext.session().remove("currentUser");
-            // routingContext.session().remove("cart_id");
-            routingContext.redirect("/home/index.html");
-        });
     }
 
     @Override
     protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
             Buffer result) {
-        // if ("user_service".equalsIgnoreCase(serviceName) && "login".equalsIgnoreCase(methodName)) {
-        // JsonObject receiveJson = new JsonObject(result);
-        // routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
-        // }
+        if ("user_service".equalsIgnoreCase(serviceName)) {
+            if ("login".equalsIgnoreCase(methodName)) {
+                JsonObject receiveJson;
+                try {
+                    JsonArray a = new JsonArray(result);
+                    receiveJson = new JsonObject(a.getString(2));
+                } catch (Throwable t) {
+                    receiveJson = new JsonObject(result);
+                }
+                routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
+                routingContext.session().put("cart_id", receiveJson.getValue("CART_ID"));
+            } else if ("logout".equalsIgnoreCase(methodName)) {
+                routingContext.session().remove("currentUser");
+                routingContext.session().remove("cart_id");
+            }
+        }
         super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
     }
 
@@ -85,11 +91,9 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
         // 提取购物车ID用于调用后续的购物车服务
         router.route("/service/view_cart_service/*").handler(routingContext -> {
             String cartId = routingContext.session().get("cart_id");
-            if (cartId == null) {
-                cartId = "cart-" + UUID.randomUUID();
-                routingContext.session().put("cart_id", cartId);
+            if (cartId != null) {
+                routingContext.request().params().set("cart_id", cartId);
             }
-            routingContext.request().params().set("cart_id", cartId);
             routingContext.next();
         });
 

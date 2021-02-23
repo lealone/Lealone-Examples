@@ -2,18 +2,15 @@
 const L = {
     sockjsUrl: "/_lealone_sockjs_",
     serviceUrl: "/service",
-    services: [],
     serviceNames: [],
     serviceProxyObjects: [],
+    cache: [],
 
     getService(serviceName) {
         if(this.serviceProxyObjects[serviceName] != undefined)
             return this.serviceProxyObjects[serviceName];
-        var object = {
-            serviceName: serviceName
-        }
+        var object = { serviceName: serviceName };
         this.serviceNames.push(serviceName);
-        this.services[serviceName] = object;
         this.serviceProxyObjects[serviceName] = this.getProxyObject(object);
         return this.serviceProxyObjects[serviceName];
     },
@@ -37,19 +34,28 @@ const L = {
         this.call(object, method, ...args);
     },
 
+    toUnderscore(str) {
+        return str.replace(/([A-Z])/g, function(v) { return '_' + v.toLowerCase(); });
+    },
+ 
+    getKey(serviceName, methodName) {
+        return serviceName + "." + this.toUnderscore(methodName);
+    },
+
     call(object, methodName) {
         var methodArgs = [];
-        var serviceName = object.serviceName;
+        var key = this.getKey(object.serviceName, methodName);
+        this.cache[key] = {};
         var length = arguments.length;
         if(typeof arguments[length - 1] == 'function') {
-            this.services[serviceName]["callback"] = arguments[length - 1];
+            this.cache[key]["callback"] = arguments[length - 1];
             length--;
         }
         if(length > 2) {
             for(var j = 2; j < length; j++) {
                 if(arguments[j].onServiceException) {
-                    this.services[serviceName]["onServiceException"] = arguments[j].onServiceException;
-                    this.services[serviceName]["serviceObject"] = arguments[j];
+                    this.cache[key]["onServiceException"] = arguments[j].onServiceException;
+                    this.cache[key]["serviceObject"] = arguments[j];
                     continue;
                 }
                 methodArgs.push(arguments[j]);
@@ -72,14 +78,15 @@ const L = {
         }
 
         var methodArgs = [];
-        var serviceName = service.serviceName;
-        this.services[serviceName]["onServiceException"] = serviceContext.onServiceException;
-        this.services[serviceName]["serviceObject"] = serviceContext;
-        this.services[serviceName]["hooks"] = service.hooks;
+        var key = this.getKey(service.serviceName, methodName);
+        this.cache[key] = {};
+        this.cache[key]["onServiceException"] = serviceContext.onServiceException;
+        this.cache[key]["serviceObject"] = serviceContext;
+        this.cache[key]["hooks"] = service.hooks;
 
         var argumentCount = arguments.length;
         if(typeof arguments[argumentCount - 1] == 'function') {
-            this.services[serviceName]["callback"] = arguments[argumentCount - 1];
+            this.cache[key]["callback"] = arguments[argumentCount - 1];
             argumentCount--;
         }
         // 过滤掉事件对象
@@ -116,7 +123,7 @@ const L = {
     },
 
     callService(serviceContext, serviceName, methodName, methodArgs) {
-        var service = this.services[serviceName];
+        var service = this.serviceProxyObjects[serviceName];
         this.call4(serviceContext, service, methodName, methodArgs);
     },
 
@@ -176,14 +183,14 @@ const L = {
 
     sendRequest(serviceName, methodName, methodArgs) {
         if(window.axios != undefined) {
-            var underscoreMethodName = methodName.replace(/([A-Z])/, function(v) { return '_' + v.toLowerCase(); });
+            var underscoreMethodName = this.toUnderscore(methodName);
             var url = this.serviceUrl + "/" + serviceName + "/" + underscoreMethodName;
             axios.post(url, { methodArgs : JSON.stringify(methodArgs) })
             .then(response => {
                 this.handleResponse(response);
             })
             .catch(error => {
-                this.handleError(serviceName, error.message);
+                this.handleError(serviceName, methodName, error.message);
             });
         } else if(window.SockJS != undefined) {
             if(!this.sockjs) {
@@ -200,7 +207,7 @@ const L = {
                 this.penddingMsgs.push(msg);
             }
         } else {
-            handleError(serviceName, "axios or sockjs not found");
+            this.handleError(serviceName, methodName, "axios or sockjs not found");
         }
     },
 
@@ -214,7 +221,7 @@ const L = {
         var serviceAndMethodName = a[1].split(".");
         var serviceName = serviceAndMethodName[0];
         var methodName = serviceAndMethodName[1];
-        var service = this.services[serviceName];
+        var service = this.cache[a[1]];
         if(!service) {
             console.log("not found service name: "+ serviceName);
             return;
@@ -283,18 +290,19 @@ const L = {
                 break;
             case 3: // error
                 var msg = "failed to call service: " + a[1] + ", backend error: " + result;
-                handleError(serviceName, msg);
+                this.handleError(serviceName, methodName, msg);
                 break;
             default:
                 var msg = "unknown response type: " + type + ", response data: " + response.data;
-                handleError(serviceName, msg);
+                this.handleError(serviceName, methodName, msg);
         }
     },
 
-    handleError(serviceName, msg) {
-        var service = this.services[serviceName];
+    handleError(serviceName, methodName, msg) {
+        var key = this.getKey(serviceName, methodName);
+        var service = this.cache[key];
         if(!service) {
-            console.log(msg);
+            console.error(msg);
         } else {
             if(service["onServiceException"]) 
                 service["onServiceException"](msg);
@@ -310,7 +318,7 @@ const L = {
                         }
                     }
                 } 
-                console.log(msg)
+                console.error(msg)
             }
         }
     },

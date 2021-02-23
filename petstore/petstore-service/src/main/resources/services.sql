@@ -7,6 +7,7 @@ drop service if exists user_service;
 -- 创建服务: user_service，会生成一个对应的UserService接口
 create service if not exists user_service (
   login(user_id varchar, password varchar) user,
+  logout(user_id varchar) varchar,
   register(user_id varchar, password varchar, password2 varchar) void,
   update(account Account) void,
   get_user(user_id varchar) varchar

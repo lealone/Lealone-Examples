@@ -14,16 +14,14 @@ const mount = function(app, appName) {
     app.mixin({
         methods: {
             logout() {
-                localStorage.removeItem("currentUser");
-                axios.get("/user/logout")
-                .then(response => {
-                    location.href = "/";
+                UserService.logout(localStorage.currentUser, () => {
+                    localStorage.removeItem("currentUser");
+                    location.href = "/home/index.html";
                 });
             }
         }
     });
-    Lealone.loadServices(services => {
-        // console.log(services);
+    Lealone.loadServices(() => {
         app.mount(appName)
     });
 }

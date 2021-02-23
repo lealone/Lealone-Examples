@@ -1,7 +1,7 @@
 ﻿const viewCart = { 
     data() {
         return {
-            cartId: localStorage.cartId ? localStorage.cartId : "test" // TODO
+            cartId: localStorage.currentUser ? localStorage.currentUser : ""
         }
     }
 }
