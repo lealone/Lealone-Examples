@@ -23,49 +23,16 @@ import java.util.Map;
 import org.lealone.server.http.HttpRouterFactory;
 
 import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.JsonArray;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
-import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
-import io.vertx.ext.web.handler.SessionHandler;
-import io.vertx.ext.web.sstore.SessionStore;
 
 public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
         // route的顺序很重要，所以下面三个调用不能乱
-        setSessionHandler(vertx, router);
         setRedirectHandler(router);
         setDevelopmentEnvironmentRouter(config, vertx, router);
-    }
-
-    private void setSessionHandler(Vertx vertx, Router router) {
-        router.route().handler(SessionHandler.create(SessionStore.create(vertx)));
-    }
-
-    @Override
-    protected void sendHttpServiceResponse(RoutingContext routingContext, String serviceName, String methodName,
-            Buffer result) {
-        if ("user_service".equalsIgnoreCase(serviceName)) {
-            if ("login".equalsIgnoreCase(methodName)) {
-                JsonObject receiveJson;
-                try {
-                    JsonArray a = new JsonArray(result);
-                    receiveJson = new JsonObject(a.getString(2));
-                } catch (Throwable t) {
-                    receiveJson = new JsonObject(result);
-                }
-                routingContext.session().put("currentUser", receiveJson.getValue("USER_ID"));
-                routingContext.session().put("cart_id", receiveJson.getValue("CART_ID"));
-            } else if ("logout".equalsIgnoreCase(methodName)) {
-                routingContext.session().remove("currentUser");
-                routingContext.session().remove("cart_id");
-            }
-        }
-        super.sendHttpServiceResponse(routingContext, serviceName, methodName, result);
     }
 
     private void setRedirectHandler(Router router) {
@@ -87,16 +54,6 @@ public class PetStoreRouterFactory extends HttpRouterFactory {
     @Override
     protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
         setFileUploadHandler(config, vertx, router);
-
-        // 提取购物车ID用于调用后续的购物车服务
-        router.route("/service/view_cart_service/*").handler(routingContext -> {
-            String cartId = routingContext.session().get("cart_id");
-            if (cartId != null) {
-                routingContext.request().params().set("cart_id", cartId);
-            }
-            routingContext.next();
-        });
-
         super.setHttpServiceHandler(config, vertx, router);
     }
 
