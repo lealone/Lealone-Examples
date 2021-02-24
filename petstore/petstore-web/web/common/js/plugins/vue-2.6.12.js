@@ -4081,8 +4081,12 @@
           vm._update(vm._c('div',{}), hydrating);
           vm._beforeRender(result=>{
             for(var key in result) {
-              vm[key] = result[key];
+              //vm[key] = result[key];
+              proxy(vm, "_data", key);
+              vm._data[key] = result[key];
             }
+            vm._data.__ob__ = null;
+            observe(vm._data, true);
             var updateComponent2 = function () {
               vm._update(vm._render(), hydrating);
             }
@@ -4094,7 +4098,7 @@
       };
     }
 
-	createWatcher(vm, updateComponent);
+    createWatcher(vm, updateComponent);
     hydrating = false;
 
     // manually mounted instance, call mounted on self

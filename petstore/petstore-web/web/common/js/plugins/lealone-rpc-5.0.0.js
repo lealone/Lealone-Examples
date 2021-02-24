@@ -37,7 +37,13 @@ const L = {
     toUnderscore(str) {
         return str.replace(/([A-Z])/g, function(v) { return '_' + v.toLowerCase(); });
     },
- 
+
+    toCamel(str) {
+        return str.replace(/\_(\w)/g, function(all, letter){
+            return letter.toUpperCase();
+        });
+    },
+    
     getKey(serviceName, methodName) {
         return serviceName + "." + this.toUnderscore(methodName);
     },
@@ -66,7 +72,7 @@ const L = {
 
     call4(serviceContext, service, methodName, arguments) {
         if(service.hooks != undefined) { 
-            let hook = service.hooks[methodName];
+            let hook = service.hooks[this.toCamel(methodName)];
             if(hook != undefined) {
                 let beforeHook = hook["before"];
                 if(beforeHook != undefined) {
@@ -249,7 +255,7 @@ const L = {
 
                         let hooks = service["hooks"];
                         if(hooks != undefined) { 
-                            let hook = hooks[methodName];
+                            let hook = hooks[this.toCamel(methodName)];
                             if(hook != undefined) {
                                 let handleHook = hook["handle"];
                                 //手动处理结果
@@ -275,7 +281,7 @@ const L = {
                             }
                         }
                         if(hooks != undefined) { 
-                            let hook = hooks[methodName];
+                            let hook = hooks[this.toCamel(methodName)];
                             if(hook != undefined) {
                                 let afterHook = hook["after"];
                                 if(afterHook != undefined) {
@@ -309,7 +315,7 @@ const L = {
             else {
                 let hooks = service["hooks"];
                 if(hooks != undefined) { 
-                    let hook = hooks[methodName];
+                    let hook = hooks[this.toCamel(methodName)];
                     if(hook != undefined) {
                         let errorHook = hook["error"];
                         if(errorHook != undefined) {
