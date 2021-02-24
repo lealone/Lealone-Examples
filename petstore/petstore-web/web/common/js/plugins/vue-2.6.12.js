@@ -4043,6 +4043,19 @@
     }
     callHook(vm, 'beforeMount');
 
+    var createWatcher = function (vm, updateComponent) {
+      // we set this to vm._watcher inside the watcher's constructor
+      // since the watcher's initial patch may call $forceUpdate (e.g. inside child
+      // component's mounted hook), which relies on vm._watcher being already defined
+      new Watcher(vm, updateComponent, noop, {
+        before: function before () {
+          if (vm._isMounted && !vm._isDestroyed) {
+            callHook(vm, 'beforeUpdate');
+          }
+        }
+      }, true /* isRenderWatcher */);
+    };
+
     var updateComponent;
     /* istanbul ignore if */
     if (config.performance && mark) {
@@ -4064,30 +4077,24 @@
       };
     } else {
       updateComponent = function () {
-        if(typeof vm._beforeRender == 'function') {
+        if(typeof vm._beforeRender == 'function' && vm.gid == lealone.page) {
+          vm._update(vm._c('div',{}), hydrating);
           vm._beforeRender(result=>{
             for(var key in result) {
               vm[key] = result[key];
             }
-            vm._update(vm._render(), hydrating);
+            var updateComponent2 = function () {
+              vm._update(vm._render(), hydrating);
+            }
+            createWatcher(vm, updateComponent2);
           });
-          vm._update(vm._c('div',{}), hydrating);
         } else {
           vm._update(vm._render(), hydrating);
         }
       };
     }
 
-    // we set this to vm._watcher inside the watcher's constructor
-    // since the watcher's initial patch may call $forceUpdate (e.g. inside child
-    // component's mounted hook), which relies on vm._watcher being already defined
-    new Watcher(vm, updateComponent, noop, {
-      before: function before () {
-        if (vm._isMounted && !vm._isDestroyed) {
-          callHook(vm, 'beforeUpdate');
-        }
-      }
-    }, true /* isRenderWatcher */);
+	createWatcher(vm, updateComponent);
     hydrating = false;
 
     // manually mounted instance, call mounted on self

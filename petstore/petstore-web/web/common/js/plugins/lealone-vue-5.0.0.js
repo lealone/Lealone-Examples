@@ -150,9 +150,10 @@
                             
                             var methodInfo = service.methodInfo[m];
                             for(var j = 0; j < methodInfo.length; j++){
-                                if(this.$data)
+                                if(this.$data && !this.$data[methodInfo[j]])
                                     this.$data[methodInfo[j]] = "";
-                                this[methodInfo[j]] = "";
+                                if(!this[methodInfo[j]])
+                                    this[methodInfo[j]] = "";
                             }
                             if(this.$data)
                                 this.$data.errorMessage = "";
@@ -171,14 +172,14 @@
     },
 
     install(app, options) {
-        var that = this;
+        var thisLealone = this;
         app.mixin({
-            data() { return { lealone: that } },
+            data() { return { lealone: thisLealone } },
             beforeMount() {
                 if(this.getComponentInstance && this.lealone.get == undefined) {
-                    let that = this;
+                    let thisVm = this;
                     this.lealone.get = function() {
-                       var instance = that.getComponentInstance.apply(that, arguments);
+                       var instance = thisVm.getComponentInstance.apply(thisVm, arguments);
                        if(instance.external) {
                            for(var m in instance.$options.beforeMount) {
                                instance.$options.beforeMount[m].apply(instance);
@@ -187,7 +188,7 @@
                        return instance;
                     }
                     this.lealone.find = function() {
-                        return that.findComponentInstance.apply(that, arguments);
+                        return thisVm.findComponentInstance.apply(thisVm, arguments);
                     }
                 }
                 window.lealone = this.lealone; // 这样组件在内部使用this.lealone和lealone都是一样的

@@ -7,9 +7,6 @@
                 return false;
             }
             var cart = lealone.get('view-cart');
-            if(cart.cartId != localStorage.currentUser) {
-                cart.cartId = localStorage.currentUser;
-            }
             cart.addItem(cart.cartId, itemId, data=>{
                 this.itemAdded = true;
             });
