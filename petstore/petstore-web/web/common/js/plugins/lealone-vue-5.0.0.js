@@ -81,7 +81,9 @@
             options: options,
             mount(appName) {
                 this.options.el = appName;
-                new Vue(this.options);
+                Lealone.loadServices(() => {
+                    new Vue(this.options);
+                });
             },
             component(name, service, method) {
                 lealone.component(name, service, method);

@@ -159,7 +159,6 @@ const L = {
                 for(var m in service.methods) {
                     service[m] = service.methods[m];
                 }
-                // console.log(parameterNames);
             }
             if(callback != undefined)
                 callback(services);

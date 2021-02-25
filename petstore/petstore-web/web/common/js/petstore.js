@@ -21,7 +21,5 @@ const mount = function(app, appName) {
             }
         }
     });
-    Lealone.loadServices(() => {
-        app.mount(appName)
-    });
+    app.mount(appName);
 }
