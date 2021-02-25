@@ -45,11 +45,3 @@ package @packageName
 implement by 'org.lealone.examples.petstore.service.ViewCartServiceImpl' -- ViewCartService接口的默认实现类
 generate code @srcPath;
 
-drop service if exists system_service;
-
-create service if not exists system_service (
-  load_services(service_names varchar) varchar
-)
-package @packageName
-implement by 'org.lealone.examples.petstore.service.SystemServiceImpl'
-generate code @srcPath;

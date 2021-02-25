@@ -134,7 +134,8 @@ const L = {
     },
 
     loadServices(callback) {
-        var systemService = this.getService("system_service");
+        var object = { serviceName: "lealone_system_service" };
+        var systemService = this.getProxyObject(object);
         systemService.loadServices(this.serviceNames.join(","), services => {
             for(var i = 0; i < services.length; i++) {
                 var serviceInfo = services[i];
