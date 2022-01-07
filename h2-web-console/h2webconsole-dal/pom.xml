@@ -30,13 +30,6 @@
     <version>1.0.0</version>
 
     <dependencies>
-        <!-- 版本太老了-->
-        <!-- <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
-        </dependency>-->
-        <!-- 这个是我编译出来的jar包 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
