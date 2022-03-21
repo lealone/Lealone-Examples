@@ -28,9 +28,11 @@ public class StorageEngineDemo {
     public static void main(String[] args) {
         Storage storage = getStorage("aose");
         testMap(storage);
+        testAsyncMap(storage);
 
         storage = getStorage("memory");
         testMap(storage);
+        testAsyncMap(storage);
     }
 
     private static void testMap(Storage storage) {
@@ -39,6 +41,24 @@ public class StorageEngineDemo {
         map.put("b", 200);
 
         Integer v = map.get("a");
+        System.out.println(v);
+
+        map.cursor().forEachRemaining(k -> {
+            System.out.println(map.get(k));
+        });
+
+        map.save();
+    }
+
+    private static void testAsyncMap(Storage storage) {
+        StorageMap<String, Integer> map = storage.openMap("test", null);
+        map.put("c", 300, ac -> {
+            System.out.println("Async old value: " + ac.getResult());
+        });
+        map.put("d", 400, ac -> {
+            System.out.println("Async old value: " + ac.getResult());
+        });
+        Integer v = map.get("c");
         System.out.println(v);
 
         map.cursor().forEachRemaining(k -> {
