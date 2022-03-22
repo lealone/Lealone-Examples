@@ -25,14 +25,14 @@ import org.lealone.server.http.HttpServer;
 
 public class RpcDemo {
 
-    // 通过JDBC访问的数据库的URL
+    // 通过 JDBC 访问的数据库的 URL
     static String jdbcUrl = "jdbc:lealone:embed:test";
 
     public static void main(String[] args) throws Exception {
         // 静态资源文件的根目录，如果有多个可以用逗号分隔
         String webRoot = args.length == 1 ? args[0] : "./web";
 
-        // 启动HttpServer，请在浏览器中打开下面这个URL进行测试:
+        // 启动 HttpServer，请在浏览器中打开下面的 URL 进行测试:
         // http://localhost:8080/hello.html
         HttpServer server = new HttpServer();
         server.setJdbcUrl(jdbcUrl);
@@ -42,7 +42,7 @@ public class RpcDemo {
         createService();
     }
 
-    // 执行服务创建脚本，同时自动生成对应的服务接口代码
+    // 执行 services.sql 脚本，创建服务
     public static void createService() throws Exception {
         System.setProperty("lealone.jdbc.url", jdbcUrl);
         try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
