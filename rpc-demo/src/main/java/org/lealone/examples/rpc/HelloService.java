@@ -17,10 +17,7 @@
  */
 package org.lealone.examples.rpc;
 
-import org.lealone.examples.rpc.generated.HelloService;
-
-public class HelloServiceImpl implements HelloService {
-    @Override
+public class HelloService {
     public String sayHello(String name) {
         return "Hello " + name;
     }

@@ -40,7 +40,7 @@ public class PolyglotDemo {
         createService();
     }
 
-    // 执行服务创建脚本
+    // 执行 services.sql 脚本，创建服务
     public static void createService() throws Exception {
         System.setProperty("lealone.jdbc.url", jdbcUrl);
         try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
