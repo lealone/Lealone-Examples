@@ -34,7 +34,6 @@ public class PolyglotDemo {
         // http://localhost:8080/service/time_service/get_current_time
         HttpServer server = new HttpServer();
         server.setJdbcUrl(jdbcUrl);
-        server.setWebRoot("./");
         server.start();
 
         createService();
@@ -42,7 +41,6 @@ public class PolyglotDemo {
 
     // 执行 services.sql 脚本，创建服务
     public static void createService() throws Exception {
-        System.setProperty("lealone.jdbc.url", jdbcUrl);
         try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/services.sql'");
         }

@@ -44,7 +44,6 @@ public class RpcDemo {
 
     // 执行 services.sql 脚本，创建服务
     public static void createService() throws Exception {
-        System.setProperty("lealone.jdbc.url", jdbcUrl);
         try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/services.sql'");
         }
