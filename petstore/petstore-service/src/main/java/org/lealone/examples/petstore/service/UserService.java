@@ -19,12 +19,10 @@ package org.lealone.examples.petstore.service;
 
 import org.lealone.examples.petstore.dal.model.Account;
 import org.lealone.examples.petstore.dal.model.User;
-import org.lealone.examples.petstore.service.generated.UserService;
 import org.lealone.orm.json.JsonObject;
 
-public class UserServiceImpl implements UserService {
+public class UserService {
 
-    @Override
     public User login(String userId, String password) {
         User user = User.dao.where().userId.eq(userId).and().password.eq(password).findOne();
         if (user == null)
@@ -32,17 +30,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    @Override
     public String logout(String userId) {
         return "ok";
     }
 
-    @Override
     public void register(String userId, String password, String password2) {
         new User().userId.set(userId).password.set(password).insert();
     }
 
-    @Override
     public void update(Account account) {
         Account old = Account.dao.where().userId.eq(account.userId.get()).findOne();
         if (old == null)
@@ -51,7 +46,6 @@ public class UserServiceImpl implements UserService {
             account.update();
     }
 
-    @Override
     public String getUser(String userId) {
         User user = User.dao.where().userId.eq(userId).findOne();
         Account account = Account.dao.where().userId.eq(userId).findOne();

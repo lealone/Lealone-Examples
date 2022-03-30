@@ -22,20 +22,17 @@ import java.util.List;
 import org.lealone.examples.petstore.dal.model.Category;
 import org.lealone.examples.petstore.dal.model.Item;
 import org.lealone.examples.petstore.dal.model.Product;
-import org.lealone.examples.petstore.service.generated.StoreService;
 import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
-public class StoreServiceImpl implements StoreService {
+public class StoreService {
 
-    @Override
     public String addProduct(Product product, String logo) {
         product.logo.set(logo);
         product.insert();
         return null;
     }
 
-    @Override
     public String getAllCategories() {
         Product p = Product.dao;
         // TODO 不加where()会导致排序错误
@@ -43,7 +40,6 @@ public class StoreServiceImpl implements StoreService {
         return new JsonObject().put("categories", new JsonArray(list)).encode();
     }
 
-    @Override
     public String getAllProductItems(String productId) {
         // Category c = Category.dao;
         // Product p = Product.dao;

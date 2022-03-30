@@ -22,11 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lealone.examples.petstore.dal.model.Item;
-import org.lealone.examples.petstore.service.generated.ViewCartService;
 import org.lealone.orm.json.JsonArray;
 import org.lealone.orm.json.JsonObject;
 
-public class ViewCartServiceImpl implements ViewCartService {
+public class ViewCartService {
 
     public static class ViewCart {
         CopyOnWriteArrayList<String> items = new CopyOnWriteArrayList<>();
@@ -34,7 +33,6 @@ public class ViewCartServiceImpl implements ViewCartService {
 
     private final ConcurrentHashMap<String, ViewCart> viewCarts = new ConcurrentHashMap<>();
 
-    @Override
     public void addItem(String cartId, String itemId) {
         ViewCart viewCart = new ViewCart();
         ViewCart old = viewCarts.putIfAbsent(cartId, viewCart);
@@ -43,19 +41,16 @@ public class ViewCartServiceImpl implements ViewCartService {
         viewCart.items.add(itemId);
     }
 
-    @Override
     public void removeItem(String cartId, String itemId) {
         ViewCart viewCart = viewCarts.get(cartId);
         if (viewCart != null)
             viewCart.items.remove(itemId);
     }
 
-    @Override
     public void update(String cartId, String itemId, Integer quantity) {
         // TODO Auto-generated method stub
     }
 
-    @Override
     public String getItems(String cartId) {
         JsonObject json = new JsonObject();
         ViewCart viewCart = viewCarts.get(cartId);
