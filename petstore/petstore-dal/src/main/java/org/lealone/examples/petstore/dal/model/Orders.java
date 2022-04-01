@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.Orders.OrdersDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PBigDecimal;
 import org.lealone.orm.property.PDate;
@@ -18,8 +13,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = OrdersDeserializer.class)
 public class Orders extends Model<Orders> {
 
     public static final Orders dao = new Orders(null, ROOT_DAO);
@@ -91,10 +84,7 @@ public class Orders extends Model<Orders> {
         return new Orders(t, modelType);
     }
 
-    static class OrdersDeserializer extends ModelDeserializer<Orders> {
-        @Override
-        protected Model<Orders> newModelInstance() {
-            return new Orders();
-        }
+    public static Orders decode(String str) {
+        return new Orders().decode0(str);
     }
 }

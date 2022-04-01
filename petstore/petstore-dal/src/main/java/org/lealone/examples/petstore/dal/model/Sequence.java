@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.Sequence.SequenceDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PInteger;
 import org.lealone.orm.property.PString;
@@ -16,8 +11,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = SequenceDeserializer.class)
 public class Sequence extends Model<Sequence> {
 
     public static final Sequence dao = new Sequence(null, ROOT_DAO);
@@ -43,10 +36,7 @@ public class Sequence extends Model<Sequence> {
         return new Sequence(t, modelType);
     }
 
-    static class SequenceDeserializer extends ModelDeserializer<Sequence> {
-        @Override
-        protected Model<Sequence> newModelInstance() {
-            return new Sequence();
-        }
+    public static Sequence decode(String str) {
+        return new Sequence().decode0(str);
     }
 }

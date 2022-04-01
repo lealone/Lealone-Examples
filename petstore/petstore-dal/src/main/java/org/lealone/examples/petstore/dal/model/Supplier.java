@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.Supplier.SupplierDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PInteger;
 import org.lealone.orm.property.PString;
@@ -16,8 +11,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = SupplierDeserializer.class)
 public class Supplier extends Model<Supplier> {
 
     public static final Supplier dao = new Supplier(null, ROOT_DAO);
@@ -57,10 +50,7 @@ public class Supplier extends Model<Supplier> {
         return new Supplier(t, modelType);
     }
 
-    static class SupplierDeserializer extends ModelDeserializer<Supplier> {
-        @Override
-        protected Model<Supplier> newModelInstance() {
-            return new Supplier();
-        }
+    public static Supplier decode(String str) {
+        return new Supplier().decode0(str);
     }
 }

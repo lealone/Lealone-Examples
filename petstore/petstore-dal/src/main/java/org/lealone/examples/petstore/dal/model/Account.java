@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.Account.AccountDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PDate;
 import org.lealone.orm.property.PString;
@@ -16,8 +11,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = AccountDeserializer.class)
 public class Account extends Model<Account> {
 
     public static final Account dao = new Account(null, ROOT_DAO);
@@ -69,10 +62,7 @@ public class Account extends Model<Account> {
         return new Account(t, modelType);
     }
 
-    static class AccountDeserializer extends ModelDeserializer<Account> {
-        @Override
-        protected Model<Account> newModelInstance() {
-            return new Account();
-        }
+    public static Account decode(String str) {
+        return new Account().decode0(str);
     }
 }

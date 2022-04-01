@@ -1,14 +1,9 @@
 package org.lealone.examples.orm.generated;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.List;
-import org.lealone.examples.orm.generated.Customer.CustomerDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PInteger;
 import org.lealone.orm.property.PLong;
@@ -19,8 +14,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = CustomerDeserializer.class)
 public class Customer extends Model<Customer> {
 
     public static final Customer dao = new Customer(null, ROOT_DAO);
@@ -75,10 +68,7 @@ public class Customer extends Model<Customer> {
         return list;
     }
 
-    static class CustomerDeserializer extends ModelDeserializer<Customer> {
-        @Override
-        protected Model<Customer> newModelInstance() {
-            return new Customer();
-        }
+    public static Customer decode(String str) {
+        return new Customer().decode0(str);
     }
 }

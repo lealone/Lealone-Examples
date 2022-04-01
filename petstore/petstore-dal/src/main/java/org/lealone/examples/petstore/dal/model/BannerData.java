@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.BannerData.BannerDataDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PString;
 
@@ -15,8 +10,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = BannerDataDeserializer.class)
 public class BannerData extends Model<BannerData> {
 
     public static final BannerData dao = new BannerData(null, ROOT_DAO);
@@ -42,10 +35,7 @@ public class BannerData extends Model<BannerData> {
         return new BannerData(t, modelType);
     }
 
-    static class BannerDataDeserializer extends ModelDeserializer<BannerData> {
-        @Override
-        protected Model<BannerData> newModelInstance() {
-            return new BannerData();
-        }
+    public static BannerData decode(String str) {
+        return new BannerData().decode0(str);
     }
 }

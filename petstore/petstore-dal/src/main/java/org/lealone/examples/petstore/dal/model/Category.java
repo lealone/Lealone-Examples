@@ -1,14 +1,9 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.ArrayList;
 import java.util.List;
-import org.lealone.examples.petstore.dal.model.Category.CategoryDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PString;
 
@@ -17,8 +12,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = CategoryDeserializer.class)
 public class Category extends Model<Category> {
 
     public static final Category dao = new Category(null, ROOT_DAO);
@@ -73,10 +66,7 @@ public class Category extends Model<Category> {
         return list;
     }
 
-    static class CategoryDeserializer extends ModelDeserializer<Category> {
-        @Override
-        protected Model<Category> newModelInstance() {
-            return new Category();
-        }
+    public static Category decode(String str) {
+        return new Category().decode0(str);
     }
 }

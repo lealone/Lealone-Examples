@@ -1,12 +1,7 @@
 package org.lealone.examples.petstore.dal.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.lealone.examples.petstore.dal.model.Profile.ProfileDeserializer;
 import org.lealone.orm.Model;
-import org.lealone.orm.ModelDeserializer;
 import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelSerializer;
 import org.lealone.orm.ModelTable;
 import org.lealone.orm.property.PInteger;
 import org.lealone.orm.property.PString;
@@ -16,8 +11,6 @@ import org.lealone.orm.property.PString;
  *
  * THIS IS A GENERATED OBJECT, DO NOT MODIFY THIS CLASS.
  */
-@JsonSerialize(using = ModelSerializer.class)
-@JsonDeserialize(using = ProfileDeserializer.class)
 public class Profile extends Model<Profile> {
 
     public static final Profile dao = new Profile(null, ROOT_DAO);
@@ -49,10 +42,7 @@ public class Profile extends Model<Profile> {
         return new Profile(t, modelType);
     }
 
-    static class ProfileDeserializer extends ModelDeserializer<Profile> {
-        @Override
-        protected Model<Profile> newModelInstance() {
-            return new Profile();
-        }
+    public static Profile decode(String str) {
+        return new Profile().decode0(str);
     }
 }
