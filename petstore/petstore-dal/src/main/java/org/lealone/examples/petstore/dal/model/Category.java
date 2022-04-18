@@ -27,13 +27,11 @@ public class Category extends Model<Category> {
 
     private Category(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "CATEGORY") : t, modelType);
-        super.setRoot(this);
-
-        this.catid = new PString<>("CATID", this);
-        this.name = new PString<>("NAME", this);
-        this.logo = new PString<>("LOGO", this);
-        this.descn = new PString<>("DESCN", this);
-        super.setModelProperties(new ModelProperty[] { this.catid, this.name, this.logo, this.descn });
+        catid = new PString<>("CATID", this);
+        name = new PString<>("NAME", this);
+        logo = new PString<>("LOGO", this);
+        descn = new PString<>("DESCN", this);
+        super.setModelProperties(new ModelProperty[] { catid, name, logo, descn });
     }
 
     public Category addProduct(Product m) {

@@ -26,12 +26,10 @@ public class User extends Model<User> {
 
     private User(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("TEST", "PUBLIC", "USER") : t, modelType);
-        super.setRoot(this);
-
-        this.id = new PLong<>("ID", this);
-        this.name = new PString<>("NAME", this);
-        this.age = new PInteger<>("AGE", this);
-        super.setModelProperties(new ModelProperty[] { this.id, this.name, this.age });
+        id = new PLong<>("ID", this);
+        name = new PString<>("NAME", this);
+        age = new PInteger<>("AGE", this);
+        super.setModelProperties(new ModelProperty[] { id, name, age });
     }
 
     @Override

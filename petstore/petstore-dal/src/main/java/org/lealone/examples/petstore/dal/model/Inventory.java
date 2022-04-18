@@ -24,11 +24,9 @@ public class Inventory extends Model<Inventory> {
 
     private Inventory(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "INVENTORY") : t, modelType);
-        super.setRoot(this);
-
-        this.itemid = new PString<>("ITEMID", this);
-        this.qty = new PInteger<>("QTY", this);
-        super.setModelProperties(new ModelProperty[] { this.itemid, this.qty });
+        itemid = new PString<>("ITEMID", this);
+        qty = new PInteger<>("QTY", this);
+        super.setModelProperties(new ModelProperty[] { itemid, qty });
     }
 
     @Override

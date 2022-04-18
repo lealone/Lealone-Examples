@@ -3,7 +3,6 @@ package org.lealone.examples.fullstack.generated.service;
 import java.sql.*;
 import org.lealone.client.ClientServiceProxy;
 import org.lealone.examples.fullstack.generated.model.User;
-import org.lealone.orm.json.JsonObject;
 
 /**
  * Service interface for 'user_service'.
@@ -54,9 +53,9 @@ public interface UserService {
                 ps2.setString(1, name);
                 ResultSet rs = ps2.executeQuery();
                 rs.next();
-                JsonObject jo = new JsonObject(rs.getString(1));
+                String ret = rs.getString(1);
                 rs.close();
-                return jo.mapTo(User.class);
+                return User.decode(ret);
             } catch (Throwable e) {
                 throw ClientServiceProxy.failed("USER_SERVICE.FIND_BY_NAME", e);
             }

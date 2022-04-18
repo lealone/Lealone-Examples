@@ -37,24 +37,22 @@ public class Account extends Model<Account> {
 
     private Account(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "ACCOUNT") : t, modelType);
-        super.setRoot(this);
-
-        this.userId = new PString<>("USER_ID", this);
-        this.email = new PString<>("EMAIL", this);
-        this.firstName = new PString<>("FIRST_NAME", this);
-        this.lastName = new PString<>("LAST_NAME", this);
-        this.status = new PString<>("STATUS", this);
-        this.address1 = new PString<>("ADDRESS_1", this);
-        this.address2 = new PString<>("ADDRESS_2", this);
-        this.city = new PString<>("CITY", this);
-        this.state = new PString<>("STATE", this);
-        this.zip = new PString<>("ZIP", this);
-        this.country = new PString<>("COUNTRY", this);
-        this.phone = new PString<>("PHONE", this);
-        this.creditCardNumber = new PString<>("CREDIT_CARD_NUMBER", this);
-        this.creditCardType = new PString<>("CREDIT_CARD_TYPE", this);
-        this.creditCardExpiry = new PDate<>("CREDIT_CARD_EXPIRY", this);
-        super.setModelProperties(new ModelProperty[] { this.userId, this.email, this.firstName, this.lastName, this.status, this.address1, this.address2, this.city, this.state, this.zip, this.country, this.phone, this.creditCardNumber, this.creditCardType, this.creditCardExpiry });
+        userId = new PString<>("USER_ID", this);
+        email = new PString<>("EMAIL", this);
+        firstName = new PString<>("FIRST_NAME", this);
+        lastName = new PString<>("LAST_NAME", this);
+        status = new PString<>("STATUS", this);
+        address1 = new PString<>("ADDRESS_1", this);
+        address2 = new PString<>("ADDRESS_2", this);
+        city = new PString<>("CITY", this);
+        state = new PString<>("STATE", this);
+        zip = new PString<>("ZIP", this);
+        country = new PString<>("COUNTRY", this);
+        phone = new PString<>("PHONE", this);
+        creditCardNumber = new PString<>("CREDIT_CARD_NUMBER", this);
+        creditCardType = new PString<>("CREDIT_CARD_TYPE", this);
+        creditCardExpiry = new PDate<>("CREDIT_CARD_EXPIRY", this);
+        super.setModelProperties(new ModelProperty[] { userId, email, firstName, lastName, status, address1, address2, city, state, zip, country, phone, creditCardNumber, creditCardType, creditCardExpiry });
     }
 
     @Override

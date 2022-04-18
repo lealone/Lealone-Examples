@@ -36,20 +36,18 @@ public class Item extends Model<Item> {
 
     private Item(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "ITEM") : t, modelType);
-        super.setRoot(this);
-
-        this.itemid = new PString<>("ITEMID", this);
-        this.productid = new PString<>("PRODUCTID", this);
-        this.listprice = new PBigDecimal<>("LISTPRICE", this);
-        this.unitcost = new PBigDecimal<>("UNITCOST", this);
-        this.supplierid = new PInteger<>("SUPPLIERID", this);
-        this.status = new PString<>("STATUS", this);
-        this.attr1 = new PString<>("ATTR1", this);
-        this.attr2 = new PString<>("ATTR2", this);
-        this.attr3 = new PString<>("ATTR3", this);
-        this.attr4 = new PString<>("ATTR4", this);
-        this.attr5 = new PString<>("ATTR5", this);
-        super.setModelProperties(new ModelProperty[] { this.itemid, this.productid, this.listprice, this.unitcost, this.supplierid, this.status, this.attr1, this.attr2, this.attr3, this.attr4, this.attr5 });
+        itemid = new PString<>("ITEMID", this);
+        productid = new PString<>("PRODUCTID", this);
+        listprice = new PBigDecimal<>("LISTPRICE", this);
+        unitcost = new PBigDecimal<>("UNITCOST", this);
+        supplierid = new PInteger<>("SUPPLIERID", this);
+        status = new PString<>("STATUS", this);
+        attr1 = new PString<>("ATTR1", this);
+        attr2 = new PString<>("ATTR2", this);
+        attr3 = new PString<>("ATTR3", this);
+        attr4 = new PString<>("ATTR4", this);
+        attr5 = new PString<>("ATTR5", this);
+        super.setModelProperties(new ModelProperty[] { itemid, productid, listprice, unitcost, supplierid, status, attr1, attr2, attr3, attr4, attr5 });
     }
 
     public Product getProduct() {

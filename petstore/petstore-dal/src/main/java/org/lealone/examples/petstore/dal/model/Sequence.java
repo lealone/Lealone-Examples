@@ -24,11 +24,9 @@ public class Sequence extends Model<Sequence> {
 
     private Sequence(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "SEQUENCE") : t, modelType);
-        super.setRoot(this);
-
-        this.name = new PString<>("NAME", this);
-        this.nextid = new PInteger<>("NEXTID", this);
-        super.setModelProperties(new ModelProperty[] { this.name, this.nextid });
+        name = new PString<>("NAME", this);
+        nextid = new PInteger<>("NEXTID", this);
+        super.setModelProperties(new ModelProperty[] { name, nextid });
     }
 
     @Override

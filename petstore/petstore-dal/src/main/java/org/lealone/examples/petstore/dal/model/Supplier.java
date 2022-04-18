@@ -31,18 +31,16 @@ public class Supplier extends Model<Supplier> {
 
     private Supplier(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "SUPPLIER") : t, modelType);
-        super.setRoot(this);
-
-        this.suppid = new PInteger<>("SUPPID", this);
-        this.name = new PString<>("NAME", this);
-        this.status = new PString<>("STATUS", this);
-        this.addr1 = new PString<>("ADDR1", this);
-        this.addr2 = new PString<>("ADDR2", this);
-        this.city = new PString<>("CITY", this);
-        this.state = new PString<>("STATE", this);
-        this.zip = new PString<>("ZIP", this);
-        this.phone = new PString<>("PHONE", this);
-        super.setModelProperties(new ModelProperty[] { this.suppid, this.name, this.status, this.addr1, this.addr2, this.city, this.state, this.zip, this.phone });
+        suppid = new PInteger<>("SUPPID", this);
+        name = new PString<>("NAME", this);
+        status = new PString<>("STATUS", this);
+        addr1 = new PString<>("ADDR1", this);
+        addr2 = new PString<>("ADDR2", this);
+        city = new PString<>("CITY", this);
+        state = new PString<>("STATE", this);
+        zip = new PString<>("ZIP", this);
+        phone = new PString<>("PHONE", this);
+        super.setModelProperties(new ModelProperty[] { suppid, name, status, addr1, addr2, city, state, zip, phone });
     }
 
     @Override

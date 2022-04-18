@@ -27,14 +27,12 @@ public class Profile extends Model<Profile> {
 
     private Profile(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "PROFILE") : t, modelType);
-        super.setRoot(this);
-
-        this.userId = new PString<>("USER_ID", this);
-        this.languagePreference = new PString<>("LANGUAGE_PREFERENCE", this);
-        this.favoriteCategoryId = new PString<>("FAVORITE_CATEGORY_ID", this);
-        this.listOption = new PInteger<>("LIST_OPTION", this);
-        this.bannerOpttion = new PInteger<>("BANNER_OPTTION", this);
-        super.setModelProperties(new ModelProperty[] { this.userId, this.languagePreference, this.favoriteCategoryId, this.listOption, this.bannerOpttion });
+        userId = new PString<>("USER_ID", this);
+        languagePreference = new PString<>("LANGUAGE_PREFERENCE", this);
+        favoriteCategoryId = new PString<>("FAVORITE_CATEGORY_ID", this);
+        listOption = new PInteger<>("LIST_OPTION", this);
+        bannerOpttion = new PInteger<>("BANNER_OPTTION", this);
+        super.setModelProperties(new ModelProperty[] { userId, languagePreference, favoriteCategoryId, listOption, bannerOpttion });
     }
 
     @Override

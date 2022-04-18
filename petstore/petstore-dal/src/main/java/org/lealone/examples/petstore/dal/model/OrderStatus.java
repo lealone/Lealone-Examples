@@ -27,13 +27,11 @@ public class OrderStatus extends Model<OrderStatus> {
 
     private OrderStatus(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "ORDER_STATUS") : t, modelType);
-        super.setRoot(this);
-
-        this.orderid = new PInteger<>("ORDERID", this);
-        this.orderItemid = new PInteger<>("ORDER_ITEMID", this);
-        this.timestamp = new PDate<>("TIMESTAMP", this);
-        this.status = new PString<>("STATUS", this);
-        super.setModelProperties(new ModelProperty[] { this.orderid, this.orderItemid, this.timestamp, this.status });
+        orderid = new PInteger<>("ORDERID", this);
+        orderItemid = new PInteger<>("ORDER_ITEMID", this);
+        timestamp = new PDate<>("TIMESTAMP", this);
+        status = new PString<>("STATUS", this);
+        super.setModelProperties(new ModelProperty[] { orderid, orderItemid, timestamp, status });
     }
 
     @Override

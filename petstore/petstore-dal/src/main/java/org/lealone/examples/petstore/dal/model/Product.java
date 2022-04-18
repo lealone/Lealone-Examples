@@ -29,14 +29,12 @@ public class Product extends Model<Product> {
 
     private Product(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "PRODUCT") : t, modelType);
-        super.setRoot(this);
-
-        this.productid = new PString<>("PRODUCTID", this);
-        this.categoryid = new PString<>("CATEGORYID", this);
-        this.name = new PString<>("NAME", this);
-        this.logo = new PString<>("LOGO", this);
-        this.descn = new PString<>("DESCN", this);
-        super.setModelProperties(new ModelProperty[] { this.productid, this.categoryid, this.name, this.logo, this.descn });
+        productid = new PString<>("PRODUCTID", this);
+        categoryid = new PString<>("CATEGORYID", this);
+        name = new PString<>("NAME", this);
+        logo = new PString<>("LOGO", this);
+        descn = new PString<>("DESCN", this);
+        super.setModelProperties(new ModelProperty[] { productid, categoryid, name, logo, descn });
     }
 
     public Category getCategory() {

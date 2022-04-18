@@ -28,14 +28,12 @@ public class OrderItem extends Model<OrderItem> {
 
     private OrderItem(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "ORDER_ITEM") : t, modelType);
-        super.setRoot(this);
-
-        this.orderid = new PInteger<>("ORDERID", this);
-        this.orderItemid = new PInteger<>("ORDER_ITEMID", this);
-        this.itemid = new PString<>("ITEMID", this);
-        this.quantity = new PInteger<>("QUANTITY", this);
-        this.unitprice = new PBigDecimal<>("UNITPRICE", this);
-        super.setModelProperties(new ModelProperty[] { this.orderid, this.orderItemid, this.itemid, this.quantity, this.unitprice });
+        orderid = new PInteger<>("ORDERID", this);
+        orderItemid = new PInteger<>("ORDER_ITEMID", this);
+        itemid = new PString<>("ITEMID", this);
+        quantity = new PInteger<>("QUANTITY", this);
+        unitprice = new PBigDecimal<>("UNITPRICE", this);
+        super.setModelProperties(new ModelProperty[] { orderid, orderItemid, itemid, quantity, unitprice });
     }
 
     @Override

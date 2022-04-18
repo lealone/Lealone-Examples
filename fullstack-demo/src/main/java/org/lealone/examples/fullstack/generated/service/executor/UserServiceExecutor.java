@@ -6,7 +6,6 @@ import org.lealone.db.value.*;
 import org.lealone.examples.fullstack.UserServiceImpl;
 import org.lealone.examples.fullstack.generated.model.User;
 import org.lealone.orm.json.JsonArray;
-import org.lealone.orm.json.JsonObject;
 
 /**
  * Service executor for 'user_service'.
@@ -32,7 +31,7 @@ public class UserServiceExecutor implements ServiceExecutor {
             User result2 = this.s.findByName(p_name_2);
             if (result2 == null)
                 return ValueNull.INSTANCE;
-            return ValueString.get(JsonObject.mapFrom(result2).encode());
+            return ValueString.get(result2.encode());
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -53,7 +52,7 @@ public class UserServiceExecutor implements ServiceExecutor {
             User result2 = this.s.findByName(p_name_2);
             if (result2 == null)
                 return null;
-            return JsonObject.mapFrom(result2).encode();
+            return result2.encode();
         default:
             throw new RuntimeException("no method: " + methodName);
         }
@@ -77,7 +76,7 @@ public class UserServiceExecutor implements ServiceExecutor {
             User result2 = this.s.findByName(p_name_2);
             if (result2 == null)
                 return null;
-            return JsonObject.mapFrom(result2).encode();
+            return result2.encode();
         default:
             throw new RuntimeException("no method: " + methodName);
         }

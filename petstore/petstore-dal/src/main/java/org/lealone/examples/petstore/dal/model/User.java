@@ -24,12 +24,10 @@ public class User extends Model<User> {
 
     private User(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "USER") : t, modelType);
-        super.setRoot(this);
-
-        this.userId = new PString<>("USER_ID", this);
-        this.password = new PString<>("PASSWORD", this);
-        this.roles = new PString<>("ROLES", this);
-        super.setModelProperties(new ModelProperty[] { this.userId, this.password, this.roles });
+        userId = new PString<>("USER_ID", this);
+        password = new PString<>("PASSWORD", this);
+        roles = new PString<>("ROLES", this);
+        super.setModelProperties(new ModelProperty[] { userId, password, roles });
     }
 
     @Override

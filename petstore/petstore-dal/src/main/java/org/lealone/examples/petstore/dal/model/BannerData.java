@@ -23,11 +23,9 @@ public class BannerData extends Model<BannerData> {
 
     private BannerData(ModelTable t, short modelType) {
         super(t == null ? new ModelTable("PETSTORE", "PUBLIC", "BANNER_DATA") : t, modelType);
-        super.setRoot(this);
-
-        this.favcategory = new PString<>("FAVCATEGORY", this);
-        this.bannerName = new PString<>("BANNER_NAME", this);
-        super.setModelProperties(new ModelProperty[] { this.favcategory, this.bannerName });
+        favcategory = new PString<>("FAVCATEGORY", this);
+        bannerName = new PString<>("BANNER_NAME", this);
+        super.setModelProperties(new ModelProperty[] { favcategory, bannerName });
     }
 
     @Override
