@@ -14,6 +14,9 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
+#  
+#  Initial Developer: zhh
+
 if [ "x$LEALONE_HOME" = "x" ]; then
     LEALONE_HOME="`dirname "$0"`/.."
 fi
@@ -22,8 +25,6 @@ if [ "x$JAVA_HOME" = "x" ]; then
     echo JAVA_HOME environment variable must be set!
     exit 1;
 fi
-
-LEALONE_MAIN=org.lealone.main.Lealone
 
 # JAVA_OPTS=-ea
 # JAVA_OPTS="$JAVA_OPTS -Xms10M"
@@ -39,9 +40,11 @@ LEALONE_MAIN=org.lealone.main.Lealone
 
 JAVA_OPTS=-Xms10M
 JAVA_OPTS="$JAVA_OPTS -Dlealone.logdir=$LEALONE_HOME/logs"
-JAVA_OPTS="$JAVA_OPTS -Dlealone.config.loader=org.lealone.aose.config.YamlConfigurationLoader"
-# JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y"
+
+if [ "$1" = "-debug" ]; then
+    JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=y"
+fi
 
 CLASSPATH=$LEALONE_HOME/conf:$LEALONE_HOME/lib/*
 
-"$JAVA_HOME/bin/java" $JAVA_OPTS -cp $CLASSPATH $LEALONE_MAIN
+"$JAVA_HOME/bin/java" $JAVA_OPTS -cp $CLASSPATH org.lealone.main.Lealone $@
