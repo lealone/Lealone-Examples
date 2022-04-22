@@ -17,6 +17,9 @@
  */
 package org.lealone.examples.petstore.main;
 
+import java.io.File;
+import java.net.URL;
+
 import org.lealone.main.Lealone;
 
 public class PetStore {
@@ -27,4 +30,24 @@ public class PetStore {
         Lealone.main(args);
     }
 
+    public static String getAppBaseDir() {
+        String dir;
+        try {
+            dir = System.getProperty("appBaseDir");
+            if (dir == null) {
+                String name = PetStore.class.getName().replace('.', '/') + ".class";
+                URL url = PetStore.class.getClassLoader().getResource(name);
+                String file = new File(url.toURI()).getAbsolutePath();
+                int pos = file.indexOf("petstore-main");
+                dir = file.substring(0, pos - 1);
+            }
+        } catch (Exception e) {
+            dir = ".";
+        }
+        return dir;
+    }
+
+    public static String getAbsolutePath(String name) {
+        return new File(getAppBaseDir(), name).getAbsolutePath().replace('/', File.separatorChar);
+    }
 }

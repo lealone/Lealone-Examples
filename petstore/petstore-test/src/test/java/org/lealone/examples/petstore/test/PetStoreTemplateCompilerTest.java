@@ -19,12 +19,14 @@ package org.lealone.examples.petstore.test;
 
 import java.io.IOException;
 
+import org.lealone.examples.petstore.main.PetStore;
 import org.lealone.server.template.TemplateCompiler;
 
 public class PetStoreTemplateCompilerTest {
 
     public static void main(String[] args) throws IOException {
-        args = new String[] { "-webRoot", "../petstore-web/web" };
+        String webRoot = PetStore.getAbsolutePath("petstore-web/web");
+        args = new String[] { "-webRoot", webRoot };
         TemplateCompiler.main(args);
     }
 

@@ -17,12 +17,14 @@
  */
 package org.lealone.examples.petstore.test;
 
+import org.lealone.examples.petstore.main.PetStore;
 import org.lealone.server.template.TemplateEngine;
 
 public class TemplateEngineTest {
 
     public static void main(String[] args) throws Exception {
-        TemplateEngine te = new TemplateEngine("../petstore-web/web", "utf-8");
+        String webRoot = PetStore.getAbsolutePath("petstore-web/web");
+        TemplateEngine te = new TemplateEngine(webRoot, "utf-8");
         String str = te.process("/home/index.html");
         System.out.println(str);
     }

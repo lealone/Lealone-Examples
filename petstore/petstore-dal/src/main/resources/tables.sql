@@ -19,7 +19,7 @@ drop table if exists sequence;
 
 
 set @packageName 'org.lealone.examples.petstore.dal.model'; -- 生成的模型类所在的包名
-set @srcPath '../petstore-dal/src/main/java'; -- 生成的模型类对应的源文件所在的根目录
+--set @srcPath '../petstore-dal/src/main/java'; -- 生成的模型类对应的源文件所在的根目录
 
 
 create table if not exists user (
