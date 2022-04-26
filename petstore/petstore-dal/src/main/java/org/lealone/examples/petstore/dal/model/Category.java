@@ -1,6 +1,5 @@
 package org.lealone.examples.petstore.dal.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.lealone.orm.Model;
 import org.lealone.orm.ModelProperty;
@@ -32,6 +31,12 @@ public class Category extends Model<Category> {
         logo = new PString<>("LOGO", this);
         descn = new PString<>("DESCN", this);
         super.setModelProperties(new ModelProperty[] { catid, name, logo, descn });
+        super.initAdders(new ProductAdder());
+    }
+
+    @Override
+    protected Category newInstance(ModelTable t, short modelType) {
+        return new Category(t, modelType);
     }
 
     public Category addProduct(Product m) {
@@ -50,18 +55,18 @@ public class Category extends Model<Category> {
         return super.getModelList(Product.class);
     }
 
-    @Override
-    protected Category newInstance(ModelTable t, short modelType) {
-        return new Category(t, modelType);
-    }
+    protected class ProductAdder implements AssociateAdder<Product> {
+        @Override
+        public Product getDao() {
+            return Product.dao;
+        }
 
-    @Override
-    protected List<Model<?>> newAssociateInstances() {
-        ArrayList<Model<?>> list = new ArrayList<>();
-        Product m1 = new Product();
-        addProduct(m1);
-        list.add(m1);
-        return list;
+        @Override
+        public void add(Product m) {
+            if (areEqual(catid, m.categoryid)) {
+                addProduct(m);
+            }
+        }
     }
 
     public static Category decode(String str) {

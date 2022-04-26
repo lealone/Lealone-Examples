@@ -1,6 +1,5 @@
 package org.lealone.examples.petstore.dal.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.lealone.orm.Model;
 import org.lealone.orm.ModelProperty;
@@ -35,6 +34,13 @@ public class Product extends Model<Product> {
         logo = new PString<>("LOGO", this);
         descn = new PString<>("DESCN", this);
         super.setModelProperties(new ModelProperty[] { productid, categoryid, name, logo, descn });
+        super.initSetters(new CategorySetter());
+        super.initAdders(new ItemAdder());
+    }
+
+    @Override
+    protected Product newInstance(ModelTable t, short modelType) {
+        return new Product(t, modelType);
     }
 
     public Category getCategory() {
@@ -63,18 +69,34 @@ public class Product extends Model<Product> {
         return super.getModelList(Item.class);
     }
 
-    @Override
-    protected Product newInstance(ModelTable t, short modelType) {
-        return new Product(t, modelType);
+    protected class CategorySetter implements AssociateSetter<Category> {
+        @Override
+        public Category getDao() {
+            return Category.dao;
+        }
+
+        @Override
+        public boolean set(Category m) {
+            if (areEqual(categoryid, m.catid)) {
+                setCategory(m);
+                return true;
+            }
+            return false;
+        }
     }
 
-    @Override
-    protected List<Model<?>> newAssociateInstances() {
-        ArrayList<Model<?>> list = new ArrayList<>();
-        Item m1 = new Item();
-        addItem(m1);
-        list.add(m1);
-        return list;
+    protected class ItemAdder implements AssociateAdder<Item> {
+        @Override
+        public Item getDao() {
+            return Item.dao;
+        }
+
+        @Override
+        public void add(Item m) {
+            if (areEqual(productid, m.productid)) {
+                addItem(m);
+            }
+        }
     }
 
     public static Product decode(String str) {

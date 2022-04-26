@@ -48,6 +48,12 @@ public class Item extends Model<Item> {
         attr4 = new PString<>("ATTR4", this);
         attr5 = new PString<>("ATTR5", this);
         super.setModelProperties(new ModelProperty[] { itemid, productid, listprice, unitcost, supplierid, status, attr1, attr2, attr3, attr4, attr5 });
+        super.initSetters(new ProductSetter(), new SupplierSetter());
+    }
+
+    @Override
+    protected Item newInstance(ModelTable t, short modelType) {
+        return new Item(t, modelType);
     }
 
     public Product getProduct() {
@@ -70,9 +76,36 @@ public class Item extends Model<Item> {
         return this;
     }
 
-    @Override
-    protected Item newInstance(ModelTable t, short modelType) {
-        return new Item(t, modelType);
+    protected class ProductSetter implements AssociateSetter<Product> {
+        @Override
+        public Product getDao() {
+            return Product.dao;
+        }
+
+        @Override
+        public boolean set(Product m) {
+            if (areEqual(productid, m.productid)) {
+                setProduct(m);
+                return true;
+            }
+            return false;
+        }
+    }
+
+    protected class SupplierSetter implements AssociateSetter<Supplier> {
+        @Override
+        public Supplier getDao() {
+            return Supplier.dao;
+        }
+
+        @Override
+        public boolean set(Supplier m) {
+            if (areEqual(supplierid, m.suppid)) {
+                setSupplier(m);
+                return true;
+            }
+            return false;
+        }
     }
 
     public static Item decode(String str) {

@@ -48,7 +48,7 @@ public class ViewCartService {
     }
 
     public void update(String cartId, String itemId, Integer quantity) {
-        // TODO Auto-generated method stub
+        // TODO
     }
 
     public String getItems(String cartId) {
@@ -58,7 +58,7 @@ public class ViewCartService {
             json.put("items", new JsonArray());
         } else {
             int size = viewCart.items.size();
-            ArrayList<Item> items = new ArrayList<>();
+            ArrayList<Item> items = new ArrayList<>(size);
             for (int i = 0; i < size; i++) {
                 Item item = Item.dao.where().itemid.eq(viewCart.items.get(i)).findOne();
                 items.add(item);
@@ -67,5 +67,4 @@ public class ViewCartService {
         }
         return json.encode();
     }
-
 }

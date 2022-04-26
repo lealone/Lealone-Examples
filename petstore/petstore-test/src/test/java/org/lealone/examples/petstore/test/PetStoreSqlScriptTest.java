@@ -17,12 +17,12 @@
  */
 package org.lealone.examples.petstore.test;
 
-import org.lealone.examples.petstore.main.RunSqlScript;
+import org.lealone.examples.petstore.main.PetStoreSqlScript;
 
 public class PetStoreSqlScriptTest {
 
     public static void main(String[] args) throws Exception {
-        RunSqlScript.main(args);
+        PetStoreSqlScript.main(args);
     }
 
 }

@@ -55,5 +55,4 @@ public class UserService {
         json.put("account", account);
         return json.encode();
     }
-
 }

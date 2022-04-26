@@ -35,29 +35,53 @@ public class StoreService {
 
     public String getAllCategories() {
         Product p = Product.dao;
-        // TODO 不加where()会导致排序错误
-        List<Category> list = Category.dao.join(p).on().catid.eq(p.categoryid).where().orderBy().catid.asc().findList();
+        List<Category> list = Category.dao.join(p).on().catid.eq(p.categoryid) //
+                .orderBy().catid.asc().findList();
         return new JsonObject().put("categories", new JsonArray(list)).encode();
     }
 
+    // TODO 取inventory表的存货数
     public String getAllProductItems(String productId) {
-        // Category c = Category.dao;
-        // Product p = Product.dao;
-        // Item i = Item.dao;
-        //
-        // // TODO 还不支持三表join
-        // List<Category> list = c.join(p).on().catid.eq(p.categoryid).m(p).join(i).on().productid.eq(i.productid)
-        // .where().productid.eq(productId).m(c).findList();
-
-        Product product = Product.dao.where().productid.eq(productId).findOne();
-        Category category = Category.dao.where().catid.eq(product.categoryid.get()).findOne();
-        List<Item> items = Item.dao.where().productid.eq(productId).findList(); // TODO 取inventory表的存货数
 
         JsonObject json = new JsonObject();
+
+        Category c = Category.dao;
+        Product p = Product.dao;
+        Item i = Item.dao;
+
+        // 这是最简洁最高效的用法，只查一次数据库
+        Product product = p.join(c).on().categoryid.eq(c.catid).join(i).on().productid.eq(i.productid) //
+                .where().productid.eq(productId).findOne();
+
+        json.put("category", product.getCategory());
+        json.put("product", product);
+        json.put("items", product.getItemList());
+
+        /*
+        // 以下三种用法都可行，但是不够简洁
+        Category category = p.join(c).on().categoryid.eq(c.catid).join(i).on().productid.eq(i.productid) //
+                .where().productid.eq(productId).m(c).findOne(); // m(c) 转到 Category
+        
+        json.put("category", category);
+        json.put("product", category.getProductList().get(0));
+        json.put("items", category.getProductList().get(0).getItemList());
+        
+        List<Item> items = p.join(c).on().categoryid.eq(c.catid).join(i).on().productid.eq(i.productid) //
+                .where().productid.eq(productId).m(i).findList(); // m(i) 转到 Item
+        
+        json.put("category", items.get(0).getProduct().getCategory());
+        json.put("product", items.get(0).getProduct());
+        json.put("items", items);
+        
+        // 这种最慢了，要分三次查数据库
+        product = Product.dao.where().productid.eq(productId).findOne();
+        category = Category.dao.where().catid.eq(product.categoryid.get()).findOne();
+        items = Item.dao.where().productid.eq(productId).findList();
+        
         json.put("category", category);
         json.put("product", product);
-        json.put("items", new JsonArray(items));
+        json.put("items", items);
+        */
         return json.encode();
     }
-
 }

@@ -23,10 +23,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-public class RunSqlScript {
+public class PetStoreSqlScript {
 
     public static void main(String[] args) throws Exception {
-        new RunSqlScript().run(args);
+        new PetStoreSqlScript().run(args);
     }
 
     private String tableDir;
@@ -81,7 +81,7 @@ public class RunSqlScript {
             if (dir != null) {
                 file = new File(dir, name);
             } else {
-                URL url = RunSqlScript.class.getClassLoader().getResource(name);
+                URL url = PetStoreSqlScript.class.getClassLoader().getResource(name);
                 file = new File(url.toURI());
             }
             return file.getAbsolutePath();
