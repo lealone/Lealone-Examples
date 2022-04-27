@@ -17,12 +17,29 @@
  */
 package org.lealone.examples.petstore.test;
 
+import org.lealone.common.exceptions.ConfigException;
 import org.lealone.examples.petstore.main.PetStore;
+import org.lealone.p2p.config.Config;
+import org.lealone.p2p.config.Config.PluggableEngineDef;
+import org.lealone.p2p.config.YamlConfigLoader;
+import org.lealone.server.http.HttpServerEngine;
 
-public class PetStoreTest {
+public class PetStoreTest extends YamlConfigLoader {
 
     public static void main(String[] args) {
+        System.setProperty("lealone.config.loader", PetStoreTest.class.getName());
         PetStore.main(args);
     }
 
+    @Override
+    public void applyConfig(Config config) throws ConfigException {
+        // 动态生成绝对路径的webRoot，使用相对路径在eclipse和idea下面总有一个不正确
+        String webRoot = PetStore.getAbsolutePath("petstore-web/web");
+        for (PluggableEngineDef e : config.protocol_server_engines) {
+            if (HttpServerEngine.NAME.equalsIgnoreCase(e.name)) {
+                e.parameters.put("web_root", webRoot);
+            }
+        }
+        super.applyConfig(config);
+    }
 }
