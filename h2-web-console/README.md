@@ -1,3 +1,5 @@
+<b>此项目已经废弃，请用这个替换它 [Lealone-OpsCenter](https://github.com/lealone/Lealone-OpsCenter) </b>
+
 # H2 Web Console
 
 基于 Vue + Lealone 开发的 Web Console，改编自 [H2 数据库的 Web Console](http://www.h2database.com/html/quickstart.html)
