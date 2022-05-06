@@ -34,6 +34,12 @@ public class Order extends Model<Order> {
         orderDate = new PDate<>("ORDER_DATE", this);
         total = new PDouble<>("TOTAL", this);
         super.setModelProperties(new ModelProperty[] { customerId, orderId, orderDate, total });
+        super.initSetters(new CustomerSetter());
+    }
+
+    @Override
+    protected Order newInstance(ModelTable t, short modelType) {
+        return new Order(t, modelType);
     }
 
     public Customer getCustomer() {
@@ -46,9 +52,20 @@ public class Order extends Model<Order> {
         return this;
     }
 
-    @Override
-    protected Order newInstance(ModelTable t, short modelType) {
-        return new Order(t, modelType);
+    protected class CustomerSetter implements AssociateSetter<Customer> {
+        @Override
+        public Customer getDao() {
+            return Customer.dao;
+        }
+
+        @Override
+        public boolean set(Customer m) {
+            if (areEqual(customerId, m.id)) {
+                setCustomer(m);
+                return true;
+            }
+            return false;
+        }
     }
 
     public static Order decode(String str) {
