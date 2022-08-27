@@ -26,5 +26,5 @@ protocol_server_engines:
         environment: dev,
         web_root: ../petstore-web/web,
         router_factory: "org.lealone.examples.petstore.web.PetStoreRouterFactory",
-        jdbc_url: "jdbc:lealone:embed:petstore"
+        jdbc_url: "jdbc:lealone:embed:petstore?user=root"
     }
