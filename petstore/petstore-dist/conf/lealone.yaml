@@ -58,13 +58,7 @@ protocol_server_engines:
         environment: prod,
         web_root: ../web,
         router_factory: "org.lealone.examples.petstore.web.PetStoreRouterFactory",
-        jdbc_url: "jdbc:lealone:embed:petstore"
-    }
-  - name: P2P
-    enabled: false
-    parameters: {
-        port: 9211,
-        ssl: false
+        jdbc_url: "jdbc:lealone:embed:petstore?user=root"
     }
 
 server_encryption_options:
@@ -72,28 +66,3 @@ server_encryption_options:
     keystore_password: lealone
     truststore: conf/.truststore
     truststore_password: lealone
-
-cluster_config:
-    cluster_name: Test Cluster
-    node_snitch: SimpleSnitch
-    dynamic_snitch: true
-    request_timeout_in_ms: 10000
-
-    seed_provider:
-        name: SimpleSeedProvider
-        parameters: {
-            seeds: "127.0.0.1"
-        }
-
-    replication_strategy:
-        name: SimpleStrategy
-        parameters: {
-            replication_factor: 3
-        }
-
-    # replication_strategy:
-    #     name: NetworkTopologyStrategy
-    #     parameters: {
-    #         dc1: 1,
-    #         dc2: 2
-    #     }
