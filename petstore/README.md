@@ -14,7 +14,7 @@ build -p
 
 cd target\lealone-petstore-1.0.0\bin
 
-petstore
+lealone
 
 
 
