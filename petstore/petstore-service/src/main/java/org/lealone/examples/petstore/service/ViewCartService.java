@@ -22,8 +22,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.lealone.examples.petstore.dal.model.Item;
-import org.lealone.orm.json.JsonArray;
-import org.lealone.orm.json.JsonObject;
+import org.lealone.plugins.orm.json.JsonArray;
+import org.lealone.plugins.orm.json.JsonObject;
 
 public class ViewCartService {
 

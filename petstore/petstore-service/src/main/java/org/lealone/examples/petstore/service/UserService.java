@@ -19,7 +19,7 @@ package org.lealone.examples.petstore.service;
 
 import org.lealone.examples.petstore.dal.model.Account;
 import org.lealone.examples.petstore.dal.model.User;
-import org.lealone.orm.json.JsonObject;
+import org.lealone.plugins.orm.json.JsonObject;
 
 public class UserService {
 

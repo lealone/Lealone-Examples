@@ -54,10 +54,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>2.3.2</version>
+                    <version>3.8.1</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
+                        <release>8</release>
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
@@ -104,8 +105,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.lealone</groupId>
-            <artifactId>lealone-main</artifactId>
+            <groupId>org.lealone.plugins</groupId>
+            <artifactId>lealone-service</artifactId>
+            <version>5.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lealone.plugins</groupId>
+            <artifactId>lealone-vertx</artifactId>
             <version>5.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>

@@ -18,7 +18,7 @@
 package org.lealone.examples.petstore.test;
 
 import org.lealone.examples.petstore.main.PetStore;
-import org.lealone.server.template.TemplateEngine;
+import org.lealone.plugins.service.template.TemplateEngine;
 
 public class TemplateEngineTest {
 

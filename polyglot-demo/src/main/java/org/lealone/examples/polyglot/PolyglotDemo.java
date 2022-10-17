@@ -21,7 +21,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
 
-import org.lealone.server.http.HttpServer;
+import org.lealone.plugins.service.http.HttpServer;
 
 public class PolyglotDemo {
 

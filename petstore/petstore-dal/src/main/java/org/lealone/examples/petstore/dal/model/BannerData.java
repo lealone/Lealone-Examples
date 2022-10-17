@@ -1,9 +1,9 @@
 package org.lealone.examples.petstore.dal.model;
 
-import org.lealone.orm.Model;
-import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelTable;
-import org.lealone.orm.property.PString;
+import org.lealone.plugins.orm.Model;
+import org.lealone.plugins.orm.ModelProperty;
+import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.property.PString;
 
 /**
  * Model for table 'BANNER_DATA'.

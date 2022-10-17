@@ -20,7 +20,7 @@ package org.lealone.examples.petstore.web;
 import java.io.File;
 import java.util.Map;
 
-import org.lealone.server.vertx.VertxRouter;
+import org.lealone.plugins.vertx.VertxRouter;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.FileUpload;

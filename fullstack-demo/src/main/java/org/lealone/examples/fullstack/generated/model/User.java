@@ -1,11 +1,11 @@
 package org.lealone.examples.fullstack.generated.model;
 
-import org.lealone.orm.Model;
-import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelTable;
-import org.lealone.orm.property.PInteger;
-import org.lealone.orm.property.PLong;
-import org.lealone.orm.property.PString;
+import org.lealone.plugins.orm.Model;
+import org.lealone.plugins.orm.ModelProperty;
+import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.property.PInteger;
+import org.lealone.plugins.orm.property.PLong;
+import org.lealone.plugins.orm.property.PString;
 
 /**
  * Model for table 'USER'.
