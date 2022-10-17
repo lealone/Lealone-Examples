@@ -1,12 +1,12 @@
 package org.lealone.examples.orm.generated;
 
-import org.lealone.orm.Model;
-import org.lealone.orm.ModelProperty;
-import org.lealone.orm.ModelTable;
-import org.lealone.orm.property.PDate;
-import org.lealone.orm.property.PDouble;
-import org.lealone.orm.property.PInteger;
-import org.lealone.orm.property.PLong;
+import org.lealone.plugins.orm.Model;
+import org.lealone.plugins.orm.ModelProperty;
+import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.property.PDate;
+import org.lealone.plugins.orm.property.PDouble;
+import org.lealone.plugins.orm.property.PInteger;
+import org.lealone.plugins.orm.property.PLong;
 
 /**
  * Model for table 'ORDER'.
