@@ -20,14 +20,14 @@ package org.lealone.examples.petstore.web;
 import java.io.File;
 import java.util.Map;
 
-import org.lealone.server.http.HttpRouterFactory;
+import org.lealone.server.vertx.VertxRouter;
 
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 
-public class PetStoreRouterFactory extends HttpRouterFactory {
+public class PetStoreRouter extends VertxRouter {
     @Override
     protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
         // route的顺序很重要，所以下面三个调用不能乱

@@ -34,7 +34,7 @@ public class FullStackDemo {
 
         // 启动HttpServer，请在浏览器中打开下面这个URL进行测试:
         // http://localhost:8080/fullStack.html
-        HttpServer server = new HttpServer();
+        HttpServer server = HttpServer.create();
         server.setJdbcUrl(jdbcUrl);
         server.setWebRoot(webRoot);
         server.start();
@@ -48,7 +48,8 @@ public class FullStackDemo {
 
     static void runScript(String scriptFile) throws Exception {
         System.setProperty("lealone.jdbc.url", jdbcUrl);
-        try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+                Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM '" + scriptFile + "'");
         }
     }

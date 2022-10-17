@@ -32,7 +32,7 @@ public class PolyglotDemo {
         // 启动 HttpServer，请在浏览器中打开下面的 URL 进行测试:
         // http://localhost:8080/service/hello_service/hello?name=zhh
         // http://localhost:8080/service/time_service/get_current_time
-        HttpServer server = new HttpServer();
+        HttpServer server = HttpServer.create();
         server.setJdbcUrl(jdbcUrl);
         server.start();
 
@@ -41,7 +41,8 @@ public class PolyglotDemo {
 
     // 执行 services.sql 脚本，创建服务
     public static void createService() throws Exception {
-        try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+                Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/services.sql'");
         }
     }

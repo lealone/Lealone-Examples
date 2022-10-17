@@ -11,16 +11,23 @@ import org.lealone.examples.fullstack.generated.model.User;
  */
 public interface UserService {
 
+    Long addUser(String name, Integer age);
+
+    User findByName(String name);
+
+    static UserService create() {
+        return create(null);
+    }
+
     static UserService create(String url) {
-        if (new org.lealone.db.ConnectionInfo(url).isEmbedded())
+        if (url == null)
+            url = ClientServiceProxy.getUrl();
+
+        if (ClientServiceProxy.isEmbedded(url))
             return new org.lealone.examples.fullstack.UserServiceImpl();
         else
             return new ServiceProxy(url);
     }
-
-    Long addUser(String name, Integer age);
-
-    User findByName(String name);
 
     static class ServiceProxy implements UserService {
 
@@ -39,7 +46,7 @@ public interface UserService {
                 ps1.setInt(2, age);
                 ResultSet rs = ps1.executeQuery();
                 rs.next();
-                Long ret =  rs.getLong(1);
+                Long ret = rs.getLong(1);
                 rs.close();
                 return ret;
             } catch (Throwable e) {

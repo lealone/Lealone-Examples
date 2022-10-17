@@ -51,13 +51,13 @@ protocol_server_engines:
         daemon: false,
         ssl: false
     }
-  - name: HTTP
+  - name: VERTX
     enabled: true
     parameters: {
         port: 9000,
         environment: prod,
         web_root: ../web,
-        router_factory: "org.lealone.examples.petstore.web.PetStoreRouterFactory",
+        router: "org.lealone.examples.petstore.web.PetStoreRouter",
         jdbc_url: "jdbc:lealone:embed:petstore?user=root"
     }
 

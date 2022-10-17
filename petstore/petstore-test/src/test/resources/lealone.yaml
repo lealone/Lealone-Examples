@@ -19,12 +19,12 @@ base_dir: ./target/data
 listen_address: 127.0.0.1
 
 protocol_server_engines:
-  - name: HTTP
+  - name: VERTX
     enabled: true
     parameters: {
         port: 9000,
         environment: dev,
         web_root: ../petstore-web/web,
-        router_factory: "org.lealone.examples.petstore.web.PetStoreRouterFactory",
+        router: "org.lealone.examples.petstore.web.PetStoreRouter",
         jdbc_url: "jdbc:lealone:embed:petstore?user=root"
     }
