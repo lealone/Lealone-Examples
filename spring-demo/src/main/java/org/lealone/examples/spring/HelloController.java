@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class ServiceController {
+public class HelloController {
 
     // 用这样的url打开: http://localhost:8080/hello?name=zhh
     @GetMapping("/hello")

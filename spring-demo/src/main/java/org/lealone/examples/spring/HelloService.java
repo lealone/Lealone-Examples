@@ -17,10 +17,26 @@
  */
 package org.lealone.examples.spring;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class HelloService {
 
     // 用这样的url打开: http://localhost:8080/service/hello_service/hello?name=zhh
     public String hello(String name) {
         return "Hello " + name;
+    }
+
+    public static void create() {
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:lealone:embed:lealone", "root", "");
+            String sql = "create service if not exists hello_service (hello(name varchar) varchar)" //
+                    + " implement by '" + HelloService.class.getName() + "'";
+            conn.createStatement().executeUpdate(sql);
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

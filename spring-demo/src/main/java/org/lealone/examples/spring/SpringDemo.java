@@ -17,27 +17,16 @@
  */
 package org.lealone.examples.spring;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
 
-@SpringBootApplication
-@ComponentScan(basePackages = "org.lealone.plugins.spring")
+@SpringBootApplication(scanBasePackages = {
+        "org.lealone.plugins.spring",
+        "org.lealone.examples.spring" })
 public class SpringDemo {
 
-    public static void main(String[] args) throws Exception {
-        createService();
+    public static void main(String[] args) {
+        HelloService.create();
         SpringApplication.run(SpringDemo.class, args);
-    }
-
-    public static void createService() throws Exception {
-        Connection conn = DriverManager.getConnection("jdbc:lealone:embed:lealone", "root", "");
-        String sql = "create service if not exists hello_service (hello(name varchar) varchar)" //
-                + " implement by '" + HelloService.class.getName() + "'";
-        conn.createStatement().executeUpdate(sql);
-        conn.close();
     }
 }
