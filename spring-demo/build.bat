@@ -29,6 +29,7 @@ if /i "%ARG%" == "-i" goto i
 if /i "%ARG%" == "-c" goto c
 if /i "%ARG%" == "-dt" goto dt
 if /i "%ARG%" == "-vu" goto vu
+if /i "%ARG%" == "-r" goto r
 
 goto usage
 
@@ -44,6 +45,7 @@ echo    -i            mvn install -Dmaven.test.skip=true
 echo    -c            mvn clean
 echo    -dt           mvn dependency:tree
 echo    -vu version   pom.xml version update
+echo    -r            java -jar ./target/lealone-spring-demo-1.0.0.jar
 goto end
 
 :e
@@ -85,4 +87,6 @@ call mvn versions:set -DnewVersion=%VERSION%
 call mvn versions:commit
 goto end
 
+:r
+java -jar ./target/lealone-spring-demo-1.0.0.jar
 :end

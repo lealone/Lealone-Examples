@@ -17,15 +17,15 @@
  */
 package org.lealone.examples.spring;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-@SpringBootApplication(scanBasePackages = {
-        "org.lealone.plugins.spring",
-        "org.lealone.examples.spring" })
-public class SpringDemo {
-    public static void main(String[] args) {
+public class ServletInitializer extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         HelloService.create();
-        SpringApplication.run(SpringDemo.class, args);
+        return application.sources(SpringDemo.class);
     }
+
 }
