@@ -24,7 +24,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "org.lealone.plugins.spring",
         "org.lealone.examples.spring" })
 public class SpringDemo {
-
+    // 用 mvn package spring-boot:repackage 打出的 jar 包在运行时调用 java compiler api 编译源代码会报错
+    // 只能用 eclipse 导出一个可执行的 jar 包
+    // https://user-images.githubusercontent.com/872655/197129734-a1fc9612-c603-4773-8c30-c08d8d061dc4.png
     public static void main(String[] args) {
         HelloService.create();
         SpringApplication.run(SpringDemo.class, args);
