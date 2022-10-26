@@ -3,11 +3,16 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion> 
     <groupId>org.lealone.examples</groupId>
-    <artifactId>lealone-fullstack-demo</artifactId>
+    <artifactId>lealone-js-demo</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>org.lealone.plugins</groupId>
+            <artifactId>lealone-orm</artifactId>
+            <version>5.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.lealone.plugins</groupId>
             <artifactId>lealone-service</artifactId>
@@ -16,6 +21,11 @@
         <dependency>
             <groupId>org.lealone.plugins</groupId>
             <artifactId>lealone-vertx</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.lealone.plugins</groupId>
+            <artifactId>lealone-javascript</artifactId>
             <version>5.0.0</version>
         </dependency>
     </dependencies>
@@ -49,14 +59,14 @@
                                 <transformer
                                     implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>org.lealone.examples.fullstack.FullStackDemo</Main-Class>
+                                        <Main-Class>org.lealone.examples.js.JsDemo</Main-Class>
                                          <!-- 让log4j2选择合适的jdk，避免启动时出现WARNING: sun.reflect.Reflection.getCallerClass is not supported -->
                                         <Multi-Release>true</Multi-Release>
                                         <Built-By>Lealone Database Group</Built-By>
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
-                            <outputFile>target/lealone-fullstack-demo-all-${project.version}.jar</outputFile>
+                            <outputFile>target/lealone-js-demo-all-${project.version}.jar</outputFile>
                         </configuration>
                     </execution>
                 </executions>
