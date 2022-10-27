@@ -45,17 +45,17 @@ public class StoreService {
 
         JsonObject json = new JsonObject();
 
-        Category c = Category.dao;
-        Product p = Product.dao;
-        Item i = Item.dao;
-
-        // 这是最简洁最高效的用法，只查一次数据库
-        Product product = p.join(c).on().categoryid.eq(c.catid).join(i).on().productid.eq(i.productid) //
-                .where().productid.eq(productId).findOne();
-
-        json.put("category", product.getCategory());
-        json.put("product", product);
-        json.put("items", product.getItemList());
+        // Category c = Category.dao;
+        // Product p = Product.dao;
+        // Item i = Item.dao;
+        //
+        // // 这是最简洁最高效的用法，只查一次数据库，但是Item没有数据时为null
+        // Product product = p.join(c).on().categoryid.eq(c.catid).join(i).on().productid.eq(i.productid) //
+        // .where().productid.eq(productId).findOne();
+        //
+        // json.put("category", product.getCategory());
+        // json.put("product", product);
+        // json.put("items", product.getItemList());
 
         /*
         // 以下三种用法都可行，但是不够简洁
@@ -72,16 +72,16 @@ public class StoreService {
         json.put("category", items.get(0).getProduct().getCategory());
         json.put("product", items.get(0).getProduct());
         json.put("items", items);
-        
+        */
+
         // 这种最慢了，要分三次查数据库
-        product = Product.dao.where().productid.eq(productId).findOne();
-        category = Category.dao.where().catid.eq(product.categoryid.get()).findOne();
-        items = Item.dao.where().productid.eq(productId).findList();
-        
+        Product product = Product.dao.where().productid.eq(productId).findOne();
+        Category category = Category.dao.where().catid.eq(product.categoryid.get()).findOne();
+        List<Item> items = Item.dao.where().productid.eq(productId).findList();
+
         json.put("category", category);
         json.put("product", product);
         json.put("items", items);
-        */
         return json.encode();
     }
 }
