@@ -49,7 +49,8 @@ public class UserService {
     public String getUser(String userId) {
         User user = User.dao.where().userId.eq(userId).findOne();
         Account account = Account.dao.where().userId.eq(userId).findOne();
-
+        if (account == null)
+            account = new Account();
         JsonObject json = new JsonObject();
         json.put("user", user);
         json.put("account", account);
