@@ -20,7 +20,6 @@ package org.lealone.examples.python;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.util.concurrent.CountDownLatch;
 
 import org.lealone.main.Lealone;
 
@@ -31,24 +30,19 @@ import org.lealone.main.Lealone;
 // http://localhost:9000/fullStack.html
 public class PythonDemo {
 
-    public static void main(String[] args) throws Exception {
-        // 在一个新线程中启动 Lealone
-        CountDownLatch latch = new CountDownLatch(1);
-        new Thread(() -> {
-            Lealone.run(args, false, latch);
-        }).start();
-        latch.await();
-
-        runScript();
+    public static void main(String[] args) {
+        Lealone.run(args, () -> runScript());
     }
 
     // 执行 tables.sql 和 services.sql 脚本，创建表和服务
-    public static void runScript() throws Exception {
+    public static void runScript() {
         String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
         try (Connection conn = DriverManager.getConnection(url);
                 Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM './sql/tables.sql'");
             stmt.executeUpdate("RUNSCRIPT FROM './sql/services.sql'");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

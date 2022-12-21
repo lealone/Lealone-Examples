@@ -3,6 +3,7 @@ package org.lealone.examples.petstore.dal.model;
 import org.lealone.plugins.orm.Model;
 import org.lealone.plugins.orm.ModelProperty;
 import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.format.JsonFormat;
 import org.lealone.plugins.orm.property.PBigDecimal;
 import org.lealone.plugins.orm.property.PInteger;
 import org.lealone.plugins.orm.property.PString;
@@ -109,6 +110,10 @@ public class Item extends Model<Item> {
     }
 
     public static Item decode(String str) {
-        return new Item().decode0(str);
+        return decode(str, null);
+    }
+
+    public static Item decode(String str, JsonFormat format) {
+        return new Item().decode0(str, format);
     }
 }

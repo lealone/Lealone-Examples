@@ -1,12 +1,8 @@
 package org.lealone.examples.fullstack.generated.service.executor;
 
 import java.util.Map;
-
 import org.lealone.db.service.ServiceExecutor;
-import org.lealone.db.value.Value;
-import org.lealone.db.value.ValueLong;
-import org.lealone.db.value.ValueNull;
-import org.lealone.db.value.ValueString;
+import org.lealone.db.value.*;
 import org.lealone.examples.fullstack.UserServiceImpl;
 import org.lealone.examples.fullstack.generated.model.User;
 import org.lealone.plugins.orm.json.JsonArray;
@@ -18,7 +14,7 @@ import org.lealone.plugins.orm.json.JsonArray;
  */
 public class UserServiceExecutor implements ServiceExecutor {
 
-    private final UserServiceImpl s = new UserServiceImpl();
+    private final UserServiceImpl si = new UserServiceImpl();
 
     @Override
     public Value executeService(String methodName, Value[] methodArgs) {
@@ -26,63 +22,51 @@ public class UserServiceExecutor implements ServiceExecutor {
         case "ADD_USER":
             String p_name_1 = methodArgs[0].getString();
             Integer p_age_1 = methodArgs[1].getInt();
-            Long result1 = this.s.addUser(p_name_1, p_age_1);
+            Long result1 = si.addUser(p_name_1, p_age_1);
             if (result1 == null)
                 return ValueNull.INSTANCE;
             return ValueLong.get(result1);
         case "FIND_BY_NAME":
             String p_name_2 = methodArgs[0].getString();
-            User result2 = this.s.findByName(p_name_2);
+            User result2 = si.findByName(p_name_2);
             if (result2 == null)
                 return ValueNull.INSTANCE;
             return ValueString.get(result2.encode());
         default:
-            throw new RuntimeException("no method: " + methodName);
+            throw noMethodException(methodName);
         }
     }
 
     @Override
-    public String executeService(String methodName, Map<String, Object> methodArgs) {
+    public Object executeService(String methodName, Map<String, Object> methodArgs) {
         switch (methodName) {
         case "ADD_USER":
-            String p_name_1 = ServiceExecutor.toString("NAME", methodArgs);
-            Integer p_age_1 = Integer.valueOf(ServiceExecutor.toString("AGE", methodArgs));
-            Long result1 = this.s.addUser(p_name_1, p_age_1);
-            if (result1 == null)
-                return null;
-            return result1.toString();
+            String p_name_1 = toString("NAME", methodArgs);
+            Integer p_age_1 = toInt("AGE", methodArgs);
+            return si.addUser(p_name_1, p_age_1);
         case "FIND_BY_NAME":
-            String p_name_2 = ServiceExecutor.toString("NAME", methodArgs);
-            User result2 = this.s.findByName(p_name_2);
-            if (result2 == null)
-                return null;
-            return result2.encode();
+            String p_name_2 = toString("NAME", methodArgs);
+            return si.findByName(p_name_2);
         default:
-            throw new RuntimeException("no method: " + methodName);
+            throw noMethodException(methodName);
         }
     }
 
     @Override
-    public String executeService(String methodName, String json) {
+    public Object executeService(String methodName, String json) {
         JsonArray ja = null;
         switch (methodName) {
         case "ADD_USER":
             ja = new JsonArray(json);
             String p_name_1 = ja.getString(0);
             Integer p_age_1 = Integer.valueOf(ja.getValue(1).toString());
-            Long result1 = this.s.addUser(p_name_1, p_age_1);
-            if (result1 == null)
-                return null;
-            return result1.toString();
+            return si.addUser(p_name_1, p_age_1);
         case "FIND_BY_NAME":
             ja = new JsonArray(json);
             String p_name_2 = ja.getString(0);
-            User result2 = this.s.findByName(p_name_2);
-            if (result2 == null)
-                return null;
-            return result2.encode();
+            return si.findByName(p_name_2);
         default:
-            throw new RuntimeException("no method: " + methodName);
+            throw noMethodException(methodName);
         }
     }
 }

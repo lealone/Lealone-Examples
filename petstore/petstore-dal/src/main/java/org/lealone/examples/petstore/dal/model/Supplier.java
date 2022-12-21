@@ -3,6 +3,7 @@ package org.lealone.examples.petstore.dal.model;
 import org.lealone.plugins.orm.Model;
 import org.lealone.plugins.orm.ModelProperty;
 import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.format.JsonFormat;
 import org.lealone.plugins.orm.property.PInteger;
 import org.lealone.plugins.orm.property.PString;
 
@@ -49,6 +50,10 @@ public class Supplier extends Model<Supplier> {
     }
 
     public static Supplier decode(String str) {
-        return new Supplier().decode0(str);
+        return decode(str, null);
+    }
+
+    public static Supplier decode(String str, JsonFormat format) {
+        return new Supplier().decode0(str, format);
     }
 }

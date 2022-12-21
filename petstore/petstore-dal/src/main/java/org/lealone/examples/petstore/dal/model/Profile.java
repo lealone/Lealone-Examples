@@ -3,6 +3,7 @@ package org.lealone.examples.petstore.dal.model;
 import org.lealone.plugins.orm.Model;
 import org.lealone.plugins.orm.ModelProperty;
 import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.format.JsonFormat;
 import org.lealone.plugins.orm.property.PInteger;
 import org.lealone.plugins.orm.property.PString;
 
@@ -41,6 +42,10 @@ public class Profile extends Model<Profile> {
     }
 
     public static Profile decode(String str) {
-        return new Profile().decode0(str);
+        return decode(str, null);
+    }
+
+    public static Profile decode(String str, JsonFormat format) {
+        return new Profile().decode0(str, format);
     }
 }

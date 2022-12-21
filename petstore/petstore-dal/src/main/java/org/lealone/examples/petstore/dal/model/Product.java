@@ -4,6 +4,7 @@ import java.util.List;
 import org.lealone.plugins.orm.Model;
 import org.lealone.plugins.orm.ModelProperty;
 import org.lealone.plugins.orm.ModelTable;
+import org.lealone.plugins.orm.format.JsonFormat;
 import org.lealone.plugins.orm.property.PString;
 
 /**
@@ -100,6 +101,10 @@ public class Product extends Model<Product> {
     }
 
     public static Product decode(String str) {
-        return new Product().decode0(str);
+        return decode(str, null);
+    }
+
+    public static Product decode(String str, JsonFormat format) {
+        return new Product().decode0(str, format);
     }
 }
