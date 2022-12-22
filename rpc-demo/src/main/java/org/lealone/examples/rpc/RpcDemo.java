@@ -17,10 +17,7 @@
  */
 package org.lealone.examples.rpc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-
+import org.lealone.main.Lealone;
 import org.lealone.plugins.service.http.HttpServer;
 
 public class RpcDemo {
@@ -28,7 +25,7 @@ public class RpcDemo {
     // 通过 JDBC 访问的数据库的 URL
     static String jdbcUrl = "jdbc:lealone:embed:test";
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         // 静态资源文件的根目录，如果有多个可以用逗号分隔
         String webRoot = args.length == 1 ? args[0] : "./web";
 
@@ -43,10 +40,7 @@ public class RpcDemo {
     }
 
     // 执行 services.sql 脚本，创建服务
-    public static void createService() throws Exception {
-        try (Connection conn = DriverManager.getConnection(jdbcUrl);
-                Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/services.sql'");
-        }
+    public static void createService() {
+        Lealone.runScript(jdbcUrl, "./src/main/resources/services.sql");
     }
 }

@@ -17,33 +17,20 @@
  */
 package org.lealone.examples.polyglot;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import org.lealone.main.Lealone;
 
-import org.lealone.plugins.service.http.HttpServer;
-
+// 请在浏览器中打开下面的 URL 进行测试:
+// http://localhost:9000/service/hello_service/hello?name=zhh
+// http://localhost:9000/service/time_service/get_current_time
 public class PolyglotDemo {
 
-    // 通过 JDBC 访问的数据库的 URL
-    static String jdbcUrl = "jdbc:lealone:embed:test";
-
-    public static void main(String[] args) throws Exception {
-        // 启动 HttpServer，请在浏览器中打开下面的 URL 进行测试:
-        // http://localhost:8080/service/hello_service/hello?name=zhh
-        // http://localhost:8080/service/time_service/get_current_time
-        HttpServer server = HttpServer.create();
-        server.setJdbcUrl(jdbcUrl);
-        server.start();
-
-        createService();
+    public static void main(String[] args) {
+        Lealone.run(args, () -> runScript());
     }
 
-    // 执行 services.sql 脚本，创建服务
-    public static void createService() throws Exception {
-        try (Connection conn = DriverManager.getConnection(jdbcUrl);
-                Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/services.sql'");
-        }
+    public static void runScript() {
+        String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
+        // 执行服务创建脚本，同时自动生成对应的服务接口代码
+        Lealone.runScript(url, "./sql/services.sql");
     }
 }

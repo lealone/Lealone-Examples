@@ -17,40 +17,20 @@
  */
 package org.lealone.examples.fullstack;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
+import org.lealone.main.Lealone;
 
-import org.lealone.plugins.service.http.HttpServer;
-
+// 请在浏览器中打开下面的 URL 进行测试:
+// http://localhost:9000/fullStack.html
 public class FullStackDemo {
 
-    // 通过JDBC访问的数据库的URL
-    static String jdbcUrl = "jdbc:lealone:embed:test";
-
-    public static void main(String[] args) throws Exception {
-        // 静态资源文件的根目录，如果有多个可以用逗号分隔
-        String webRoot = args.length == 1 ? args[0] : "./web";
-
-        // 启动HttpServer，请在浏览器中打开下面这个URL进行测试:
-        // http://localhost:8080/fullStack.html
-        HttpServer server = HttpServer.create();
-        server.setJdbcUrl(jdbcUrl);
-        server.setWebRoot(webRoot);
-        server.start();
-
-        // 执行建表脚本，同时自动生成对应的模型类的代码
-        runScript("./src/main/resources/tables.sql");
-
-        // 执行服务创建脚本，同时自动生成对应的服务接口代码
-        runScript("./src/main/resources/services.sql");
+    public static void main(String[] args) {
+        Lealone.run(args, () -> runScript());
     }
 
-    static void runScript(String scriptFile) throws Exception {
-        System.setProperty("lealone.jdbc.url", jdbcUrl);
-        try (Connection conn = DriverManager.getConnection(jdbcUrl);
-                Statement stmt = conn.createStatement()) {
-            stmt.executeUpdate("RUNSCRIPT FROM '" + scriptFile + "'");
-        }
+    public static void runScript() {
+        String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
+        // 执行建表脚本，同时自动生成对应的模型类的代码
+        // 执行服务创建脚本，同时自动生成对应的服务接口代码
+        Lealone.runScript(url, "./sql/tables.sql", "./sql/services.sql");
     }
 }
