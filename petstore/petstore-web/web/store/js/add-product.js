@@ -1,7 +1,7 @@
 ﻿const storeAddProduct = { 
     data() {
         return {
-            product: {CATEGORYID: "", PRODUCTID: "", NAME: "", DESCN: ""},
+            product: {categoryid: "", productid: "", name: "", descn: ""},
             file: "",
             errorMessage: ""
         }
@@ -11,7 +11,7 @@
             this.file = event.target.files[0];
         },
         addProduct() {
-            if(!this.product.PRODUCTID) {
+            if(!this.product.productid) {
                 this.errorMessage = "必须填写产品ID";
                 return;
             }
@@ -43,6 +43,6 @@
         }
     },
     mounted() {
-        this.product.CATEGORYID = lealone.params.categoryid;
+        this.product.categoryid = lealone.params.categoryid;
     }
 }

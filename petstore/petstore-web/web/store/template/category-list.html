@@ -2,23 +2,23 @@
     <template v-for="category in categories">
     <table width="100%" border="0" cellspacing="0" cellpadding="10">
       <tr>
-        <td><template v-if="category.LOGO"><img v-bind:src="'/store/img/' + category.LOGO"></template></td>
+        <td><template v-if="category.logo"><img v-bind:src="'/store/img/' + category.logo"></template></td>
         <td width="100%">
           <table width="100%"  border="0" cellspacing="0" cellpadding="5">
             <tr>
-              <td colspan="2" class="categoryName">{{ category.NAME }}</td>
+              <td colspan="2" class="categoryName">{{ category.name }}</td>
             </tr>
             <tr>
               <td class="subcategoryName">
               <template v-for="(product, index) in category.ProductList">
                 <template v-if="index != 0"> | </template>
-                <a href="/" v-bind:title="product.DESCN" @click.prevent="lealone.route('store', 'item-list', [product.PRODUCTID], 'getAllProductItems')">
-                  {{ product.NAME }}
+                <a href="/" v-bind:title="product.descn" @click.prevent="lealone.route('store', 'item-list', [product.productid], 'getAllProductItems')">
+                  {{ product.name }}
                 </a>
               </template>
               </td>
               <td align="right">
-                <input type="button" value="添加产品" @click.prevent="lealone.route('store', 'add-product', {categoryid:category.CATID})"/>
+                <input type="button" value="添加产品" @click.prevent="lealone.route('store', 'add-product', {categoryid:category.catid})"/>
               </td>
             </tr>
           </table>

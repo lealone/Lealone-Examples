@@ -1,12 +1,12 @@
 <div id="item-list">
     <table width="100%" border="0" cellspacing="0" cellpadding="10">
       <tr>
-        <td rowspan="2" width="1%"><template v-if="category.LOGO">
-          <img v-bind:src="'/store/img/' + category.LOGO"></template></td>
-        <td class="categoryName">{{ category.NAME }}</td>
+        <td rowspan="2" width="1%"><template v-if="category.logo">
+          <img v-bind:src="'/store/img/' + category.logo"></template></td>
+        <td class="categoryName">{{ category.name }}</td>
       </tr>
       <tr>
-        <td colspan="2" class="subcategoryName">{{ product.NAME }} - {{ product.DESCN }}</td>
+        <td colspan="2" class="subcategoryName">{{ product.name }} - {{ product.descn }}</td>
       </tr>
       <tr>
         <td colspan="2">
@@ -20,9 +20,9 @@
             </tr>
             <template v-for="item in items">
             <tr onmouseenter="this.style.backgroundColor='powderblue'" onmouseleave="this.style.backgroundColor=''">
-              <td>{{ item.ITEMID }}</td>
-              <td>{{ item.LISTPRICE }}</td>
-              <td>{{ item.ATTR }}1</td>
+              <td>{{ item.itemid }}</td>
+              <td>{{ item.listprice }}</td>
+              <td>{{ item.attr }}1</td>
               <td>{{ item.quantity }}</td>
               <td align="right">[<a href="#" onclick="alert('未实现')">修改</a>]
               </td>

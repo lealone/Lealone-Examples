@@ -11,27 +11,27 @@
         <tr>
           <td nowrap="nowrap">产品类别：</td>
           <td width="100%" colspan="2">
-            {{ product.CATEGORYID }}
+            {{ product.categoryid }}
           </td>
         </tr>
         <tr>
           <td nowrap="nowrap">产品ID：</td>
           <td width="100%">
-            <input type="text" v-model="product.PRODUCTID"/>
+            <input type="text" v-model="product.productid"/>
           </td>
           <td class="errorMessage">{{ errorMessage }}</td>
         </tr>
         <tr>
           <td nowrap="nowrap">产品名称：</td>
           <td width="100%">
-            <input type="text" v-model="product.NAME"/>
+            <input type="text" v-model="product.name"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">产品描述： </td>
           <td>
-            <textarea v-model="product.DESCN"></textarea>
+            <textarea v-model="product.descn"></textarea>
           </td>
           <td class="errorMessage"></td>
         </tr>

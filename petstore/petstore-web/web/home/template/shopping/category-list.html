@@ -2,14 +2,14 @@
     <template v-for="category in categories">
     <table width="100%" border="0" cellspacing="0" cellpadding="10">
       <tr>
-        <td><template v-if="category.LOGO"><img v-bind:src="'/store/img/' + category.LOGO"></template></td>
+        <td><template v-if="category.logo"><img v-bind:src="'/store/img/' + category.logo"></template></td>
         <td width="100%">
-          <div class="categoryName">{{ category.NAME }}</div>
+          <div class="categoryName">{{ category.name }}</div>
           <div class="subcategoryName">
           <template v-for="(product, index) in category.ProductList">
             <template v-if="index != 0"> | </template>
-            <a href="/" v-bind:title="product.DESCN" @click.prevent="lealone.route('home', 'item-list', [product.PRODUCTID], 'getAllProductItems')">
-              {{ product.NAME }}
+            <a href="/" v-bind:title="product.descn" @click.prevent="lealone.route('home', 'item-list', [product.productid], 'getAllProductItems')">
+              {{ product.name }}
             </a>
           </template>
           </div>

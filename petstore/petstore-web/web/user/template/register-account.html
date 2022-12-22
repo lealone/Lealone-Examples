@@ -27,14 +27,14 @@
         <tr>
           <td nowrap="nowrap">姓氏：</td>
           <td width="100%">
-            <input type="text" v-model="account.last_name" size="30"/>
+            <input type="text" v-model="account.lastName" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">名字：</td>
           <td width="100%">
-            <input type="text" v-model="account.first_name" size="30"/>
+            <input type="text" v-model="account.firstName" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
@@ -286,14 +286,14 @@
         <tr>
           <td nowrap="nowrap">信用卡号：</td>
           <td width="100%">
-            <input type="text" v-model="account.credit_card_number" size="30"/>
+            <input type="text" v-model="account.creditCardNumber" size="30"/>
           </td>
           <td class="errorMessage"></td>
         </tr>
         <tr>
           <td nowrap="nowrap">信用卡类型：</td>
           <td width="100%">
-            <select v-model="account.credit_card_type">
+            <select v-model="account.creditCardType">
               <option value="">-- 请选择信用卡类型 --</option>
               <option value="MasterCard" >MasterCard</option>
               <option value="Visa" >Visa</option>

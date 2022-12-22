@@ -24,13 +24,13 @@
         }
     },
     update: {
-        before() { this.account.user_id = lealone.currentUser },
+        before() { this.account.userId = lealone.currentUser },
         after() { lealone.route('user', 'account') }
     },
     login: {
         after(data) {
-            lealone.currentUser = data.USER_ID;
-            localStorage.currentUser = data.USER_ID;
+            lealone.currentUser = data.userId;
+            localStorage.currentUser = data.userId;
             location.href = "/";
         },
         error(msg) { this.errorMessage = "用户名或密码不正确,请重新输入" }
