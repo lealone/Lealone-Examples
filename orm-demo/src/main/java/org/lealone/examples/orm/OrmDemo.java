@@ -122,7 +122,8 @@ public class OrmDemo {
         String jdbcUrl = "jdbc:lealone:embed:test";
         System.setProperty("lealone.jdbc.url", jdbcUrl);
 
-        try (Connection conn = DriverManager.getConnection(jdbcUrl); Statement stmt = conn.createStatement()) {
+        try (Connection conn = DriverManager.getConnection(jdbcUrl);
+                Statement stmt = conn.createStatement()) {
             stmt.executeUpdate("RUNSCRIPT FROM './src/main/resources/tables.sql'");
         }
     }

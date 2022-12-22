@@ -25,7 +25,7 @@ import org.lealone.main.Lealone;
 public class PolyglotDemo {
 
     public static void main(String[] args) {
-        Lealone.run(args, () -> runScript());
+        Lealone.main(args, () -> runScript());
     }
 
     public static void runScript() {
