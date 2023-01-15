@@ -28,7 +28,7 @@ public class FullStackDemo {
     }
 
     public static void runScript() {
-        String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
+        String url = "jdbc:lealone:tcp://localhost:9210/test?user=root";
         // 执行建表脚本，同时自动生成对应的模型类的代码
         // 执行服务创建脚本，同时自动生成对应的服务接口代码
         Lealone.runScript(url, "./sql/tables.sql", "./sql/services.sql");

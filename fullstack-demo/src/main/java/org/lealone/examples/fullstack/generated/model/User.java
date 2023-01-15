@@ -26,7 +26,7 @@ public class User extends Model<User> {
     }
 
     private User(ModelTable t, short modelType) {
-        super(t == null ? new ModelTable("LEALONE", "PUBLIC", "USER") : t, modelType);
+        super(t == null ? new ModelTable("TEST", "PUBLIC", "USER") : t, modelType);
         id = new PLong<>("ID", this);
         name = new PString<>("NAME", this);
         age = new PInteger<>("AGE", this);

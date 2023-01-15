@@ -23,5 +23,5 @@ protocol_server_engines:
         port: 9000,
         environment: dev,
         web_root: ./web,
-        jdbc_url: "jdbc:lealone:embed:lealone?user=root"
+        jdbc_url: "jdbc:lealone:embed:test?user=root"
     }
