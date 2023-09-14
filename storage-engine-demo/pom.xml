@@ -11,13 +11,13 @@
         <dependency>
             <groupId>org.lealone</groupId>
             <artifactId>lealone-aose</artifactId>
-            <version>5.1.2</version>
-        </dependency>
+            <version>5.2.0</version>
+        </dependency><!--
         <dependency>
-            <groupId>org.lealone.plugins</groupId>
-            <artifactId>lealone-memory</artifactId>
-            <version>5.1.2</version>
-        </dependency>
+            <groupId>org.qinsql</groupId>
+            <artifactId>qinsql-memory</artifactId>
+            <version>5.2.0</version>
+        </dependency>-->
     </dependencies>
 
     <build>

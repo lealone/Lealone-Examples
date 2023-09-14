@@ -30,9 +30,9 @@ public class StorageEngineDemo {
         testMap(storage);
         testAsyncMap(storage);
 
-        storage = getStorage("memory");
-        testMap(storage);
-        testAsyncMap(storage);
+        // storage = getStorage("memory");
+        // testMap(storage);
+        // testAsyncMap(storage);
     }
 
     private static void testMap(Storage storage) {
