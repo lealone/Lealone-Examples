@@ -25,7 +25,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
         "org.lealone.examples.spring" })
 public class SpringDemo {
     public static void main(String[] args) {
-        HelloService.create();
         SpringApplication.run(SpringDemo.class, args);
+        HelloService.create();
     }
 }

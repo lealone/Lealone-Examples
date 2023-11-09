@@ -27,6 +27,6 @@ public class HelloController {
     // 用这样的url打开: http://localhost:8080/hello?name=zhh
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return "Hello " + name;
+        return "Hello " + HelloService.getUser(name);
     }
 }
