@@ -10,7 +10,7 @@ create service if not exists user_service (
   update(account Account) void,
   get_user(user_id varchar) varchar
 )
-implement by 'org.lealone.examples.petstore.service.UserService' -- user_service 的默认实现类
+implement by 'com.lealone.examples.petstore.service.UserService' -- user_service 的默认实现类
 ;
 
 -- 删除服务: store_service
@@ -22,7 +22,7 @@ create service if not exists store_service (
   get_all_categories() varchar,
   get_all_product_items(product_id varchar) varchar
 )
-implement by 'org.lealone.examples.petstore.service.StoreService' -- store_service 的默认实现类
+implement by 'com.lealone.examples.petstore.service.StoreService' -- store_service 的默认实现类
 ;
 
 -- 删除服务: view_cart_service
@@ -35,5 +35,5 @@ create service if not exists view_cart_service (
   update(cart_id varchar, item_id varchar, quantity int) void,
   get_items(cart_id varchar) varchar
 )
-implement by 'org.lealone.examples.petstore.service.ViewCartService' -- view_cart_service 的默认实现类
+implement by 'com.lealone.examples.petstore.service.ViewCartService' -- view_cart_service 的默认实现类
 ;

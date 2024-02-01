@@ -7,5 +7,5 @@ create table if not exists user (
   name varchar,
   age int
 )
-package 'org.lealone.examples.fullstack.generated.model' -- User类所在的包名
+package 'com.lealone.examples.fullstack.generated.model' -- User类所在的包名
 generate code './src/main/java' -- User类的源文件所在的根目录

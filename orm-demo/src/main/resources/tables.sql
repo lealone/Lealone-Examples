@@ -2,7 +2,7 @@
 drop table if exists `order`;
 drop table if exists customer;
 
-set @packageName 'org.lealone.examples.orm.generated'; -- 生成的模型类所在的包名
+set @packageName 'com.lealone.examples.orm.generated'; -- 生成的模型类所在的包名
 set @srcPath './src/main/java'; -- 生成的模型类对应的源文件所在的根目录
 
 -- 创建customer表，会生成一个名为Customer的模型类

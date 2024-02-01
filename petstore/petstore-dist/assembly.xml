@@ -63,7 +63,7 @@
     <moduleSets>
         <moduleSet>
             <includes>
-                <include>org.lealone.examples.petstore:petstore-main</include>
+                <include>com.lealone.examples.petstore:petstore-main</include>
             </includes><!--
             <binaries>
                 <unpack>false</unpack>

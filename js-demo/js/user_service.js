@@ -1,6 +1,6 @@
 
 // 使用 java 的类
-var User = Java.type('org.lealone.examples.js.User');
+var User = Java.type('com.lealone.examples.js.User');
 
 function addUser(name, age) {
     // 创建 User 对象

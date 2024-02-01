@@ -2,7 +2,7 @@
 import java
 
 # 使用 java 的类
-User = java.type('org.lealone.examples.python.User')
+User = java.type('com.lealone.examples.python.User')
 
 def addUser(name, age):
     # 创建 User 对象

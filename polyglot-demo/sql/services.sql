@@ -14,5 +14,5 @@ drop service if exists time_service;
 create service if not exists time_service (
   get_current_time() varchar
 )
-implement by 'org.lealone.examples.polyglot.TimeService';
+implement by 'com.lealone.examples.polyglot.TimeService';
 

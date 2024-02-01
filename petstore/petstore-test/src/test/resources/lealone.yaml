@@ -25,6 +25,6 @@ protocol_server_engines:
         port: 9000,
         environment: dev,
         web_root: ../petstore-web/web,
-        router: "org.lealone.examples.petstore.web.PetStoreRouter",
+        router: "com.lealone.examples.petstore.web.PetStoreRouter",
         jdbc_url: "jdbc:lealone:embed:petstore?user=root"
     }

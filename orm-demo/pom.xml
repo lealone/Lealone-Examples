@@ -2,16 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion> 
-    <groupId>org.lealone.examples</groupId>
+    <groupId>com.lealone.examples</groupId>
     <artifactId>lealone-orm-demo</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>org.lealone.plugins</groupId>
+            <groupId>com.lealone.plugins</groupId>
             <artifactId>lealone-orm</artifactId>
-            <version>5.2.0</version>
+            <version>6.0.0-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -28,8 +28,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>17</source>
-                    <target>17</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -50,7 +50,7 @@
                                     
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
-                                        <Main-Class>org.lealone.examples.orm.OrmDemo</Main-Class>
+                                        <Main-Class>com.lealone.examples.orm.OrmDemo</Main-Class>
                                         <!-- 让log4j2选择合适的jdk，避免启动时出现WARNING: sun.reflect.Reflection.getCallerClass is not supported -->
                                         <Multi-Release>true</Multi-Release>
                                         <Built-By>Lealone Database Group</Built-By>
