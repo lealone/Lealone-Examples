@@ -33,6 +33,7 @@ public class StorageEngineDemo {
         storage = getStorage("memory");
         testMap(storage);
         testAsyncMap(storage);
+        System.exit(0); // 关闭所有的非守护线程
     }
 
     private static void testMap(Storage storage) {

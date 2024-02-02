@@ -1,7 +1,5 @@
 package com.lealone.examples.orm.generated;
 
-import java.util.List;
-
 import com.lealone.plugins.orm.Model;
 import com.lealone.plugins.orm.ModelProperty;
 import com.lealone.plugins.orm.ModelTable;
@@ -9,6 +7,7 @@ import com.lealone.plugins.orm.format.JsonFormat;
 import com.lealone.plugins.orm.property.PInteger;
 import com.lealone.plugins.orm.property.PLong;
 import com.lealone.plugins.orm.property.PString;
+import java.util.List;
 
 /**
  * Model for table 'CUSTOMER'.
