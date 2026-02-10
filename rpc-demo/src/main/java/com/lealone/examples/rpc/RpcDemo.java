@@ -17,20 +17,23 @@
  */
 package com.lealone.examples.rpc;
 
-import com.lealone.main.Lealone;
+import com.lealone.plugins.boot.LealoneApplication;
 
 // 请在浏览器中打开下面的 URL 进行测试:
-// http://localhost:9000/service/hello_service/say_hello?name=zhh
-// http://localhost:9000/hello.html
+// http://localhost:8080/service/hello_service/say_hello?name=zhh
+// http://localhost:8080/hello.html
 public class RpcDemo {
 
     public static void main(String[] args) {
-        Lealone.main(args, () -> runScript());
-    }
+        // 1. 使用默认参数启动
+        LealoneApplication.start("mydb", "./sql/services.sql");
 
-    public static void runScript() {
-        String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
-        // 执行 services.sql 脚本，创建服务
-        Lealone.runScript(url, "./sql/services.sql");
+        // 2. 按定制的参数启动
+        // LealoneApplication app = new LealoneApplication();
+        // app.setBaseDir("./target/test-data");
+        // app.setWebRoot("./web");
+        // app.setDatabase("mydb");
+        // app.setSqlScripts("./sql/services.sql");
+        // app.start();
     }
 }

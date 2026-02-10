@@ -17,20 +17,13 @@
  */
 package com.lealone.examples.fullstack;
 
-import com.lealone.main.Lealone;
+import com.lealone.plugins.boot.LealoneApplication;
 
 // 请在浏览器中打开下面的 URL 进行测试:
 // http://localhost:9000/fullStack.html
 public class FullStackDemo {
 
     public static void main(String[] args) {
-        Lealone.main(args, () -> runScript());
-    }
-
-    public static void runScript() {
-        String url = "jdbc:lealone:tcp://localhost:9210/test?user=root";
-        // 执行建表脚本，同时自动生成对应的模型类的代码
-        // 执行服务创建脚本，同时自动生成对应的服务接口代码
-        Lealone.runScript(url, "./sql/tables.sql", "./sql/services.sql");
+        LealoneApplication.start("test", "./sql/tables.sql", "./sql/services.sql");
     }
 }
