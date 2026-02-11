@@ -17,63 +17,109 @@
  */
 package com.lealone.examples.petstore.web;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
-import com.lealone.plugins.vertx.VertxRouter;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 
-import io.vertx.core.Vertx;
-import io.vertx.ext.web.FileUpload;
-import io.vertx.ext.web.Router;
-import io.vertx.ext.web.handler.BodyHandler;
+import com.lealone.plugins.service.template.TemplateEngine;
+import com.lealone.plugins.tomcat.TomcatRouter;
 
-public class PetStoreRouter extends VertxRouter {
-    @Override
-    protected void initRouter(Map<String, String> config, Vertx vertx, Router router) {
-        // route的顺序很重要，所以下面三个调用不能乱
-        setRedirectHandler(router);
-        setDevelopmentEnvironmentRouter(config, vertx, router);
-    }
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpFilter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 
-    private void setRedirectHandler(Router router) {
-        router.route("/").handler(routingContext -> {
-            routingContext.redirect("/home/index.html");
-        });
-        router.route("/user").handler(routingContext -> {
-            routingContext.redirect("/user/index.html");
-        });
-        router.route("/store").handler(routingContext -> {
-            routingContext.redirect("/store/index.html");
-        });
-        // 实现footer.html中的重定向功能
-        router.route("/redirect.do").handler(routingContext -> {
-            routingContext.redirect(routingContext.request().getParam("location"));
-        });
-    }
+public class PetStoreRouter extends TomcatRouter {
+
+    private String webRoot;
+    // private String uploadDirectory;
 
     @Override
-    protected void setHttpServiceHandler(Map<String, String> config, Vertx vertx, Router router) {
-        setFileUploadHandler(config, vertx, router);
-        super.setHttpServiceHandler(config, vertx, router);
+    public void init(Map<String, String> config) {
+        webRoot = config.get("web_root");
+        // String uploadDirectory = config.get("upload_directory");
+        // if (uploadDirectory == null)
+        // uploadDirectory = config.get("web_root") + "/store/img/file_uploads";
+        // this.uploadDirectory = uploadDirectory;
+
+        addFilter("redirectFilter", new RedirectFilter(), "/*");
+        if (isDevelopmentEnvironment(config)) {
+            addFilter("templateFilter", new TemplateFilter(), "*.html");
+        }
+        addFilter("fileUploadFilter", new FileUploadFilter(), "/service/store_service/add_product");
+        tomcatServer.getContext().setAllowCasualMultipartParsing(true);
+        super.init(config);
     }
 
-    private void setFileUploadHandler(Map<String, String> config, Vertx vertx, Router router) {
-        String uploadDirectory = config.get("upload_directory");
-        if (uploadDirectory == null)
-            uploadDirectory = config.get("web_root") + "/store/img/file_uploads";
-        BodyHandler bodyHandler = BodyHandler.create(uploadDirectory);
-        // 先不合并，留给父类setHttpServiceHandler中定义的BodyHandler合并，否则表单属性会重复
-        bodyHandler.setMergeFormAttributes(false);
-        router.post("/service/store_service/add_product").handler(bodyHandler);
-        router.post("/service/store_service/add_product").handler(routingContext -> {
-            for (FileUpload f : routingContext.fileUploads()) {
-                routingContext.request().params().set("logo", f.fileName());
-                File logoFile = new File(config.get("web_root") + "/store/img/", f.fileName());
-                File uploadedFile = new File(f.uploadedFileName());
-                uploadedFile.renameTo(logoFile);
-                break;
+    private boolean isDevelopmentEnvironment(Map<String, String> config) {
+        String environment = config.get("environment");
+        if (environment != null) {
+            environment = environment.trim().toLowerCase();
+            if (environment.equals("development") || environment.equals("dev")) {
+                return true;
             }
-            routingContext.next();
-        });
+        }
+        return false;
+    }
+
+    private class TemplateFilter extends HttpFilter {
+        @Override
+        protected void doFilter(HttpServletRequest request, HttpServletResponse response,
+                FilterChain chain) throws IOException, ServletException {
+            TemplateEngine te = new TemplateEngine(webRoot, "utf-8");
+            String file = request.getRequestURI();
+            try {
+                String str = te.process(file);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text/html; charset=utf-8");
+                response.getWriter().write(str);
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    private class RedirectFilter extends HttpFilter {
+        @Override
+        protected void doFilter(HttpServletRequest request, HttpServletResponse response,
+                FilterChain chain) throws IOException, ServletException {
+            String url = request.getRequestURI();
+            if (url.equals("/")) {
+                response.sendRedirect("/home/index.html");
+            } else if (url.equals("/user")) {
+                response.sendRedirect("/user/index.html");
+            } else if (url.equals("/store")) {
+                response.sendRedirect("/store/index.html");
+            } else if (url.equals("/redirect.do")) {
+                response.sendRedirect(request.getParameter("location"));
+            } else {
+                chain.doFilter(request, response);
+            }
+        }
+    }
+
+    private class FileUploadFilter extends HttpFilter {
+        @Override
+        public void init(FilterConfig filterConfig) throws ServletException {
+        }
+
+        @Override
+        protected void doFilter(HttpServletRequest request, HttpServletResponse response,
+                FilterChain chain) throws IOException, ServletException {
+            for (Part p : request.getParts()) {
+                // request.getParameterMap().put("logo", new String[] { p.getName() });
+                File logoFile = new File(webRoot + "/store/img/", p.getName());
+                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(logoFile));
+                IOUtils.copy(p.getInputStream(), out);
+                out.close();
+            }
+            chain.doFilter(request, response);
+        }
     }
 }

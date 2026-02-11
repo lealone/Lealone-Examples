@@ -17,7 +17,7 @@
  */
 package com.lealone.examples.storage;
 
-import com.lealone.db.PluginManager;
+import com.lealone.db.plugin.PluginManager;
 import com.lealone.storage.Storage;
 import com.lealone.storage.StorageBuilder;
 import com.lealone.storage.StorageEngine;
@@ -29,11 +29,6 @@ public class StorageEngineDemo {
         Storage storage = getStorage("aose");
         testMap(storage);
         testAsyncMap(storage);
-
-        storage = getStorage("memory");
-        testMap(storage);
-        testAsyncMap(storage);
-        System.exit(0); // 关闭所有的非守护线程
     }
 
     private static void testMap(Storage storage) {

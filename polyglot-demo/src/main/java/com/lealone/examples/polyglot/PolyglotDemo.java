@@ -17,20 +17,14 @@
  */
 package com.lealone.examples.polyglot;
 
-import com.lealone.main.Lealone;
+import com.lealone.plugins.boot.LealoneApplication;
 
 // 请在浏览器中打开下面的 URL 进行测试:
-// http://localhost:9000/service/hello_service/hello?name=zhh
-// http://localhost:9000/service/time_service/get_current_time
+// http://localhost:8080/service/hello_service/hello?name=zhh
+// http://localhost:8080/service/time_service/get_current_time
 public class PolyglotDemo {
 
     public static void main(String[] args) {
-        Lealone.main(args, () -> runScript());
-    }
-
-    public static void runScript() {
-        String url = "jdbc:lealone:tcp://localhost:9210/lealone?user=root";
-        // 执行服务创建脚本，同时自动生成对应的服务接口代码
-        Lealone.runScript(url, "./sql/services.sql");
+        LealoneApplication.start("lealone", "./sql/services.sql");
     }
 }

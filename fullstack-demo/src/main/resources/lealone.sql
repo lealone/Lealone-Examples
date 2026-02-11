@@ -3,7 +3,7 @@ create config lealone (
     protocol_server_engine: (
         name: 'tomcat',
         enabled: true,
-        port: 9000,
+        port: 8080,
         web_root: './web',
         jdbc_url: 'jdbc:lealone:embed:test?user=root'
     )

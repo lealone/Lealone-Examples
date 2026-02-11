@@ -19,14 +19,14 @@ package com.lealone.examples.petstore.test;
 
 import com.lealone.common.exceptions.ConfigException;
 import com.lealone.examples.petstore.main.PetStore;
-import com.lealone.main.config.Config;
-import com.lealone.main.config.YamlConfigLoader;
 import com.lealone.plugins.service.http.HttpServerEngine;
+import com.lealone.sql.config.Config;
+import com.lealone.sql.config.ConfigListener;
 
-public class PetStoreTest extends YamlConfigLoader {
+public class PetStoreTest implements ConfigListener {
 
     public static void main(String[] args) {
-        System.setProperty("lealone.config.loader", PetStoreTest.class.getName());
+        System.setProperty("lealone.config.listener ", PetStoreTest.class.getName());
         PetStore.main(args);
     }
 
@@ -35,6 +35,5 @@ public class PetStoreTest extends YamlConfigLoader {
         // 动态生成绝对路径的webRoot，使用相对路径在eclipse和idea下面总有一个不正确
         String webRoot = PetStore.getAbsolutePath("petstore-web/web");
         config.getProtocolServerParameters(HttpServerEngine.NAME).put("web_root", webRoot);
-        super.applyConfig(config);
     }
 }

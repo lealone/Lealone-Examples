@@ -20,7 +20,7 @@ package com.lealone.examples.fullstack;
 import com.lealone.plugins.boot.LealoneApplication;
 
 // 请在浏览器中打开下面的 URL 进行测试:
-// http://localhost:9000/fullStack.html
+// http://localhost:8080/fullStack.html
 public class FullStackDemo {
 
     public static void main(String[] args) {

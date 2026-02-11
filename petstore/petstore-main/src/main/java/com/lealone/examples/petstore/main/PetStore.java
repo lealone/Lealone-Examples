@@ -26,7 +26,7 @@ public class PetStore {
 
     public static void main(String[] args) {
         // 请在浏览器中打开下面这个URL进行测试:
-        // http://localhost:9000/
+        // http://localhost:8080/
         Lealone.main(args);
     }
 
