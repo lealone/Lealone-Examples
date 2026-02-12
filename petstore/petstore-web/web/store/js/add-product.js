@@ -1,7 +1,7 @@
 ﻿const storeAddProduct = { 
     data() {
         return {
-            product: {categoryid: "", productid: "", name: "", descn: ""},
+            product: {categoryid: "", productid: "", name: "", descn: "", logo: ""},
             file: "",
             errorMessage: ""
         }
@@ -16,6 +16,7 @@
                 return;
             }
             var formData = new FormData();
+			this.product.logo = this.file.name;
             formData.append('product', JSON.stringify(this.product));
             formData.append('logo_file', this.file);
             // 不需要手工增加Content-Type头，axios会自动删除

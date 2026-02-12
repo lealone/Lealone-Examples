@@ -27,8 +27,7 @@ import com.lealone.plugins.orm.json.JsonObject;
 
 public class StoreService {
 
-    public String addProduct(Product product, String logo) {
-        product.logo.set(logo);
+    public String addProduct(Product product) {
         product.insert();
         return null;
     }

@@ -18,7 +18,7 @@ drop service if exists store_service;
 
 -- 创建服务: store_service
 create service if not exists store_service (
-  add_product(product Product, logo varchar) varchar,
+  add_product(product Product) varchar,
   get_all_categories() varchar,
   get_all_product_items(product_id varchar) varchar
 )

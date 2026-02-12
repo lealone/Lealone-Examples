@@ -17,19 +17,14 @@
  */
 package com.lealone.examples.petstore.web;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map;
-
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 
 import com.lealone.plugins.service.template.TemplateEngine;
 import com.lealone.plugins.tomcat.TomcatRouter;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -39,15 +34,15 @@ import jakarta.servlet.http.Part;
 public class PetStoreRouter extends TomcatRouter {
 
     private String webRoot;
-    // private String uploadDirectory;
+    private String uploadDirectory;
 
     @Override
     public void init(Map<String, String> config) {
         webRoot = config.get("web_root");
-        // String uploadDirectory = config.get("upload_directory");
-        // if (uploadDirectory == null)
-        // uploadDirectory = config.get("web_root") + "/store/img/file_uploads";
-        // this.uploadDirectory = uploadDirectory;
+        String uploadDirectory = config.get("upload_directory");
+        if (uploadDirectory == null)
+            uploadDirectory = webRoot + "/store/img/file_uploads";
+        this.uploadDirectory = uploadDirectory;
 
         addFilter("redirectFilter", new RedirectFilter(), "/*");
         if (isDevelopmentEnvironment(config)) {
@@ -106,18 +101,14 @@ public class PetStoreRouter extends TomcatRouter {
 
     private class FileUploadFilter extends HttpFilter {
         @Override
-        public void init(FilterConfig filterConfig) throws ServletException {
-        }
-
-        @Override
         protected void doFilter(HttpServletRequest request, HttpServletResponse response,
                 FilterChain chain) throws IOException, ServletException {
             for (Part p : request.getParts()) {
-                // request.getParameterMap().put("logo", new String[] { p.getName() });
-                File logoFile = new File(webRoot + "/store/img/", p.getName());
-                BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(logoFile));
-                IOUtils.copy(p.getInputStream(), out);
-                out.close();
+                if ("logo_file".equalsIgnoreCase(p.getName())) {
+                    String fileName = p.getSubmittedFileName();
+                    File logoFile = new File(uploadDirectory, fileName);
+                    p.write(logoFile.getCanonicalPath());
+                }
             }
             chain.doFilter(request, response);
         }
