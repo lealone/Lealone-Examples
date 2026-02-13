@@ -44,11 +44,11 @@ public class PetStoreRouter extends TomcatRouter {
             uploadDirectory = webRoot + "/store/img/file_uploads";
         this.uploadDirectory = uploadDirectory;
 
-        addFilter("redirectFilter", new RedirectFilter(), "/*");
+        addFilter(new RedirectFilter(), "/*");
         if (isDevelopmentEnvironment(config)) {
-            addFilter("templateFilter", new TemplateFilter(), "*.html");
+            addFilter(new TemplateFilter(), "*.html");
         }
-        addFilter("fileUploadFilter", new FileUploadFilter(), "/service/store_service/add_product");
+        addFilter(new FileUploadFilter(), "/service/store_service/add_product");
         tomcatServer.getContext().setAllowCasualMultipartParsing(true);
         super.init(config);
     }
