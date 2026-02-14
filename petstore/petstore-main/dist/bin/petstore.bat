@@ -52,7 +52,7 @@ if "%str%"=="" (
 
 :exec
 set CLASSPATH="%LEALONE_HOME%\conf;%LEALONE_HOME%\lib\*"
-"%JAVA_HOME%\bin\java" %JAVA_OPTS% -cp %CLASSPATH% com.lealone.examples.petstore.main.PetStore -database petstore -initSql "set @srcPath '../src'" -sqlScripts "../sql/tables.sql,../sql/init-data.sql,../sql/services.sql" %*
+"%JAVA_HOME%\bin\java" %JAVA_OPTS% -cp %CLASSPATH% com.lealone.examples.petstore.main.PetStore -database petstore -initSql "set @disable_generate_code true" -sqlScripts "../sql/tables.sql,../sql/init-data.sql,../sql/services.sql" %*
 goto finally
 
 :err
