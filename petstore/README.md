@@ -14,15 +14,7 @@ build -p
 
 cd target\lealone-petstore-1.0.0\bin
 
-lealone
-
-
-
-### 初始化数据
-
-cd target\lealone-petstore-1.0.0\bin
-
-runSqlScript
+petstore
 
 
 
@@ -38,8 +30,6 @@ http://localhost:9000/
 把代码导入到 IDE 后，
 
 先运行 PetStoreTest 启动应用，
-
-然后运行 PetStoreSqlScriptTest 初始化数据，
 
 最后就能打开页面查看了。
 

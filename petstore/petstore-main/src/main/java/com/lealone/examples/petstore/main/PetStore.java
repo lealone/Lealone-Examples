@@ -20,14 +20,14 @@ package com.lealone.examples.petstore.main;
 import java.io.File;
 import java.net.URL;
 
-import com.lealone.main.Lealone;
+import com.lealone.plugins.boot.LealoneApplication;
 
 public class PetStore {
 
     public static void main(String[] args) {
         // 请在浏览器中打开下面这个URL进行测试:
         // http://localhost:8080/
-        Lealone.main(args);
+        LealoneApplication.start(args);
     }
 
     public static String getAppBaseDir() {

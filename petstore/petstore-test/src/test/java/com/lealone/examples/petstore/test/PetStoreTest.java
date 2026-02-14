@@ -17,6 +17,8 @@
  */
 package com.lealone.examples.petstore.test;
 
+import java.util.ArrayList;
+
 import com.lealone.common.exceptions.ConfigException;
 import com.lealone.examples.petstore.main.PetStore;
 import com.lealone.plugins.service.http.HttpServerEngine;
@@ -27,7 +29,23 @@ public class PetStoreTest implements ConfigListener {
 
     public static void main(String[] args) {
         System.setProperty("lealone.config.listener ", PetStoreTest.class.getName());
-        PetStore.main(args);
+        ArrayList<String> list = new ArrayList<>();
+        list.add("-database");
+        list.add("petstore");
+
+        list.add("-initSql");
+        list.add("set @srcPath '" + PetStore.getAbsolutePath("petstore-dal/src/main/java") + "'");
+
+        list.add("-sqlScripts");
+        // 执行建表脚本，同时自动生成对应的模型类的代码
+        String sqlScripts = PetStore.getAbsolutePath("petstore-dal/src/main/resources/tables.sql");
+        // 初始化数据
+        sqlScripts += "," + PetStore.getAbsolutePath("petstore-dal/src/main/resources/init-data.sql");
+        // 执行服务创建脚本，同时自动生成对应的服务接口代码
+        sqlScripts += "," + PetStore.getAbsolutePath("petstore-service/src/main/resources/services.sql");
+        list.add(sqlScripts);
+
+        PetStore.main(list.toArray(args));
     }
 
     @Override
