@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.lealone.examples.petstore.dal.model.Item;
+import com.lealone.examples.petstore.model.Item;
 import com.lealone.plugins.orm.json.JsonArray;
 import com.lealone.plugins.orm.json.JsonObject;
 

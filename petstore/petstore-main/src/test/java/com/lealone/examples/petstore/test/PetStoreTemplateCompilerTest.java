@@ -15,14 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lealone.examples.petstore.main;
+package com.lealone.examples.petstore.test;
 
-import com.lealone.plugins.boot.LealoneApplication;
+import java.io.IOException;
 
-public class PetStore {
-    public static void main(String[] args) {
-        // 请在浏览器中打开下面这个URL进行测试:
-        // http://localhost:8080/
-        LealoneApplication.start(args);
+import com.lealone.plugins.service.template.TemplateCompiler;
+
+public class PetStoreTemplateCompilerTest {
+
+    public static void main(String[] args) throws IOException {
+        String webRoot = PetStoreTest.getAbsolutePath("petstore-web/web");
+        args = new String[] { "-webRoot", webRoot };
+        TemplateCompiler.main(args);
     }
+
 }

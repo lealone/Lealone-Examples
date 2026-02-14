@@ -19,9 +19,9 @@ package com.lealone.examples.petstore.service;
 
 import java.util.List;
 
-import com.lealone.examples.petstore.dal.model.Category;
-import com.lealone.examples.petstore.dal.model.Item;
-import com.lealone.examples.petstore.dal.model.Product;
+import com.lealone.examples.petstore.model.Category;
+import com.lealone.examples.petstore.model.Item;
+import com.lealone.examples.petstore.model.Product;
 import com.lealone.plugins.orm.json.JsonArray;
 import com.lealone.plugins.orm.json.JsonObject;
 

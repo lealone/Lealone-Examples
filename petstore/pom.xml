@@ -26,13 +26,19 @@
     <version>1.0.0</version>
 
     <modules>
-        <module>petstore-dal</module>
+        <module>petstore-model</module>
         <module>petstore-service</module>
         <module>petstore-web</module>
         <module>petstore-main</module>
-        <module>petstore-test</module>
-        <module>petstore-dist</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.lealone.plugins</groupId>
+            <artifactId>lealone-boot</artifactId>
+            <version>8.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -92,22 +98,14 @@
                     <artifactId>maven-assembly-plugin</artifactId>
                     <version>2.2-beta-5</version>
                     <configuration>
-                        <finalName>lealone-petstore-${project.version}</finalName>
+                        <finalName>petstore-${project.version}</finalName>
                         <descriptors>
-                            <descriptor>petstore-dist/assembly.xml</descriptor>
+                            <descriptor>petstore-main/dist/assembly.xml</descriptor>
                         </descriptors>
                     </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.lealone.plugins</groupId>
-            <artifactId>lealone-boot</artifactId>
-            <version>8.0.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 </project>
 

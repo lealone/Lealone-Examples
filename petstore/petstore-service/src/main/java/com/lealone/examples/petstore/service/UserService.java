@@ -17,8 +17,8 @@
  */
 package com.lealone.examples.petstore.service;
 
-import com.lealone.examples.petstore.dal.model.Account;
-import com.lealone.examples.petstore.dal.model.User;
+import com.lealone.examples.petstore.model.Account;
+import com.lealone.examples.petstore.model.User;
 import com.lealone.plugins.orm.json.JsonObject;
 
 public class UserService {

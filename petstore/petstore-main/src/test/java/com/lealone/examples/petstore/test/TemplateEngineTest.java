@@ -15,14 +15,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.lealone.examples.petstore.main;
+package com.lealone.examples.petstore.test;
 
-import com.lealone.plugins.boot.LealoneApplication;
+import com.lealone.plugins.service.template.TemplateEngine;
 
-public class PetStore {
-    public static void main(String[] args) {
-        // 请在浏览器中打开下面这个URL进行测试:
-        // http://localhost:8080/
-        LealoneApplication.start(args);
+public class TemplateEngineTest {
+
+    public static void main(String[] args) throws Exception {
+        String webRoot = PetStoreTest.getAbsolutePath("petstore-web/web");
+        TemplateEngine te = new TemplateEngine(webRoot, "utf-8");
+        String str = te.process("/home/index.html");
+        System.out.println(str);
     }
+
 }

@@ -32,7 +32,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lealone.examples.petstore</groupId>
-            <artifactId>petstore-dal</artifactId>
+            <artifactId>petstore-model</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
