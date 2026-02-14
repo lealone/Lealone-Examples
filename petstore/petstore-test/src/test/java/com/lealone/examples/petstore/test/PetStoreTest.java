@@ -17,41 +17,30 @@
  */
 package com.lealone.examples.petstore.test;
 
-import java.util.ArrayList;
-
-import com.lealone.common.exceptions.ConfigException;
 import com.lealone.examples.petstore.main.PetStore;
-import com.lealone.plugins.service.http.HttpServerEngine;
-import com.lealone.sql.config.Config;
-import com.lealone.sql.config.ConfigListener;
+import com.lealone.examples.petstore.web.PetStoreRouter;
+import com.lealone.plugins.boot.LealoneApplication;
 
-public class PetStoreTest implements ConfigListener {
+public class PetStoreTest {
 
     public static void main(String[] args) {
-        System.setProperty("lealone.config.listener ", PetStoreTest.class.getName());
-        ArrayList<String> list = new ArrayList<>();
-        list.add("-database");
-        list.add("petstore");
+        String[] sqlScripts = {
+                // 执行建表脚本，同时自动生成对应的模型类的代码
+                PetStore.getAbsolutePath("petstore-dal/src/main/resources/tables.sql"),
+                // 初始化数据
+                PetStore.getAbsolutePath("petstore-dal/src/main/resources/init-data.sql"),
+                // 执行服务创建脚本，同时自动生成对应的服务接口代码
+                PetStore.getAbsolutePath("petstore-service/src/main/resources/services.sql") };
 
-        list.add("-initSql");
-        list.add("set @srcPath '" + PetStore.getAbsolutePath("petstore-dal/src/main/java") + "'");
-
-        list.add("-sqlScripts");
-        // 执行建表脚本，同时自动生成对应的模型类的代码
-        String sqlScripts = PetStore.getAbsolutePath("petstore-dal/src/main/resources/tables.sql");
-        // 初始化数据
-        sqlScripts += "," + PetStore.getAbsolutePath("petstore-dal/src/main/resources/init-data.sql");
-        // 执行服务创建脚本，同时自动生成对应的服务接口代码
-        sqlScripts += "," + PetStore.getAbsolutePath("petstore-service/src/main/resources/services.sql");
-        list.add(sqlScripts);
-
-        PetStore.main(list.toArray(args));
-    }
-
-    @Override
-    public void applyConfig(Config config) throws ConfigException {
+        LealoneApplication app = new LealoneApplication();
+        app.setBaseDir("./target/test-data");
         // 动态生成绝对路径的webRoot，使用相对路径在eclipse和idea下面总有一个不正确
-        String webRoot = PetStore.getAbsolutePath("petstore-web/web");
-        config.getProtocolServerParameters(HttpServerEngine.NAME).put("web_root", webRoot);
+        app.setWebRoot(PetStore.getAbsolutePath("petstore-web/web"));
+        app.setDatabase("petstore");
+        app.setInitSql("set @srcPath '" + PetStore.getAbsolutePath("petstore-dal/src/main/java") + "'");
+        app.setSqlScripts(sqlScripts);
+        app.setEnvironment("dev");
+        app.setRouter(PetStoreRouter.class);
+        app.start();
     }
 }
